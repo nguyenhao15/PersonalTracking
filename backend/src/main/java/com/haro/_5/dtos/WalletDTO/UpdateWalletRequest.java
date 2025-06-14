@@ -13,4 +13,5 @@ public class UpdateWalletRequest {
     public String name;
     public String type;
     public Boolean isActive;
+    private String walletIcon;
 }

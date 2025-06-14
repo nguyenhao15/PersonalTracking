@@ -15,6 +15,7 @@ public class WalletInfoDTO {
     private String name;
     private String type;
     private String currency;
+    private String walletIcon;
     private Boolean isActive;
     private Double initial;
     private Double balance;

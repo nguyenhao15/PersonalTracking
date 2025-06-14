@@ -12,5 +12,6 @@ public class CategoryInfo {
     private String categoryName;
     private Boolean categoryType;
     private String createdBy;
+    private String categoryIcon;
 
 }

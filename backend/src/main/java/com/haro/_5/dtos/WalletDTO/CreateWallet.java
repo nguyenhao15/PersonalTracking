@@ -26,6 +26,8 @@ public class CreateWallet {
     @Builder.Default
     private String currency = "VND";
 
+    private String walletIcon;
+
     @Builder.Default
     private double balance = 0;
 

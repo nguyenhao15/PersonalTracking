@@ -23,7 +23,9 @@ public class CreateCategoryDTO {
     private String categoryName;
 
     @Builder.Default
-    private Boolean categoryType = false ;
+    private Boolean categoryType = false;
+
+    private String categoryIcon;
 
 
     private String createdBy;

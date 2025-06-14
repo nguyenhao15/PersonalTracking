@@ -21,6 +21,7 @@ public class Category {
     private String categoryName;
 
     private Boolean categoryType;
+    private String categoryIcon;
 
     @CreatedBy
     private String createdBy;

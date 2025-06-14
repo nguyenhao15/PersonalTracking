@@ -25,6 +25,7 @@ public class Wallet {
     private String name;
     private String type; // normal | saving
     private double balance;
+    private String walletIcon;
     private double initial;
 
     private String currency;

@@ -24,7 +24,7 @@ public class WalletController {
     private final WalletService walletService;
 
     @GetMapping
-    public ResponseEntity<ApiResponse<List<WalletInfoDTO>>> getAllWallets(){
+    public ResponseEntity<ApiResponse<List<WalletInfoDTO>>> getAllWallets() {
         return ResponseEntity.ok(walletService.getAllWallets());
     }
 
@@ -38,11 +38,11 @@ public class WalletController {
         return ResponseEntity.ok(walletService.createWallet(createWallet));
     }
 
-    @PutMapping("/{id}")
+    @PatchMapping("/{id}")
     public ResponseEntity<?> updateWallet(
             @PathVariable String id,
-            @RequestBody UpdateWalletRequest request ){
-    return walletService.updateWallet(id,request);
+            @RequestBody UpdateWalletRequest request) {
+        return walletService.updateWallet(id, request);
     }
 
     @DeleteMapping("/{id}")

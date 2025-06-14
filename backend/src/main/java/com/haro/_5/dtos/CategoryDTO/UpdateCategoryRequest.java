@@ -9,4 +9,5 @@ public class UpdateCategoryRequest {
 
     private String categoryName;
     private Boolean categoryType;
+    private String categoryIcon;
 }
