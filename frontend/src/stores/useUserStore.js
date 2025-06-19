@@ -46,29 +46,26 @@ export const useUserStore = create((set, get) => ({
     checkAuth: async () => {
         set({ checkingAuth: true });
         try {
+            set({ checkingAuth: false })
             const response = await axios.get("/auth/profile");
             set({ user: response.data });
             return response;
         } catch (error) {
-            set({ user: null });
+            set({ user: null, checkingAuth: false });
             throw error;
-        } finally {
-            set({ checkingAuth: false });
         }
     },
 
     refreshToken: async () => {
         // Prevent multiple simultaneous refresh attempts
-        console.log(get().refreshingToken);
-        if (get().refreshingToken) return;
-        set({ refreshingToken: true });
+        if (get().checkingAuth) return;
+        set({ checkingAuth: true });
         try {
             const response = await axios.post("/auth/refresh-token");
-            console.log("response is here: ", response);
-            set({ refreshingToken: false });
+            set({ checkingAuth: false, user: response.data });
             return response.data;
         } catch (error) {
-            set({ user: null, refreshingToken: false });
+            set({ user: null, checkingAuth: false });
             throw error;
         }
     }

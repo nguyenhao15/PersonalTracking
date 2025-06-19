@@ -4,9 +4,9 @@ import axios from '../../lib/axios';
 import toast from 'react-hot-toast';
 import ExpensesOverview from '../../components/Expenses/ExpensesOverview';
 import Modal from '../../components/layout/Modal';
-import CreatePage from '../CreatePage';
 import TransactionList from '../../components/layout/TransactionList';
 import DeleteAlert from '../../components/layout/DeleteAlert';
+import CreatePage from '../../components/Create/CreatePage';
 
 const Expenses = () => {
     const [expensesData, setExpensesData] = useState([]);
@@ -72,6 +72,7 @@ const Expenses = () => {
 
     };
 
+
     const deleteExpenses = async (id) => {
         try {
             const res = await axios.delete(`transactions/${id}`);
@@ -88,7 +89,6 @@ const Expenses = () => {
 
     useEffect(() => {
         fetchExpensesDetails();
-
         return () => { };
     }, []);
 
@@ -105,8 +105,8 @@ const Expenses = () => {
     })
 
     return (
-        <DashboardLayout activeMenu="Expenses">
-            <div className='my-5 mx-auto'>
+        <DashboardLayout activeMenu="Expenses" >
+            < div className='my-5 mx-auto' >
                 <div className='grid grid-cols-1 gap-6'>
                     <div className=''>
                         <ExpensesOverview
@@ -141,8 +141,8 @@ const Expenses = () => {
                         onDelete={() => deleteExpenses(openDeleteAlert.data)}
                     />
                 </Modal>
-            </div>
-        </DashboardLayout>
+            </ div>
+        </DashboardLayout >
     )
 }
 

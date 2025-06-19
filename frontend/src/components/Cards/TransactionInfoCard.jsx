@@ -1,6 +1,7 @@
 import { BanknoteArrowDown, BanknoteArrowUp, Trash2 } from 'lucide-react'
 import React, { useEffect } from 'react'
 import useCategoriesStore from '../../stores/useCategoriesStore';
+import SvgHandle from '../SvgHandle';
 
 const TransactionInfoCard = ({
     expensesName,
@@ -15,6 +16,7 @@ const TransactionInfoCard = ({
         loading,
         fetchCategories,
         getCategoryName,
+        getCategoryIcon,
         error
     } = useCategoriesStore();
 
@@ -31,11 +33,7 @@ const TransactionInfoCard = ({
     return (
         <div className='group relative flex items-center gap-4 mt-2 p-3 rounded-lg hover:bg-gray-100/5'>
             <div className='w-12 h-12 flex items-center justify-center text-xl text-gray-800 bg-gray-100 rounded-full'>
-                {type ? (
-                    <BanknoteArrowUp />
-                ) : (
-                    <BanknoteArrowDown />
-                )}
+                <SvgHandle name={getCategoryIcon(category)} className='w-6 h-6' color='text-gray-600' />
             </div>
 
             <div className='flex-1 flex items-center justify-between'>

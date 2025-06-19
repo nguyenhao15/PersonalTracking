@@ -1,14 +1,30 @@
 import { X } from 'lucide-react'
+import { useEffect } from 'react';
+import LoadingSpinner from '../LoadingSpinner';
 
 const Modal = ({ children, isOpen, onClose, title }) => {
 
-    if (!isOpen) return null
+    useEffect(() => {
+        if (isOpen) {
+            document.body.classList.add('overflow-hidden');
+        } else {
+            document.body.classList.remove('overflow-hidden');
+        }
+
+        // Đảm bảo luôn gỡ khi component unmount (nếu modal bị huỷ ngang)
+        return () => {
+            document.body.classList.remove('overflow-hidden');
+        };
+    }, [isOpen]);
+
+    if (!isOpen) return null;
+
 
     return (
-        <div className='fixed top-0 right-0 left-0 z-50 flex justify-center items-center w-full h-[calc(100%-1rem)] max-h-full overflow-y-auto overflow-x-hidden bg-black/20 bg-opacity-50'>
+        <div className='fixed top-0 right-0 left-0 z-50 flex justify-center items-center w-full h-[calc(100%)] max-h-full overflow-x-hidden bg-black/20 bg-opacity-50'>
             {/* Modal content */}
             <div className='relative p-4 w-full max-w-2xl max-h-full'>
-                <div className='relative bg-gray-200 rounded-lg shadow-sm '>
+                <div className='relative bg-gray-200 rounded-lg shadow-sm'>
                     {/* Modal header */}
                     <div className='flex items-center justify-between p-4 md:p-5 border-b rounded border-gray-200'>
                         <h3 className='text-lg font-medium text-gray-900 '>

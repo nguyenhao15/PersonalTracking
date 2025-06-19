@@ -7,7 +7,7 @@ import { useUserStore } from "./stores/useUserStore";
 import { useEffect } from "react";
 import LoadingSpinner from "./components/LoadingSpinner";
 import { Toaster } from "react-hot-toast";
-import Wallet from "./pages/Dashboard/Wallet";
+import Transfers from "./pages/Dashboard/Transfers";
 
 
 const App = () => {
@@ -15,7 +15,7 @@ const App = () => {
 
   useEffect(() => {
     checkAuth();
-  }, [checkAuth]);
+  }, []);
 
   if (checkingAuth) return <LoadingSpinner />;
 
@@ -34,7 +34,7 @@ const App = () => {
             <Route path='/login' element={!user ? <LoginPage /> : <Navigate to='/dashboard' />} />
             <Route path="/dashboard" exact element={<Home />}></Route>
             <Route path="/income" exact element={<Income />}></Route>
-            <Route path="/wallets" exact element={<Wallet />}></Route>
+            <Route path="/transfer" exact element={<Transfers />}></Route>
             <Route path="/expenses" exact element={<Expenses />}></Route>
           </>
         )}

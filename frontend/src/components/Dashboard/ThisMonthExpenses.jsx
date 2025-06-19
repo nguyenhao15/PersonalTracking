@@ -22,7 +22,6 @@ const ThisMonthExpenses = ({ transactions, onSeeMore }) => {
                         type={item.type}
                         amount={formatThousands(item.amount)}
                         category={item.category}
-                        hideDeleteBtn
                     />
                 ))}
             </div>

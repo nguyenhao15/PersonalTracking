@@ -14,4 +14,6 @@ public class UpdateWalletRequest {
     public String type;
     public Boolean isActive;
     private String walletIcon;
+    private String currency;
+
 }

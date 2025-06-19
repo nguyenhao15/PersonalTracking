@@ -1,7 +1,5 @@
 package com.haro._5.dtos.savingAndInvestDTO;
 
-import com.haro._5.models.SIUpdate;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.data.annotation.CreatedBy;
@@ -18,10 +16,11 @@ public class SIInfoDTO {
     private String _id;
 
     private String title;
-    private Long totalAmount;
-    private Long initial;
+    private Double totalAmount;
+    private Double initial;
+    private String active;
+    private String type;
 
-    private List<SIUpdate> updates ;
 
     @CreatedDate
     private Instant createdAt;

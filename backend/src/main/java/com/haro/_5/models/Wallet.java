@@ -28,7 +28,8 @@ public class Wallet {
     private String walletIcon;
     private double initial;
 
-    private String currency;
+    @Builder.Default
+    private String currency = "VND";
 
     @Builder.Default
     private Boolean isActive = true;

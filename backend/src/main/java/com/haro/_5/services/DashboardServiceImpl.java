@@ -35,7 +35,7 @@ public class DashboardServiceImpl implements DashboardService {
         LocalDateTime endOfMonth = today.withDayOfMonth(today.lengthOfMonth()).atTime(LocalTime.MAX);
 
         List<Transaction> incomeTransactions = transactionRepo.findByCreatedByAndType(userId, true);
-        List<Transaction> expensestransactions = transactionRepo.findByCreatedByAndType(userId, false);
+        List<Transaction> expensesTransactions = transactionRepo.findByCreatedByAndType(userId, false);
         List<Transaction> thisMonthExpense = transactionRepo.findByCreatedByAndDateBetweenAndType(userId, startOfMonth, endOfMonth, false);
         List<Transaction> thisMonthIncome = transactionRepo.findByCreatedByAndDateBetweenAndType(userId, startOfMonth, endOfMonth, true);
         List<Transaction> lastThirtyDayAgoExpenses = transactionRepo.findByCreatedByAndDateBetweenAndType(userId, today.minusDays(29).atStartOfDay(), today.atTime(LocalTime.MAX), false);
@@ -46,7 +46,7 @@ public class DashboardServiceImpl implements DashboardService {
                 .map(t -> BigDecimal.valueOf(t.getAmount()))
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-        BigDecimal totalExpenses = expensestransactions.stream()
+        BigDecimal totalExpenses = expensesTransactions.stream()
                 .map(t -> BigDecimal.valueOf(t.getAmount()))
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 

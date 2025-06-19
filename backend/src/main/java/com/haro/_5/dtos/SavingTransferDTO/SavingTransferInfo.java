@@ -1,4 +1,4 @@
-package com.haro._5.dtos.TransferSavingDTO;
+package com.haro._5.dtos.SavingTransferDTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -16,8 +16,8 @@ public class SavingTransferInfo {
 
     private String _id;
 
-    private String savingAndInvestId;
-    private LocalDate sendingDate;
+    private String parentId;
+    private LocalDate date;
 
     private Boolean type;
     //    Sending || throwing

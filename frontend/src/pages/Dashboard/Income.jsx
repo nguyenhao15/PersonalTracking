@@ -3,7 +3,7 @@ import DashboardLayout from '../../components/layout/DashboardLayout';
 import IncomeOverview from '../../components/Income/IncomeOverview';
 import axios from '../../lib/axios'
 import Modal from '../../components/layout/Modal';
-import CreatePage from '../CreatePage';
+import CreatePage from '../../components/Create/CreatePage';
 import toast from 'react-hot-toast';
 import DeleteAlert from '../../components/layout/DeleteAlert';
 import TransactionList from '../../components/layout/TransactionList';
@@ -119,7 +119,10 @@ const Income = () => {
                     title="Add Income"
                 >
                     <div>
-                        <CreatePage onAddTransaction={handleAddIncome} type={true} />
+                        <CreatePage
+                            onAddTransaction={handleAddIncome}
+                            type={true}
+                        />
                     </div>
                 </Modal>
 

@@ -139,6 +139,15 @@ public class AuthService {
 
         String newAccessToken = jwtService.generateAccessToken(username);
 
+        String newRefreshToken = jwtService.generateRefreshToken(username);
+
+        Cookie refreshCookie = new Cookie("refreshToken", newRefreshToken);
+        refreshCookie.setHttpOnly(true);
+        refreshCookie.setSecure(false);
+        refreshCookie.setPath("/");
+        refreshCookie.setMaxAge(7 * 24 * 60 * 60);
+
+
         // Gửi accessToken mới dưới dạng cookie
         Cookie newAccessCookie = new Cookie("accessToken", newAccessToken);
         newAccessCookie.setHttpOnly(true);
@@ -146,6 +155,7 @@ public class AuthService {
         newAccessCookie.setPath("/");
         newAccessCookie.setMaxAge(15 * 60); // 15 phút
 
+        response.addCookie(refreshCookie);
         response.addCookie(newAccessCookie);
 
 

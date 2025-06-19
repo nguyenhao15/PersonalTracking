@@ -7,8 +7,11 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.bson.types.ObjectId;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 
+import java.time.Instant;
 import java.time.LocalDate;
 
 @Data
@@ -17,23 +20,15 @@ import java.time.LocalDate;
 @Builder
 public class UpdateISDTO {
 
-    @Id
-    private String _id = new ObjectId().toString();
+    private String title;
+    private Double totalAmount;
+    private Double initial;
+    private String active;
+    private String type;
 
-    @NotBlank(message = "WalletId is required")
-    private String walletId;
+    private Instant createdAt;
 
-    @NotNull(message = "Amount is required")
-    private Long amount;
+    private String username;
 
-    @Builder.Default
-    private Long fee = 0L;
-
-    @NotNull(message = "type is required")
-//    Withdraw or sending
-    private Boolean type;
-
-    @NotNull(message = "date is required")
-    private LocalDate date;
 
 }

@@ -1,4 +1,4 @@
-package com.haro._5.dtos.TransferSavingDTO;
+package com.haro._5.dtos.SavingTransferDTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,8 +13,8 @@ import java.time.LocalDate;
 @Builder
 public class UpdateSavingTransferDTO {
 
-    private String savingAndInvestId;
-    private LocalDate sendingDate;
+    private String parentId;
+    private LocalDate date;
 
     //    Sending || throwing
     private Boolean type;

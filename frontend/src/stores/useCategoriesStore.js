@@ -27,6 +27,11 @@ const useCategoriesStore = create((set, get) => ({
     getCategoryName: (id) => {
         const category = get().categories.find((c) => c._id === id);
         return category?.categoryName || "Missing category";
+    },
+
+    getCategoryIcon: (id) => {
+        const category = get().categories.find((c) => c._id === id);
+        return category?.categoryIcon || "";
     }
 
 }))

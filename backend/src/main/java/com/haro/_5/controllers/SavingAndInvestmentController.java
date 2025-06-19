@@ -24,7 +24,7 @@ public class SavingAndInvestmentController {
     private final SavingAndInvestService service;
 
     @GetMapping
-    public ResponseEntity<ApiResponse<List<SIInfoDTO>>> getAllSavingsandInvestments() {
+    public ResponseEntity<ApiResponse<List<SIInfoDTO>>> getAllSavingsAndInvestments() {
         return ResponseEntity.ok(service.getAllSnI());
     }
 
@@ -41,12 +41,12 @@ public class SavingAndInvestmentController {
 
     @PatchMapping("/{id}")
     public ResponseEntity<?> updateDebt(@PathVariable String id, @RequestBody UpdateISDTO request) {
-        return service.addUpdate(id, request);
+        return service.updateSnI(id, request);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse<String>> deleteDebt(@PathVariable String id) {
-        return ResponseEntity.ok((service.deleteSI(id)));
+        return ResponseEntity.ok((service.deleteSavingAndInvest(id)));
     }
 
 

@@ -25,15 +25,17 @@ public class SavingAndInvest {
     private String _id;
 
     private String title;
-    private Long totalAmount;
-    private Long initial;
+    private Double totalAmount;
+    private Double initial;
+    
+    //    Throwing || investment
+    private String type;
 
-    @Builder.Default
-    private List<SIUpdate> updates = new ArrayList<>();
+    private String active;
+
 
     @CreatedDate
     private Instant createdAt;
-
     @CreatedBy
     private String username;
 

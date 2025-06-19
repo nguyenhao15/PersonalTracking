@@ -22,7 +22,13 @@ const useWalletStore = create((set, get) => ({
         } finally {
             set({ loading: false });
         }
-    }
+    },
+
+    getWalletName: (id) => {
+        const wallets = get().wallets.find((w) => w.walletId === id);
+        return wallets?.name || "Missing wallet";
+    },
+
 }))
 
 export default useWalletStore

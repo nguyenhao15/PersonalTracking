@@ -1,4 +1,4 @@
-import { BanknoteArrowDown, BanknoteArrowUp, ChartArea, WalletCards } from "lucide-react";
+import { ArrowLeftRightIcon, BanknoteArrowDown, BanknoteArrowUp, ChartArea, WalletCards } from "lucide-react";
 
 export const SIDE_MENU_DATA = [
     {
@@ -21,9 +21,9 @@ export const SIDE_MENU_DATA = [
     },
     {
         id: "04",
-        label: "Wallets",
-        icon: WalletCards,
-        path: "/wallets"
+        label: "Transfer",
+        icon: ArrowLeftRightIcon,
+        path: "/transfer"
     },
 ];
 

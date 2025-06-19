@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import { formatThousands } from '../lib/util'
-import useWalletStore from '../stores/useWalletStore'
-import useCategoriesStore from '../stores/useCategoriesStore'
+import { formatThousands } from '../../lib/util'
+import useWalletStore from '../../stores/useWalletStore'
+import useCategoriesStore from '../../stores/useCategoriesStore'
 
 const CreatePage = ({ onAddTransaction, type }) => {
     const [transaction, setTransaction] = useState({
@@ -13,6 +13,7 @@ const CreatePage = ({ onAddTransaction, type }) => {
         importance: "",
         date: "",
     });
+
     const {
         categories,
         fetchCategories
@@ -39,6 +40,7 @@ const CreatePage = ({ onAddTransaction, type }) => {
         }
         setTransaction((prev) => ({ ...prev, [name]: processedValue }));
     }
+
 
     const selectedWallet = wallets.find(w => w.walletId.toString() === transaction.walletId);
 
@@ -142,44 +144,33 @@ const CreatePage = ({ onAddTransaction, type }) => {
                     required
                 />
             </div>
-
-            {!type && <div className='mb-4 form-control'>
-                <label className="label">
-                    <span className='label-text'>Importance</span>
-                </label>
-                <div className='flex gap-4'>
-                    <label className="label cursor-pointer">
-                        <input
-                            type="radio"
-                            name="importance"
-                            value="Neccessary"
-                            onChange={() => setTransaction(prev => ({ ...prev, importance: "Neccessary" }))}
-                            className="radio radio-success"
-                        />
-                        <span className="label-text ml-2">Cần thiết</span>
+            {!type &&
+                <div className='mb-4 form-control'>
+                    <label className="label">
+                        <span className='label-text'>Importance</span>
                     </label>
-                    <label className="label cursor-pointer">
-                        <input
-                            type="radio"
-                            name="importance"
-                            value="Nice to have"
-                            onChange={() => setTransaction(prev => ({ ...prev, importance: "Nice to have" }))}
-                            className="radio radio-secondary"
-                        />
-                        <span className="label-text ml-2">Nice to have</span>
-                    </label>
-                    <label className="label cursor-pointer">
-                        <input
-                            type="radio"
-                            name="importance"
-                            value="No neccessary"
-                            onChange={() => setTransaction(prev => ({ ...prev, importance: "No neccessary" }))}
-                            className="radio radio-error"
-                        />
-                        <span className="label-text ml-2">Không cần thiết</span>
-                    </label>
-                </div>
-            </div>}
+                    <div className="flex gap-4">
+                        {[
+                            { label: "Cần thiết", value: "Neccessary", style: "radio-success" },
+                            { label: "Nice to have", value: "Nice to have", style: "radio-secondary" },
+                            { label: "Không cần thiết", value: "No neccessary", style: "radio-error" },
+                        ].map((item) => (
+                            <label key={item.value} className="label cursor-pointer">
+                                <input
+                                    type="radio"
+                                    name="importance"
+                                    value={item.value}
+                                    checked={transaction.importance === item.value}
+                                    onChange={(e) =>
+                                        setTransaction((prev) => ({ ...prev, importance: e.target.value }))
+                                    }
+                                    className={`radio ${item.style}`}
+                                />
+                                <span className="label-text ml-2">{item.label}</span>
+                            </label>
+                        ))}
+                    </div>
+                </div>}
 
             <div className='flex justify-end mt-6'>
                 <button

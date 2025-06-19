@@ -1,5 +1,7 @@
-package com.haro._5.dtos.TransferSavingDTO;
+package com.haro._5.dtos.SavingTransferDTO;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,14 +20,23 @@ public class CreateTransferSIR {
     @Id
     private String _id;
 
-    private String savingAndInvestId;
-    private LocalDate sendingDate;
+    @NotBlank(message = "parentId is required ")
+    private String parentId;
 
+    @NotNull(message = "Date is required")
+    private LocalDate date;
+
+    @NotNull(message = "walletId is required")
+    private String walletId;
+
+    @NotNull(message = "type is required")
     private Boolean type;
     //    Sending || throwing
 
+    @NotNull(message = "amount is required")
     private Double amount;
-    private String walletId;
-    private Double fee;
+
+    @Builder.Default
+    private Double fee = 0.0;
 
 }
