@@ -183,7 +183,6 @@ const CreateTransferPage = ({ onAddTransaction }) => {
                     Create
                 </button>
             </div>
-
         </div>
     )
 }

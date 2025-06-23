@@ -13,6 +13,8 @@ public class UpdateWalletRequest {
     public String name;
     public String type;
     public Boolean isActive;
+    private double initial;
+    private double balance;
     private String walletIcon;
     private String currency;
 

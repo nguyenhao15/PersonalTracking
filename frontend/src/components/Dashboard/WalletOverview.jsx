@@ -12,15 +12,19 @@ const WalletOverview = ({ walletData, onSeeMore }) => {
                 </button>
             </div>
             <div className='mt-6'>
-                {walletData?.slice(0, 5)?.map((wallet) => (
-                    <WalletCard
-                        key={wallet._id}
-                        walletName={wallet.name}
-                        type={wallet.type}
-                        balance={wallet.balance}
-                        isActive={wallet.isActive}
-                    />
-                ))}
+                {walletData
+                    ?.filter(wallet => wallet.isActive)
+                    ?.slice(0, 5)
+                    ?.map((wallet) => (
+                        <WalletCard
+                            key={wallet.walletId}
+                            walletName={wallet.name}
+                            type={wallet.type}
+                            balance={wallet.balance}
+                            isActive={wallet.isActive}
+                            hideEditBtn
+                        />
+                    ))}
             </div>
         </div>
     )

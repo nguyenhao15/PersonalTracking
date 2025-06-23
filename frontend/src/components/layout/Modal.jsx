@@ -1,6 +1,5 @@
 import { X } from 'lucide-react'
 import { useEffect } from 'react';
-import LoadingSpinner from '../LoadingSpinner';
 
 const Modal = ({ children, isOpen, onClose, title }) => {
 
@@ -27,7 +26,7 @@ const Modal = ({ children, isOpen, onClose, title }) => {
                 <div className='relative bg-gray-200 rounded-lg shadow-sm'>
                     {/* Modal header */}
                     <div className='flex items-center justify-between p-4 md:p-5 border-b rounded border-gray-200'>
-                        <h3 className='text-lg font-medium text-gray-900 '>
+                        <h3 className='text-lg font-medium text-gray-900 uppercase '>
                             {title}
                         </h3>
                         <button

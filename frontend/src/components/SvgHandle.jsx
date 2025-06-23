@@ -23,7 +23,9 @@ import {
     faGraduationCap,
     faBriefcase,
     faTachographDigital,
-    faBuildingColumns
+    faBuildingColumns,
+    faPiggyBank,
+    faSeedling
 } from '@fortawesome/free-solid-svg-icons';
 
 const iconMap = {
@@ -49,7 +51,9 @@ const iconMap = {
     bussiness: faBriefcase,
     Digital: faTachographDigital,
     cash: faMoneyBill,
-    bank: faBuildingColumns
+    bank: faBuildingColumns,
+    saving: faPiggyBank,
+    invest: faSeedling
 };
 
 const SvgHandle = ({ name, className = 'w-5 h-5', color = 'text-gray-600' }) => {

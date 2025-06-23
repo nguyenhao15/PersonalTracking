@@ -1,19 +1,20 @@
-import { BanknoteArrowDown, BanknoteArrowUp, Edit2, Edit2Icon, ToggleLeftIcon, TouchpadOffIcon, Trash2 } from 'lucide-react'
+import { BanknoteArrowDown, BanknoteArrowUp, Edit2Icon, Trash2 } from 'lucide-react'
 import SvgHandle from '../SvgHandle';
 import { formatThousands } from '../../lib/util';
 import HandleBankingIcon from '../HandleBankingIcon';
 
-const WalletCard = (
+const SavingCard = (
     {
         walletName,
         balance,
-        isActive,
         type,
+        isActive,
         hideEditBtn,
-        editWallet,
+        editSaving,
         updateActive
     }
 ) => {
+
     const getTextStyle = () =>
         isActive ? "bg-green-50 text-green-500" : "bg-red-50 text-red-500"
 
@@ -28,18 +29,17 @@ const WalletCard = (
             <div className='flex-1  flex items-center justify-between'>
                 <div>
                     <p className='text-sm text-gray-700 font-medium'>{walletName}</p>
-                    <p className='text-sx text-gray-800 font-bold mt-1'>{formatThousands(balance || 0)}</p>
+                    <p className='text-sx text-gray-800 font-bold mt-1'>{formatThousands(balance)}</p>
                 </div>
-                <div className='flex items-center gap-2'>
+                <div className='flex gap-2'>
                     {!hideEditBtn && (
                         <button
                             className='text-gray-400 hover:text-blue-500 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer'
-                            onClick={editWallet}
+                            onClick={editSaving}
                         >
                             <Edit2Icon size={18} />
                         </button>
                     )}
-
                     {hideEditBtn ? (
                         <div className={`flex items-center gap-2 px-3 py-1.5 rounded-md ${getTextStyle()}`}>
                             <h6 className='text-xs font-medium'>{getActive()}</h6>
@@ -53,11 +53,10 @@ const WalletCard = (
                             <h6 className='text-xs font-medium'>{getActive()}</h6>
                         </button>
                     )}
-
                 </div>
             </div>
         </div>
     )
 }
 
-export default WalletCard
+export default SavingCard

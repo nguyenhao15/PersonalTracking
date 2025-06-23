@@ -23,7 +23,7 @@ public class UpdateISDTO {
     private String title;
     private Double totalAmount;
     private Double initial;
-    private String active;
+    private Boolean active;
     private String type;
 
     private Instant createdAt;

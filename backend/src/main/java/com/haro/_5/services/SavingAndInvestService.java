@@ -61,7 +61,7 @@ public class SavingAndInvestService {
                 .title(request.getTitle())
                 .initial(request.getInitial())
                 .type(request.getType())
-                .active("active")
+                .active(true)
                 .totalAmount(request.getInitial())
                 .build();
         repo.save(savingAndInvest);

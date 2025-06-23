@@ -30,7 +30,17 @@ const useSavingInvestStore = create((set, get) => ({
     getName: (id) => {
         const savingAndInvest = get().savingAndInvest.find((s) => s._id === id)
         return savingAndInvest?.title || "Missing saving";
-    }
+    },
+
+    addSaving: (saving) =>
+        set((state) => ({ savingAndInvest: [...state.savingAndInvest, saving] })),
+
+    updateSaving: (updateData) =>
+        set((state) => ({
+            savingAndInvest: state.savingAndInvest.map((saving) =>
+                saving._id === updateData._id ? updateData : saving
+            )
+        })),
 
 }))
 

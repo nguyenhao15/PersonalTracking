@@ -3,7 +3,7 @@ import React from 'react'
 import TransactionInfoCard from '../Cards/TransactionInfoCard'
 import { formatDate, formatThousands } from '../../lib/util'
 
-const RecentTransactions = ({ transactions, onSeeMore }) => {
+const RecentTransactions = ({ transactions, onSeeMore, onDelete }) => {
     return (
         <div className='card'>
             <div className='flex items-center justify-between'>
@@ -21,7 +21,7 @@ const RecentTransactions = ({ transactions, onSeeMore }) => {
                         category={expenses.category}
                         date={formatDate(expenses.date || "Missing date")}
                         amount={formatThousands(expenses?.amount || 0)}
-                        hideDeleteBtn
+                        onDelete={() => onDelete(expenses._id)}
                     />
                 ))}
             </div>

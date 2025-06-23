@@ -18,7 +18,7 @@ public class SIInfoDTO {
     private String title;
     private Double totalAmount;
     private Double initial;
-    private String active;
+    private Boolean active;
     private String type;
 
 

@@ -24,6 +24,16 @@ const useWalletStore = create((set, get) => ({
         }
     },
 
+    addWallet: (wallet) =>
+        set((state) => ({ wallets: [...state.wallets, wallet] })),
+
+    updateWallet: (updateData) =>
+        set((state) => ({
+            wallets: state.wallets.map((wallet) =>
+                wallet._id === updateData._id ? updateData : wallet
+            )
+        })),
+
     getWalletName: (id) => {
         const wallets = get().wallets.find((w) => w.walletId === id);
         return wallets?.name || "Missing wallet";

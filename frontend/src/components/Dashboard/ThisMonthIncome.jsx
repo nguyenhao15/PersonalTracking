@@ -3,7 +3,7 @@ import React from 'react'
 import { formatDate, formatThousands } from '../../lib/util'
 import TransactionInfoCard from '../Cards/TransactionInfoCard'
 
-const ThisMonthIncome = ({ transactions, onSeeMore }) => {
+const ThisMonthIncome = ({ transactions, onSeeMore, onDelete }) => {
     return (
         <div className='card'>
             <div className='flex items-center justify-between'>
@@ -22,7 +22,7 @@ const ThisMonthIncome = ({ transactions, onSeeMore }) => {
                         type={item.type}
                         amount={formatThousands(item.amount)}
                         category={item.category}
-                        hideDeleteBtn
+                        onDelete={() => onDelete(item._id)}
                     />
                 ))}
             </div>

@@ -16,6 +16,10 @@ import useWalletStore from '../../stores/useWalletStore';
 import toast from 'react-hot-toast';
 import Modal from '../../components/layout/Modal';
 import DeleteAlert from '../../components/layout/DeleteAlert';
+import WalletList from '../../components/Cards/WalletList';
+import SavingOverview from '../../components/Dashboard/SavingOverview';
+import useSavingInvestStore from '../../stores/useSavingInvestStore';
+import SavingList from '../../components/Cards/SavingList.JSX';
 
 
 const Home = () => {
@@ -23,10 +27,16 @@ const Home = () => {
     const [dashboarData, setDashboardData] = useState(null);
     const [loading, setLoading] = useState(false);
     const { wallets, fetchWallets } = useWalletStore();
+    const { fetchData, savingAndInvest } = useSavingInvestStore();
     const [openDeleteAlert, setOpenDeleteAlert] = useState({
         show: false,
         data: null,
-    })
+    });
+    const [openModal, setOpenModal] = useState({
+        show: false,
+        data: [],
+        dataType: null
+    });
 
 
     const deleteExpenses = async (id) => {
@@ -60,10 +70,12 @@ const Home = () => {
     };
 
     useEffect(() => {
+        fetchData();
+    }, [fetchData])
+
+    useEffect(() => {
         fetchWallets();
     }, [fetchWallets]);
-
-    console.log(wallets);
 
     useEffect(() => {
         fetchDashboardData();
@@ -96,23 +108,38 @@ const Home = () => {
             </div>
 
             <div className='grid grid-cols-1 md:grid-cols-2 gap-6 mt-6'>
-
                 <WalletOverview
                     walletData={wallets}
-                    onSeeMore={() => navigate("/wallets")}
+                    onSeeMore={() => setOpenModal({
+                        show: true,
+                        dataType: "wallet"
+                    })}
                 />
+
+                <SavingOverview
+                    savingData={savingAndInvest}
+                    onSeeMore={() => setOpenModal({
+                        show: true,
+                        data: savingAndInvest,
+                        dataType: "saving"
+                    })}
+                />
+
                 <ThisMonthExpenses
                     transactions={sortByDate(dashboarData?.thisMonthExpenses || [], false)}
                     onSeeMore={() => navigate("/expenses")}
+                    onDelete={(id) => {
+                        setOpenDeleteAlert({ show: true, data: id })
+                    }}
                 />
 
-                <RecentTransactions
-                    transactions={sortByDate(dashboarData?.lastThirtyDaysExpenses || [], false)}
-                    onSeeMore={() => navigate("/expenses")}
-                />
+
                 <ThisMonthIncome
                     transactions={sortByDate(dashboarData?.thisMonthIncome || [], false)}
                     onSeeMore={() => navigate("/income")}
+                    onDelete={(id) => {
+                        setOpenDeleteAlert({ show: true, data: id })
+                    }}
                 />
                 <ExpensesOverview
                     topfiveCategories={dashboarData?.topFiveCategory}
@@ -122,13 +149,25 @@ const Home = () => {
                     data={dashboarData?.thisMonthExpenses || []}
                 />
             </div>
-            {/* <Modal
-                isOpen={openAddExpensesModal}
-                onClose={() => setOpenAddExpensesModal(false)}
-                title="Add Expense"
+            <Modal
+                isOpen={openModal.show}
+                onClose={() => setOpenModal({
+                    show: false,
+                    data: [],
+                    dataType: null
+                })}
+                title={openModal.dataType}
             >
-                <CreatePage onAddTransaction={handleExpenses} type={false} />
-            </Modal> */}
+                {openModal.dataType === "wallet" ?
+                    <WalletList
+                        totalBalance={dashboarData?.totalBalance || 0}
+                    />
+                    :
+                    <SavingList
+                        data={openModal.data}
+                    />
+                }
+            </Modal>
 
             <Modal
                 isOpen={openDeleteAlert.show}

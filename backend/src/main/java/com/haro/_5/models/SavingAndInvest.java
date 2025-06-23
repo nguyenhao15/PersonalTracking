@@ -27,11 +27,11 @@ public class SavingAndInvest {
     private String title;
     private Double totalAmount;
     private Double initial;
-    
+
     //    Throwing || investment
     private String type;
 
-    private String active;
+    private Boolean active;
 
 
     @CreatedDate

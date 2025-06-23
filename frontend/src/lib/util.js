@@ -16,6 +16,10 @@ export function formatThousands(value) {
     return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 }
 
+export const getTotal = (dataArray, valueColName) => {
+    return dataArray.reduce((sum, item) => sum + Number(item[valueColName] || 0), 0)
+}
+
 export const createAmountHandler = (setState, key) => (e) => {
     const raw = e.target.value.replace(/\./g, "");
     if (!/^\d*$/.test(raw)) return;
@@ -75,6 +79,7 @@ export const sortByDate = (arr, asc = true) =>
     [...arr].sort((a, b) =>
         asc ? new Date(a.date) - new Date(b.date) : new Date(b.date) - new Date(a.date)
     );
+
 
 export const formatToMonthYear = (dateStr) => {
     const date = new Date(dateStr);

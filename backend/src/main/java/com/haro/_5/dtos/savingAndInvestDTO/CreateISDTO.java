@@ -33,7 +33,7 @@ public class CreateISDTO {
     private Double initial = 0.0;
 
     @Builder.Default
-    private String active = "active";
+    private Boolean active = true;
 
     @CreatedDate
     private Instant createdAt;

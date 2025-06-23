@@ -22,7 +22,6 @@ const TransactionList = ({ transactions, onDelete }) => {
                         onDelete={() => onDelete(transaction._id)}
                     />
                 ))
-
                 }
             </div>
         </div>

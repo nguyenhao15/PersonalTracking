@@ -120,7 +120,6 @@ const Expenses = () => {
                             setOpenDeleteAlert({ show: true, data: id })
                         }}
                     />
-
                 </div>
 
                 <Modal
