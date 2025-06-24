@@ -25,6 +25,9 @@ public class CreateCategoryDTO {
     @Builder.Default
     private Boolean categoryType = false;
 
+    private Boolean isParent;
+    private String parentId;
+
     private String categoryIcon;
 
 

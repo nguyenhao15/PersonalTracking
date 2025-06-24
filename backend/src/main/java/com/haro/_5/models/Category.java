@@ -23,6 +23,9 @@ public class Category {
     private Boolean categoryType;
     private String categoryIcon;
 
+    private Boolean isParent;
+    private String parentId;
+
     @CreatedBy
     private String createdBy;
 

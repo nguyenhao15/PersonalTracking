@@ -11,6 +11,8 @@ public class CategoryInfo {
     private String _id;
     private String categoryName;
     private Boolean categoryType;
+    private Boolean isParent;
+    private String parentId;
     private String createdBy;
     private String categoryIcon;
 

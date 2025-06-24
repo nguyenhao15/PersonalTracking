@@ -51,6 +51,8 @@ public class CategoryService {
         Category category = Category.builder()
                 .categoryName(request.getCategoryName())
                 .categoryType(request.getCategoryType())
+                .isParent(request.getIsParent())
+                .parentId(request.getParentId())
                 .build();
         repo.save(category);
         CategoryInfo dto = categoryMapper.toDto(category);
