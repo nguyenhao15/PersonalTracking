@@ -3,13 +3,12 @@ package com.haro._5.services;
 import com.haro._5.dtos.CategoryDTO.CategoryInfo;
 import com.haro._5.dtos.CategoryDTO.CreateCategoryDTO;
 import com.haro._5.dtos.CategoryDTO.UpdateCategoryRequest;
-import com.haro._5.dtos.TransactionDTO.TransactionInfoDTO;
 import com.haro._5.dtos.response.ApiResponse;
 import com.haro._5.dtos.response.ResponseBuilder;
 import com.haro._5.exceptions.NotFoundException;
 import com.haro._5.mappers.CategoryMapper;
 import com.haro._5.models.Category;
-import com.haro._5.models.Transaction;
+
 import com.haro._5.repositories.CategoryRepo;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
