@@ -16,4 +16,10 @@ export class Expense {
 
   @Column()
   categoryId: number;
+
+  @Column()
+  walletId: number;
+
+  @Column()
+  tag: string;
 }

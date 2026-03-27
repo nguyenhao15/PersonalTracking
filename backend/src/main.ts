@@ -5,7 +5,11 @@ import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true, // Loại bỏ các thuộc tính không có trong DTO
+    }),
+  );
   const config = new DocumentBuilder()
     .setTitle('Personal Tracking System API')
     .setDescription('API documentation for personal tracking system')
