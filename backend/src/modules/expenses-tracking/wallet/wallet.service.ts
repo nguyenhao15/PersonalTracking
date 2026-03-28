@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateWalletDto } from './dto/create-wallet.dto';
 import { UpdateWalletDto } from './dto/update-wallet.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -21,15 +21,23 @@ export class WalletService {
     return this.walletRepository.find();
   }
 
-  findOne(id: number) {
-    return this.walletRepository.findOneBy({ id });
+  async findOne(id: number) {
+    const wallet = await this.walletRepository.findOneBy({ id });
+    if (!wallet) {
+      throw new NotFoundException(`Wallet with id ${id} not found`);
+    }
+    return wallet;
   }
 
   update(id: number, updateWalletDto: UpdateWalletDto) {
     return `This action updates a #${id} wallet`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} wallet`;
+  async remove(id: number) {
+    const wallet = await this.walletRepository.findOne({ where: { id } });
+    if (!wallet) {
+      throw new Error(`Wallet with id ${id} not found`);
+    }
+    return this.walletRepository.remove(wallet);
   }
 }

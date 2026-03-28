@@ -1,4 +1,4 @@
-import { IsNumber, IsString } from 'class-validator';
+import { IsBoolean, IsNumber, IsString } from 'class-validator';
 
 export class CreateWalletDto {
   @IsString()
@@ -12,4 +12,7 @@ export class CreateWalletDto {
 
   @IsString()
   description: string;
+
+  @IsBoolean()
+  isActive: boolean;
 }

@@ -1,4 +1,4 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn, Unique } from 'typeorm';
 
 @Entity()
 export class Wallet {
@@ -6,6 +6,7 @@ export class Wallet {
   id: number;
 
   @Column()
+  @Unique(['walletName'])
   walletName: string;
 
   @Column()
@@ -16,4 +17,7 @@ export class Wallet {
 
   @Column()
   description: string;
+
+  @Column({ default: true })
+  isActive: boolean;
 }
