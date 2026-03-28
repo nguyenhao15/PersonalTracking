@@ -12,7 +12,6 @@ export class ExpensesService {
   constructor(
     @InjectRepository(Expense)
     private readonly expenseRepository: Repository<Expense>,
-
     private readonly walletService: WalletService,
     private readonly categoryService: CategoriesService,
   ) {}
@@ -22,8 +21,8 @@ export class ExpensesService {
     const category = await this.categoryService.findOne(
       createExpenseDto.categoryId,
     );
-
     const expense = this.expenseRepository.create(createExpenseDto);
+    await this.walletService.updateBalance(wallet, -createExpenseDto.amount);
     return this.expenseRepository.save(expense);
   }
 

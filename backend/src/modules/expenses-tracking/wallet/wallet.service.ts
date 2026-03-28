@@ -40,4 +40,9 @@ export class WalletService {
     }
     return this.walletRepository.remove(wallet);
   }
+
+  async updateBalance(wallet: Wallet, amount: number) {
+    wallet.balance += amount;
+    return this.walletRepository.save(wallet);
+  }
 }
