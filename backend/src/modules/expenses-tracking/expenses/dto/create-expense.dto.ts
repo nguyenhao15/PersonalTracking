@@ -1,10 +1,16 @@
+import { Type } from 'class-transformer';
 import { IsDate, IsInt, IsString } from 'class-validator';
 
 export class CreateExpenseDto {
   @IsInt()
   amount: number;
+
+  @IsString({
+    message: 'Description must be a string',
+  })
   description: string;
 
+  @Type(() => Date)
   @IsDate()
   date: Date;
 

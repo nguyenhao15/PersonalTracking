@@ -9,6 +9,10 @@ async function bootstrap() {
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true, // Loại bỏ các thuộc tính không có trong DTO
+      transform: true, // Tự động chuyển đổi kiểu dữ liệu
+      transformOptions: {
+        enableImplicitConversion: true, // Tự động chuyển kiểu dựa trên định nghĩa trong DTO
+      },
     }),
   );
 
