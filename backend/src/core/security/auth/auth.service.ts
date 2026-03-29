@@ -1,19 +1,25 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import { UserService } from '../user/user.service';
 import { compare } from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { AuthJwtPayload } from './types/auth-jwtPayload';
+import refreshJwtConfig from './configs/refresh-jwt.config';
+import type { ConfigType } from '@nestjs/config';
+import { log } from 'console';
 
 @Injectable()
 export class AuthService {
   constructor(
     private userService: UserService,
     private jwtService: JwtService,
+    @Inject(refreshJwtConfig.KEY)
+    private refreshTokenConfig: ConfigType<typeof refreshJwtConfig>,
   ) {}
 
   async validateUser(username: string, password: string): Promise<any> {
     const user = await this.userService.findByUsername(username);
     if (!user) throw new UnauthorizedException('User not found');
+    log('User found:', user);
     const isPasswordMatch = await compare(password, user.password);
     if (!isPasswordMatch)
       throw new UnauthorizedException('Invalid credentials');
@@ -25,6 +31,12 @@ export class AuthService {
     const payload: AuthJwtPayload = {
       sub: userName,
     };
-    return this.jwtService.sign(payload);
+    const token = this.jwtService.sign(payload);
+    const refreshToken = this.jwtService.sign(payload, this.refreshTokenConfig);
+    return {
+      username: userName,
+      access_token: token,
+      refresh_token: refreshToken,
+    };
   }
 }
