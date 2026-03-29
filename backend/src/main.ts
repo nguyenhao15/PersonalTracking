@@ -2,10 +2,21 @@ import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
 import { AppModule } from './app.module';
+import { AllExceptionsFilter } from './core/exceptions/http-exception.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true, // Loại bỏ các thuộc tính không có trong DTO
+      transform: true, // Tự động chuyển đổi kiểu dữ liệu
+      transformOptions: {
+        enableImplicitConversion: true, // Tự động chuyển kiểu dựa trên định nghĩa trong DTO
+      },
+    }),
+  );
+
+  app.useGlobalFilters(new AllExceptionsFilter()); // Thêm filter để xử lý lỗi toàn cục
   const config = new DocumentBuilder()
     .setTitle('Personal Tracking System API')
     .setDescription('API documentation for personal tracking system')

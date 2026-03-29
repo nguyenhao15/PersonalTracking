@@ -13,6 +13,8 @@ import { DebtModule } from './modules/expenses-tracking/debt/debt.module';
 import { InvestmentModule } from './modules/expenses-tracking/investment/investment.module';
 import { InvestmentTransactionsModule } from './modules/expenses-tracking/investment-transactions/investment-transactions.module';
 import { DebtTrasactionsModule } from './modules/expenses-tracking/debt-trasactions/debt-trasactions.module';
+import { UserModule } from './core/security/user/user.module';
+import { AuthModule } from './core/security/auth/auth.module';
 
 @Module({
   imports: [
@@ -43,6 +45,8 @@ import { DebtTrasactionsModule } from './modules/expenses-tracking/debt-trasacti
     InvestmentModule,
     InvestmentTransactionsModule,
     DebtTrasactionsModule,
+    UserModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
