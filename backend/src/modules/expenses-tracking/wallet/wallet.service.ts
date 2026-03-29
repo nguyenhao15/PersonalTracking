@@ -29,15 +29,14 @@ export class WalletService {
     return wallet;
   }
 
-  update(id: number, updateWalletDto: UpdateWalletDto) {
-    return `This action updates a #${id} wallet`;
+  async update(id: number, updateWalletDto: UpdateWalletDto) {
+    const wallet = await this.findOne(id);
+    const updatedWallet = this.walletRepository.merge(wallet, updateWalletDto);
+    return this.walletRepository.save(updatedWallet);
   }
 
   async remove(id: number) {
-    const wallet = await this.walletRepository.findOne({ where: { id } });
-    if (!wallet) {
-      throw new Error(`Wallet with id ${id} not found`);
-    }
+    const wallet = await this.findOne(id);
     return this.walletRepository.remove(wallet);
   }
 
