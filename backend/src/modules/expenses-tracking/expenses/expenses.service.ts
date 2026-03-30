@@ -28,6 +28,10 @@ export class ExpensesService {
   }
 
   findAll() {
+    return this.expenseRepository.find();
+  }
+
+  findAllByUser() {
     const options = QueryUtils.applyOwnership<Expense>();
     return this.expenseRepository.find(options);
   }
@@ -37,13 +41,24 @@ export class ExpensesService {
     return this.expenseRepository.findOne(options);
   }
 
-  update(id: number, updateExpenseDto: UpdateExpenseDto) {
-    const expense = this.expenseRepository.findOne({ where: { id } });
-
+  async update(id: number, updateExpenseDto: UpdateExpenseDto) {
+    const expense = await this.expenseRepository.findOne({ where: { id } });
+    const amountDifference = updateExpenseDto.amount - expense.amount;
+    if (amountDifference !== 0) {
+      await this.walletService.updateBalance(
+        expense?.walletId,
+        -amountDifference,
+      );
+    }
     return this.expenseRepository.save({ ...expense, ...updateExpenseDto });
   }
 
   remove(id: number) {
-    return `This action removes a #${id} expense`;
+    const expense = this.findOne(id);
+    const amount = expense.amount;
+    if (amount) {
+      this.walletService.updateBalance(expense?.walletId, amount);
+    }
+    return this.expenseRepository.delete(id);
   }
 }

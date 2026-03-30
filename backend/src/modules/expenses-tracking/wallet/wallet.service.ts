@@ -15,10 +15,15 @@ export class WalletService {
 
   create(createWalletDto: CreateWalletDto) {
     const wallet = this.walletRepository.create(createWalletDto);
+
     return this.walletRepository.save(wallet);
   }
 
   findAll() {
+    return this.walletRepository.find();
+  }
+
+  findAllByUser() {
     const options = QueryUtils.applyOwnership<Wallet>();
     return this.walletRepository.find(options);
   }

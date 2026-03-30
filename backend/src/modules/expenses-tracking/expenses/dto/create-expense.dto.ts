@@ -2,7 +2,9 @@ import { Type } from 'class-transformer';
 import { IsDate, IsInt, IsString } from 'class-validator';
 
 export class CreateExpenseDto {
-  @IsInt()
+  @IsInt({
+    message: 'Amount must be a positive integer',
+  })
   amount: number;
 
   @IsString({

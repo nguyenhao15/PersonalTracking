@@ -10,6 +10,8 @@ import {
 import { WalletService } from './wallet.service';
 import { CreateWalletDto } from './dto/create-wallet.dto';
 import { UpdateWalletDto } from './dto/update-wallet.dto';
+import { Roles } from 'src/core/security/auth/decorators/roles.decorator';
+import { Role } from 'src/core/security/auth/enums/role.enum';
 
 @Controller('wallet')
 export class WalletController {
@@ -20,6 +22,7 @@ export class WalletController {
     return this.walletService.create(createWalletDto);
   }
 
+  @Roles(Role.ADMIN)
   @Get()
   findAll() {
     return this.walletService.findAll();
