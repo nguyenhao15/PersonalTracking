@@ -11,6 +11,13 @@ export class UserService {
     @InjectRepository(User) private readonly userRepository: Repository<User>,
   ) {}
 
+  async updateHashedRefreshToken(userName: string, hashedRefreshToken: string) {
+    return await this.userRepository.update(
+      { username: userName },
+      { hashedRefreshToken },
+    );
+  }
+
   async create(createUserDto: CreateUserDto) {
     const user = this.userRepository.create(createUserDto);
     return await this.userRepository.save(user);

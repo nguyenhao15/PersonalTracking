@@ -6,6 +6,7 @@ import {
   Entity,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { Role } from '../../auth/enums/role.enum';
 
 @Entity()
 export class User {
@@ -19,6 +20,18 @@ export class User {
     select: false,
   })
   password: string;
+
+  @Column({
+    nullable: true,
+  })
+  hashedRefreshToken: string;
+
+  @Column({
+    type: 'enum',
+    enum: Role,
+    default: Role.USER,
+  })
+  role: Role;
 
   @Column()
   email: string;
