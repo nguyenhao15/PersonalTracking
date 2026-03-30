@@ -13,6 +13,7 @@ import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth/jwt-auth.guard';
+import { log } from 'console';
 
 @Controller('user')
 export class UserController {
@@ -23,20 +24,11 @@ export class UserController {
     return this.userService.create(createUserDto);
   }
 
-  // @Get()
-  // findAll() {
-  //   return this.userService.findAll();
-  // }
-
-  // @Get(':id')
-  // findOne(@Param('id') id: string) {
-  //   return this.userService.findOne(+id);
-  // }
-
   @UseGuards(JwtAuthGuard)
   @Get('profile')
-  getProfile(@Req() req) {
-    return this.userService.findByUsername(req.user.username);
+  async getProfile(@Req() req) {
+    const userResult = await this.userService.findByUsername(req.user.username);
+    return userResult;
   }
 
   @Patch(':id')

@@ -17,9 +17,8 @@ export class AuthService {
   ) {}
 
   async validateUser(username: string, password: string): Promise<any> {
-    const user = await this.userService.findByUsername(username);
+    const user = await this.userService.findAuthUserByUsername(username);
     if (!user) throw new UnauthorizedException('User not found');
-    log('User found:', user);
     const isPasswordMatch = await compare(password, user.password);
     if (!isPasswordMatch)
       throw new UnauthorizedException('Invalid credentials');
@@ -37,6 +36,17 @@ export class AuthService {
       username: userName,
       access_token: token,
       refresh_token: refreshToken,
+    };
+  }
+
+  refreshToken(userName: string) {
+    const payload: AuthJwtPayload = {
+      sub: userName,
+    };
+    const token = this.jwtService.sign(payload);
+    return {
+      username: userName,
+      access_token: token,
     };
   }
 }
