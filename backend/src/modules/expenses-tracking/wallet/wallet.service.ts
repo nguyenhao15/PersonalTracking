@@ -4,6 +4,7 @@ import { UpdateWalletDto } from './dto/update-wallet.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Wallet } from './entities/wallet.entity';
 import { Repository } from 'typeorm';
+import { QueryUtils } from 'src/common/utils/query.utils';
 
 @Injectable()
 export class WalletService {
@@ -18,7 +19,8 @@ export class WalletService {
   }
 
   findAll() {
-    return this.walletRepository.find();
+    const options = QueryUtils.applyOwnership<Wallet>();
+    return this.walletRepository.find(options);
   }
 
   async findOne(id: number) {

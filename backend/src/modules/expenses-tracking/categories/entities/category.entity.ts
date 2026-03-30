@@ -1,12 +1,9 @@
-import { IsEnum } from 'class-validator';
-import { Column, Entity, PrimaryColumn, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity } from 'typeorm';
 import { CategoryType } from '../dto/category-type.enum';
+import { BaseAuditEntity } from 'src/core/security/common/entities/base.entity';
 
 @Entity()
-export class Category {
-  @PrimaryGeneratedColumn()
-  id: number;
-
+export class Category extends BaseAuditEntity {
   @Column()
   name: string;
 

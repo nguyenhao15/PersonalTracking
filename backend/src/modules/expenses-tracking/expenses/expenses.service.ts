@@ -6,6 +6,7 @@ import { Expense } from './entities/expense.entity';
 import { Repository } from 'typeorm';
 import { WalletService } from '../wallet/wallet.service';
 import { CategoriesService } from '../categories/categories.service';
+import { QueryUtils } from 'src/common/utils/query.utils';
 
 @Injectable()
 export class ExpensesService {
@@ -27,15 +28,19 @@ export class ExpensesService {
   }
 
   findAll() {
-    return `This action returns all expenses`;
+    const options = QueryUtils.applyOwnership<Expense>();
+    return this.expenseRepository.find(options);
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} expense`;
+    const options = QueryUtils.applyOwnership<Expense>({ where: { id } });
+    return this.expenseRepository.findOne(options);
   }
 
   update(id: number, updateExpenseDto: UpdateExpenseDto) {
-    return `This action updates a #${id} expense`;
+    const expense = this.expenseRepository.findOne({ where: { id } });
+
+    return this.expenseRepository.save({ ...expense, ...updateExpenseDto });
   }
 
   remove(id: number) {

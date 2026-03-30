@@ -24,7 +24,6 @@ async function bootstrap() {
     .setDescription('API documentation for personal tracking system')
     .setVersion('1.0')
     .addTag('orders') // Bạn có thể thêm tag theo tên module
-    // .addBearerAuth() // Nếu bạn dùng JWT để bảo mật
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
