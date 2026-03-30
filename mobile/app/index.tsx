@@ -13,7 +13,7 @@ export default function Index() {
       <Text style={{ color: 'black' }}>
         Edit app/index.tsx to edit this screen.
       </Text>
-      <Link href='/about'>About</Link>
+      <Link href='./about'>About</Link>
     </View>
   );
 }
