@@ -1,10 +1,8 @@
+import { BaseAuditEntity } from 'src/core/security/common/entities/base.entity';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
-export class Expense {
-  @PrimaryGeneratedColumn()
-  id: number;
-
+export class Expense extends BaseAuditEntity {
   @Column()
   amount: number;
 

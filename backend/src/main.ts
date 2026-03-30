@@ -3,6 +3,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
 import { AppModule } from './app.module';
 import { AllExceptionsFilter } from './core/exceptions/http-exception.filter';
+import { AuditInterceptor } from './core/security/common/interceptors/audit.interceptor';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -17,6 +18,7 @@ async function bootstrap() {
   );
 
   app.useGlobalFilters(new AllExceptionsFilter()); // Thêm filter để xử lý lỗi toàn cục
+  app.useGlobalInterceptors(new AuditInterceptor()); // Thêm interceptor để ghi log hoạt động
   const config = new DocumentBuilder()
     .setTitle('Personal Tracking System API')
     .setDescription('API documentation for personal tracking system')

@@ -15,6 +15,7 @@ import { InvestmentTransactionsModule } from './modules/expenses-tracking/invest
 import { DebtTrasactionsModule } from './modules/expenses-tracking/debt-trasactions/debt-trasactions.module';
 import { UserModule } from './core/security/user/user.module';
 import { AuthModule } from './core/security/auth/auth.module';
+import { AuditSubscriber } from './core/security/common/subscribers/audit.subscriber';
 
 @Module({
   imports: [
@@ -37,6 +38,7 @@ import { AuthModule } from './core/security/auth/auth.module';
       }),
     }),
     ExpensesModule,
+
     CategoriesModule,
     IncomeModule,
     TransferModule,
@@ -49,6 +51,6 @@ import { AuthModule } from './core/security/auth/auth.module';
     AuthModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, AuditSubscriber],
 })
 export class AppModule {}
