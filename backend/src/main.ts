@@ -1,12 +1,20 @@
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { ValidationPipe } from '@nestjs/common';
+import { ValidationPipe, VersioningType } from '@nestjs/common';
 import { AppModule } from './app.module';
 import { AllExceptionsFilter } from './core/exceptions/http-exception.filter';
 import { AuditInterceptor } from './core/security/common/interceptors/audit.interceptor';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  app.setGlobalPrefix('api'); // Thiết lập prefix cho tất cả các route là /api
+
+  app.enableVersioning({
+    type: VersioningType.URI,
+    defaultVersion: '1', // Phiên bản mặc định nếu không có phiên bản nào được chỉ định
+  });
+
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true, // Loại bỏ các thuộc tính không có trong DTO

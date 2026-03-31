@@ -25,8 +25,11 @@ export class TransferService {
     const toWallet = await this.walletService.findOne(
       createTransferDto.toWalletId,
     );
-    this.walletService.updateBalance(fromWallet, -createTransferDto.amount);
-    this.walletService.updateBalance(toWallet, createTransferDto.amount);
+    await this.walletService.updateBalance(
+      fromWallet,
+      -createTransferDto.amount,
+    );
+    await this.walletService.updateBalance(toWallet, createTransferDto.amount);
     return this.transferRepository.save(transfer);
   }
 
@@ -46,30 +49,35 @@ export class TransferService {
 
   async update(id: number, updateTransferDto: UpdateTransferDto) {
     const transfer = await this.transferRepository.findOne({ where: { id } });
-    const amountDifference = updateTransferDto.amount - transfer.amount;
+    if (!transfer) {
+      return null;
+    }
+    const newAmount = updateTransferDto.amount ?? 0;
+    const amountDifference = newAmount - transfer.amount;
     if (amountDifference !== 0) {
       const fromWallet = await this.walletService.findOne(
         transfer.fromWalletId,
       );
       const toWallet = await this.walletService.findOne(transfer.toWalletId);
-      this.walletService.updateBalance(fromWallet, -amountDifference);
-      this.walletService.updateBalance(toWallet, amountDifference);
+      await this.walletService.updateBalance(fromWallet, -amountDifference);
+      await this.walletService.updateBalance(toWallet, amountDifference);
     }
     return this.transferRepository.save({ ...transfer, ...updateTransferDto });
   }
 
   async remove(id: number) {
-    const transfer = this.findOne(id);
-    const amount = transfer.amount;
+    const transfer = await this.findOne(id);
+    if (!transfer) {
+      return null;
+    }
+    const amount = transfer.amount ?? 0;
     if (amount) {
-      this.walletService.updateBalance(
-        await this.walletService.findOne(transfer.fromWalletId),
-        amount,
+      const fromWallet = await this.walletService.findOne(
+        transfer.fromWalletId,
       );
-      this.walletService.updateBalance(
-        await this.walletService.findOne(transfer.toWalletId),
-        -amount,
-      );
+      const toWallet = await this.walletService.findOne(transfer.toWalletId);
+      await this.walletService.updateBalance(fromWallet, amount);
+      await this.walletService.updateBalance(toWallet, -amount);
     }
     return this.transferRepository.delete(id);
   }

@@ -43,21 +43,33 @@ export class ExpensesService {
 
   async update(id: number, updateExpenseDto: UpdateExpenseDto) {
     const expense = await this.expenseRepository.findOne({ where: { id } });
-    const amountDifference = updateExpenseDto.amount - expense.amount;
+    if (!expense) {
+      return null;
+    }
+    const newAmount = updateExpenseDto.amount ?? 0;
+    const oldWalletId = expense.walletId ?? expense.walletId;
+    const newWalletId = updateExpenseDto.walletId ?? expense.walletId;
+
+    const oldWallet = await this.walletService.findOne(oldWalletId);
+    const newWallet = await this.walletService.findOne(newWalletId);
+
+    const amountDifference = newAmount - expense.amount;
     if (amountDifference !== 0) {
-      await this.walletService.updateBalance(
-        expense?.walletId,
-        -amountDifference,
-      );
+      await this.walletService.updateBalance(newWallet, -amountDifference);
+      await this.walletService.updateBalance(oldWallet, amountDifference);
     }
     return this.expenseRepository.save({ ...expense, ...updateExpenseDto });
   }
 
-  remove(id: number) {
-    const expense = this.findOne(id);
-    const amount = expense.amount;
+  async remove(id: number) {
+    const expense = await this.findOne(id);
+    if (!expense) {
+      return null;
+    }
+    const amount = expense.amount ?? 0;
+    const wallet = await this.walletService.findOne(expense.walletId);
     if (amount) {
-      this.walletService.updateBalance(expense?.walletId, amount);
+      await this.walletService.updateBalance(wallet, amount);
     }
     return this.expenseRepository.delete(id);
   }
