@@ -6,7 +6,7 @@ export default registerAs(
   (): JwtSignOptions => ({
     secret: process.env.JWT_REFRESH_SECRET || 'refreshSecretKey',
     expiresIn:
-      (process.env.JWT_REFRESH_EXPIRES_IN as unknown as number) ||
+      (process.env.REFRESH_TOKEN_EXPIRES_IN as unknown as number) ||
       7 * 24 * 3600, // 7 days in seconds
   }),
 );

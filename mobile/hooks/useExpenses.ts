@@ -9,10 +9,7 @@ export const useGetExpenses = () => {
 
       return res;
     },
-    throwOnError(error, query) {
-      console.error('Error fetching expenses:', error);
-      return true; // Rethrow the error to be caught by React Query
-    },
+    throwOnError: true,
     retry: false,
     staleTime: 1000 * 60 * 5, // 5 minutes
   });

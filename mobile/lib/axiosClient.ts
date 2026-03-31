@@ -26,8 +26,6 @@ const processQueue = (error: any, token: string | null = null) => {
 
 axiosClient.interceptors.request.use(
   async (config) => {
-    console.log('🚀 Gửi API:', config.method?.toUpperCase(), config.url);
-    console.log('📦 Data:', config.data);
     const accessToken =
       useAuthStore.getState().accessToken ||
       (await SecureStore.getItemAsync('accessToken'));
@@ -54,8 +52,6 @@ axiosClient.interceptors.response.use(
     const isAuthRequest =
       requestUrl.includes('/auth/login') ||
       requestUrl.includes('/auth/refresh');
-
-    console.log('✅ Nhận API:', error.response?.status, error.config.url);
 
     if (!originalRequest || originalRequest._retry || isAuthRequest) {
       return Promise.reject(error);
