@@ -1,10 +1,30 @@
+import { QueryClientProvider } from '@tanstack/react-query';
 import { Stack } from 'expo-router';
+import React, { useEffect } from 'react';
+import { ActivityIndicator, View } from 'react-native';
 import '../global.css';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+import { queryClient } from '@/lib/queryClient';
+import { useAuthStore } from '@/stores/AuthStores';
 
 export default function RootLayout() {
+  const initializeAuth = useAuthStore((state) => state.initializeAuth);
+  const isHydrated = useAuthStore((state) => state.isHydrated);
+
+  useEffect(() => {
+    initializeAuth();
+  }, [initializeAuth]);
+
+  if (!isHydrated) {
+    return (
+      <View className='flex-1 items-center justify-center bg-white'>
+        <ActivityIndicator size='large' />
+      </View>
+    );
+  }
+
   return (
-    <QueryClientProvider client={new QueryClient()}>
+    <QueryClientProvider client={queryClient}>
       <Stack screenOptions={{ headerShown: false }} />
     </QueryClientProvider>
   );
