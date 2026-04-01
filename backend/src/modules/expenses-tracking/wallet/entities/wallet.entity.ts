@@ -1,5 +1,6 @@
 import { BaseAuditEntity } from 'src/core/security/common/entities/base.entity';
-import { Column, Entity, PrimaryGeneratedColumn, Unique } from 'typeorm';
+import { Column, Entity, OneToMany, Unique } from 'typeorm';
+import { Transaction } from '../../transactions/entities/transaction.entity';
 
 @Entity()
 export class Wallet extends BaseAuditEntity {
@@ -21,4 +22,7 @@ export class Wallet extends BaseAuditEntity {
 
   @Column({ default: true })
   isActive: boolean;
+
+  @OneToMany(() => Transaction, (transaction) => transaction.wallet)
+  transactions: Transaction[];
 }

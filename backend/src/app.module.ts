@@ -3,10 +3,10 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { ExpensesModule } from './modules/expenses-tracking/expenses/expenses.module';
+import { TransactionsModule } from './modules/expenses-tracking/transactions/transactions.module';
 
 import { CategoriesModule } from './modules/expenses-tracking/categories/categories.module';
-import { IncomeModule } from './modules/expenses-tracking/income/income.module';
+
 import { TransferModule } from './modules/expenses-tracking/transfer/transfer.module';
 import { WalletModule } from './modules/expenses-tracking/wallet/wallet.module';
 import { DebtModule } from './modules/expenses-tracking/debt/debt.module';
@@ -37,10 +37,10 @@ import { AuditSubscriber } from './core/security/common/subscribers/audit.subscr
         synchronize: true,
       }),
     }),
-    ExpensesModule,
+    TransactionsModule,
 
     CategoriesModule,
-    IncomeModule,
+
     TransferModule,
     WalletModule,
     DebtModule,

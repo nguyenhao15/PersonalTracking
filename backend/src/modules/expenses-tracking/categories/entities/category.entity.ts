@@ -1,6 +1,7 @@
-import { Column, Entity } from 'typeorm';
+import { Column, Entity, OneToMany } from 'typeorm';
 import { CategoryType } from '../dto/category-type.enum';
 import { BaseAuditEntity } from 'src/core/security/common/entities/base.entity';
+import { Transaction } from '../../transactions/entities/transaction.entity';
 
 @Entity()
 export class Category extends BaseAuditEntity {
@@ -19,4 +20,7 @@ export class Category extends BaseAuditEntity {
 
   @Column({ default: true })
   isActive: boolean;
+
+  @OneToMany(() => Transaction, (transaction) => transaction.category)
+  transactions: Transaction[];
 }

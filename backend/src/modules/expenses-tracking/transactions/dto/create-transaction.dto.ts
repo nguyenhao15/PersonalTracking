@@ -1,8 +1,10 @@
 import { Type } from 'class-transformer';
 import { IsDate, IsInt, IsString } from 'class-validator';
 
-export class CreateIncomeDto {
-  @IsInt()
+export class CreateTransactionDto {
+  @IsInt({
+    message: 'Amount must be a positive integer',
+  })
   amount: number;
 
   @IsString({
@@ -10,19 +12,18 @@ export class CreateIncomeDto {
   })
   description: string;
 
-  @IsInt({
-    message: 'Category ID must be an integer',
-  })
+  @Type(() => Date)
+  @IsDate()
+  date: Date;
+
+  @IsInt()
   categoryId: number;
 
-  @IsInt({
-    message: 'Wallet ID must be an integer',
-  })
+  @IsInt()
   walletId: number;
 
-  @IsDate({
-    message: 'Date must be a valid date',
+  @IsString({
+    message: 'Tag must be a string',
   })
-  @Type(() => Date)
-  date: Date;
+  tag: string;
 }
