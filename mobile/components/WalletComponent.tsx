@@ -1,22 +1,13 @@
 import { formatPrice, safeString, toArray } from '@/utils/formatValue';
+import { WalletObject } from '@/validations/types';
 import React from 'react';
-import { Text, View } from 'react-native';
+import { Text, TouchableOpacity, View } from 'react-native';
 
 interface WalletComponentProps {
-  wallets: unknown;
+  wallets: WalletObject[] | undefined;
 }
-
-interface WalletItem {
-  id?: string | number;
-  walletName?: string;
-  name?: string;
-  balance?: number;
-  amount?: number;
-  totalBalance?: number;
-}
-
 const WalletComponent = ({ wallets }: WalletComponentProps) => {
-  const walletList = toArray<WalletItem>(wallets);
+  const walletList = toArray<WalletObject>(wallets);
 
   if (walletList.length === 0) {
     return (
@@ -29,16 +20,22 @@ const WalletComponent = ({ wallets }: WalletComponentProps) => {
   }
 
   return (
-    <View className='px-6 pb-4'>
-      <Text className='text-text-primary text-lg font-semibold mb-3'>
-        Wallet list
-      </Text>
+    <View className='bg-surface rounded-2xl py-4 mx-6 px-6 pb-4'>
+      <View className='flex flex-row justify-between p-2'>
+        <Text className='text-text-primary text-lg font-semibold mb-3'>
+          Wallet list
+        </Text>
+        <TouchableOpacity>
+          <Text className='text-primary items-center justify-items-center my-auto text-sm font-medium'>
+            See all
+          </Text>
+        </TouchableOpacity>
+      </View>
 
-      <View className='bg-surface rounded-2xl overflow-hidden'>
+      <View className='border border-slate-950 rounded-md overflow-hidden'>
         {walletList.map((wallet, index) => {
-          const walletName = safeString(wallet.walletName ?? wallet.name);
-          const balanceValue =
-            wallet.balance ?? wallet.totalBalance ?? wallet.amount ?? 0;
+          const walletName = safeString(wallet.walletName);
+          const balanceValue = wallet.balance;
           return (
             <View
               key={String(wallet.id ?? `${walletName}-${index}`)}
