@@ -1,11 +1,11 @@
-import { getExpenses } from '@/actions/expensesActions';
+import { getTransactionAction } from '@/actions/transactionActions';
 import { useQuery } from '@tanstack/react-query';
 
-export const useGetExpenses = () => {
+export const useGetTransactions = () => {
   return useQuery({
-    queryKey: ['expenses'],
+    queryKey: ['transactions'],
     queryFn: async () => {
-      const res = await getExpenses();
+      const res = await getTransactionAction();
 
       return res;
     },

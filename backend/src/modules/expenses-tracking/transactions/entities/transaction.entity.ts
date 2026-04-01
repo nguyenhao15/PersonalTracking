@@ -21,10 +21,16 @@ export class Transaction extends BaseAuditEntity {
   @JoinColumn({ name: 'categoryId' })
   category: Category;
 
+  @Column()
+  walletId: number;
+
+  @Column()
+  categoryId: number;
+
   @ManyToOne(() => Wallet, (wallet) => wallet.transactions, {
     onDelete: 'RESTRICT', // Đảm bảo không mất dữ liệu thu chi khi xóa ví
   })
-  @JoinColumn({ name: 'walletName' })
+  @JoinColumn({ name: 'walletId' })
   wallet: Wallet;
 
   @Column()

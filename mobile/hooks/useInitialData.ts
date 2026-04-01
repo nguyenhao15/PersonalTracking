@@ -1,12 +1,12 @@
-import { useGetExpenses } from './useExpenses';
+import { useGetTransactions } from './useExpenses';
 import { useGetWalletBalance, useGetWallets } from './useWallets';
 
 export const useInitialData = () => {
   const {
-    data: expenses,
-    isLoading: isLoadingExpenses,
-    error: expensesError,
-  } = useGetExpenses();
+    data: transactions,
+    isLoading: isLoadingTransactions,
+    error: transactionsError,
+  } = useGetTransactions();
   const {
     data: wallet,
     isLoading: isLoadingWallet,
@@ -20,14 +20,14 @@ export const useInitialData = () => {
   } = useGetWalletBalance();
 
   const isLoading =
-    isLoadingExpenses || isLoadingWallet || isLoadingWalletBalance;
+    isLoadingTransactions || isLoadingWallet || isLoadingWalletBalance;
   const error =
-    expensesError?.response?.data.message ||
+    transactionsError?.response?.data.message ||
     walletError?.response?.data.message ||
     walletBalanceError?.response?.data.message;
 
   return {
-    expenses,
+    transactions,
     wallet,
     isLoading,
     error,

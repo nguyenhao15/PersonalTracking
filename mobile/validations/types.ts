@@ -21,4 +21,13 @@ export interface TransactionObject extends BaseObject {
   date?: string;
   categoryId?: string;
   walletId?: string | number;
+  category?: {
+    id?: string | number;
+    name?: string;
+  };
+  wallet?: {
+    id?: string | number;
+    walletName?: string;
+  };
+  transactionType?: string;
 }

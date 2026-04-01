@@ -11,7 +11,7 @@ import React, { useState } from 'react';
 import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 
 const Home = () => {
-  const { expenses, wallet, walletBalance, isLoading, error } =
+  const { transactions, wallet, walletBalance, isLoading, error } =
     useInitialData();
   const { mutate: logout } = useLogOut();
   const handleLogout = () => {
@@ -27,6 +27,8 @@ const Home = () => {
   if (error) {
     return <ErrorPage error={error} />;
   }
+
+  console.log('Transaction:  ', transactions);
 
   return (
     <SafeScreen>
@@ -57,7 +59,7 @@ const Home = () => {
         </View>
 
         <WalletComponent wallets={wallet.slice(0, 2)} />
-        <TransactionComponent transactions={expenses} />
+        <TransactionComponent transactions={transactions} />
       </ScrollView>
     </SafeScreen>
   );

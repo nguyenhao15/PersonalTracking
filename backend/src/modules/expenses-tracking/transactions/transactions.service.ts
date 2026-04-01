@@ -7,6 +7,7 @@ import { Repository } from 'typeorm';
 import { WalletService } from '../wallet/wallet.service';
 import { CategoriesService } from '../categories/categories.service';
 import { QueryUtils } from 'src/common/utils/query.utils';
+import { CategoryType } from '../categories/dto/category-type.enum';
 
 @Injectable()
 export class TransactionsService {
@@ -25,10 +26,13 @@ export class TransactionsService {
       createTransactionDto.categoryId,
     );
     const transaction = this.transactionRepository.create(createTransactionDto);
-    await this.walletService.updateBalance(
-      wallet,
-      -createTransactionDto.amount,
-    );
+
+    const updateAmount =
+      createTransactionDto.transactionType === CategoryType.EXPENSE
+        ? -createTransactionDto.amount
+        : createTransactionDto.amount;
+
+    await this.walletService.updateBalance(wallet, updateAmount);
     return this.transactionRepository.save(transaction);
   }
 
@@ -36,13 +40,35 @@ export class TransactionsService {
     return this.transactionRepository.find();
   }
 
-  findAllByUser() {
+  async findAllByUser() {
     const options = QueryUtils.applyOwnership<Transaction>();
-    return this.transactionRepository.find(options);
+
+    const minimalTransactions = await this.transactionRepository
+      .createQueryBuilder('transaction')
+      .leftJoin('transaction.wallet', 'wallet')
+      .leftJoin('transaction.category', 'category')
+      .select([
+        'transaction.id',
+        'transaction.amount',
+        'transaction.description',
+        'transaction.date',
+        'transaction.tag',
+        'transaction.transactionType',
+        'wallet.walletName',
+        'wallet.id',
+        'category.name',
+        'category.id',
+      ])
+      .setFindOptions({ where: options.where })
+      .getMany();
+    return minimalTransactions;
   }
 
   findOne(id: number) {
-    const options = QueryUtils.applyOwnership<Transaction>({ where: { id } });
+    const options = QueryUtils.applyOwnership<Transaction>({
+      where: { id },
+      relations: ['wallet', 'category'],
+    });
     return this.transactionRepository.findOne(options);
   }
 
@@ -53,17 +79,28 @@ export class TransactionsService {
     if (!transaction) {
       return null;
     }
-    const newAmount = updateTransactionDto.amount ?? 0;
-    const oldWalletId = transaction.wallet?.id ?? transaction.wallet.id;
-    const newWalletId = updateTransactionDto.walletId ?? transaction.wallet.id;
 
-    const oldWallet = await this.walletService.findOne(oldWalletId);
-    const newWallet = await this.walletService.findOne(newWalletId);
+    const oldTransactionType = transaction.transactionType;
+    const newTransactionType =
+      updateTransactionDto.transactionType ?? transaction.transactionType;
 
-    const amountDifference = newAmount - transaction.amount;
-    if (amountDifference !== 0) {
-      await this.walletService.updateBalance(newWallet, -amountDifference);
-      await this.walletService.updateBalance(oldWallet, amountDifference);
+    const oldAmount = transaction.amount;
+    const newAmount = updateTransactionDto.amount ?? transaction.amount;
+
+    const wallet = await this.walletService.findOne(
+      transaction.wallet?.id ?? transaction.wallet.id,
+    );
+
+    if (oldTransactionType === CategoryType.EXPENSE) {
+      await this.walletService.updateBalance(wallet, oldAmount);
+    } else {
+      await this.walletService.updateBalance(wallet, -oldAmount);
+    }
+
+    if (newTransactionType === CategoryType.EXPENSE) {
+      await this.walletService.updateBalance(wallet, -newAmount);
+    } else {
+      await this.walletService.updateBalance(wallet, newAmount);
     }
     return this.transactionRepository.save({
       ...transaction,
@@ -81,7 +118,11 @@ export class TransactionsService {
       transaction.wallet?.id ?? transaction.wallet.id,
     );
     if (amount) {
-      await this.walletService.updateBalance(wallet, amount);
+      if (transaction.transactionType === CategoryType.EXPENSE) {
+        await this.walletService.updateBalance(wallet, amount);
+      } else {
+        await this.walletService.updateBalance(wallet, -amount);
+      }
     }
     return this.transactionRepository.delete(id);
   }

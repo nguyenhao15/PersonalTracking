@@ -1,4 +1,4 @@
-export const EXPENSES_API = '/expenses';
+export const TRANSACTIONS_API = '/transactions';
 export const INCOMES_API = '/incomes';
 export const CATEGORIES_API = '/categories';
 export const AUTH_API = '/auth';

@@ -8,7 +8,7 @@ import { TransactionObject } from '@/validations/types';
 import React from 'react';
 import { FlatList, Text, View } from 'react-native';
 interface TransactionComponentProps {
-  transactions?: unknown;
+  transactions?: TransactionObject[] | null;
 }
 
 const TransactionComponent = ({ transactions }: TransactionComponentProps) => {
@@ -40,22 +40,32 @@ const TransactionComponent = ({ transactions }: TransactionComponentProps) => {
           ItemSeparatorComponent={() => (
             <View className='h-px bg-background-light mx-4' />
           )}
-          renderItem={({ item }) => (
-            <View className='px-4 py-4'>
-              <View className='flex-row items-start justify-between'>
-                <Text className='text-text-primary text-base font-medium flex-1 pr-3'>
-                  {safeString(item.description, 'No description')}
-                </Text>
-                <Text className='text-primary text-sm font-semibold'>
-                  {formatPrice(Number(item.amount ?? 0))}
+          renderItem={({ item }) => {
+            const transactionType = item.transactionType;
+
+            return (
+              <View className='px-4 py-4'>
+                <View className='flex-row items-start justify-between'>
+                  <Text className='text-text-primary  text-base font-medium flex-1 pr-3'>
+                    {safeString(item.category?.name, 'No description')}
+                  </Text>
+                  <Text
+                    style={{
+                      color:
+                        transactionType === 'expense' ? '#ef4444' : '#22c55e',
+                    }}
+                    className='font-bold text-sm mt-1'
+                  >
+                    {formatPrice(Number(item.amount ?? 0))}
+                  </Text>
+                </View>
+
+                <Text className='text-text-secondary text-xs mt-1'>
+                  {formatDate(item.date ?? '')}
                 </Text>
               </View>
-
-              <Text className='text-text-secondary text-xs mt-1'>
-                {formatDate(item.date ?? '')}
-              </Text>
-            </View>
-          )}
+            );
+          }}
         />
       </View>
     </View>
