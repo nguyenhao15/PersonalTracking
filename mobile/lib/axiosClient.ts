@@ -26,6 +26,8 @@ const processQueue = (error: any, token: string | null = null) => {
 
 axiosClient.interceptors.request.use(
   async (config) => {
+    console.log('Request: ', config.url);
+
     const accessToken =
       useAuthStore.getState().accessToken ||
       (await SecureStore.getItemAsync('accessToken'));

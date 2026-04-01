@@ -1,25 +1,30 @@
 import ErrorPage from '@/components/ErrorPage';
+import LoadingPage from '@/components/LoadingPage';
 import SafeScreen from '@/components/SafeScreen';
 import { useLogOut } from '@/hooks/useAuthentication';
-import { useGetExpenses } from '@/hooks/useExpenses';
+import { useInitialData } from '@/hooks/useInitialData';
 import { Ionicons } from '@expo/vector-icons';
-import React from 'react';
-import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import React, { useState } from 'react';
+import {
+  ScrollView,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 
 const Home = () => {
-  const { data: expenses, isLoading, error } = useGetExpenses();
+  const { expenses, wallet, walletBalance, isLoading, error } =
+    useInitialData();
   const { mutate: logout } = useLogOut();
   const handleLogout = () => {
     logout();
   };
 
+  const [searchQuery, setSearchQuery] = useState('');
+
   if (isLoading) {
-    return (
-      <SafeScreen>
-        <Text className='text-2xl font-bold mb-4'>Home Screen</Text>
-        <Text>Loading...</Text>
-      </SafeScreen>
-    );
+    return <LoadingPage message='Loading expenses...' />;
   }
 
   if (error) {
@@ -37,7 +42,10 @@ const Home = () => {
           <View className={`flex-row items-center justify-between mb-6`}>
             <View>
               <Text className='text-text-primary text-3xl font-bold tracking-tight'>
-                Expenses
+                {walletBalance.toLocaleString('vn-VN', {
+                  style: 'currency',
+                  currency: 'VND',
+                })}
               </Text>
               <Text className='text-text-secondary text-sm mt-1'>
                 Your expenses overview
@@ -51,6 +59,17 @@ const Home = () => {
             >
               <Ionicons name='log-out-outline' size={22} color='#fff' />
             </TouchableOpacity>
+          </View>
+
+          <View className='bg-surface flex-row items-center px-5 py-4 rounded-2xl'>
+            <Ionicons name='wallet-outline' size={24} color='#fff' />
+            <TextInput
+              className='flex-1 ml-3 text-base text-text-primary'
+              placeholder='Enter amount'
+              placeholderTextColor='#666'
+              value={searchQuery}
+              onChangeText={setSearchQuery}
+            />
           </View>
         </View>
       </ScrollView>

@@ -5,6 +5,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Wallet } from './entities/wallet.entity';
 import { Repository } from 'typeorm';
 import { QueryUtils } from 'src/common/utils/query.utils';
+import { log } from 'console';
 
 @Injectable()
 export class WalletService {
@@ -15,17 +16,17 @@ export class WalletService {
 
   create(createWalletDto: CreateWalletDto) {
     const wallet = this.walletRepository.create(createWalletDto);
-
     return this.walletRepository.save(wallet);
   }
 
-  findAll() {
-    return this.walletRepository.find();
+  findAll(options?: any) {
+    return this.walletRepository.find(options);
   }
 
-  findAllByUser() {
+  async findAllByUser() {
     const options = QueryUtils.applyOwnership<Wallet>();
-    return this.walletRepository.find(options);
+    const res = await this.findAll(options);
+    return res;
   }
 
   async findOne(id: number) {
@@ -34,6 +35,11 @@ export class WalletService {
       throw new NotFoundException(`Wallet with id ${id} not found`);
     }
     return wallet;
+  }
+
+  async getTotalBalanceForUser() {
+    const wallets = await this.findAllByUser();
+    return wallets.reduce((total, wallet) => total + wallet.balance, 0);
   }
 
   async update(id: number, updateWalletDto: UpdateWalletDto) {
