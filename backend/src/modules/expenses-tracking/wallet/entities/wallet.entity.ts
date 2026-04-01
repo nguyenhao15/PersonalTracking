@@ -16,6 +16,9 @@ export class Wallet extends BaseAuditEntity {
   @Column()
   description: string;
 
+  @Column({ default: 'VND' })
+  currency: string;
+
   @Column({ default: true })
   isActive: boolean;
 }

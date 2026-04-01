@@ -1,8 +1,10 @@
 import ErrorPage from '@/components/ErrorPage';
 import LoadingPage from '@/components/LoadingPage';
 import SafeScreen from '@/components/SafeScreen';
+import WalletComponent from '@/components/WalletComponent';
 import { useLogOut } from '@/hooks/useAuthentication';
 import { useInitialData } from '@/hooks/useInitialData';
+import { formatPrice } from '@/utils/formatValue';
 import { Ionicons } from '@expo/vector-icons';
 import React, { useState } from 'react';
 import {
@@ -42,10 +44,7 @@ const Home = () => {
           <View className={`flex-row items-center justify-between mb-6`}>
             <View>
               <Text className='text-text-primary text-3xl font-bold tracking-tight'>
-                {walletBalance.toLocaleString('vn-VN', {
-                  style: 'currency',
-                  currency: 'VND',
-                })}
+                {`${formatPrice(walletBalance)}`}
               </Text>
               <Text className='text-text-secondary text-sm mt-1'>
                 Your expenses overview
@@ -72,6 +71,8 @@ const Home = () => {
             />
           </View>
         </View>
+
+        <WalletComponent wallets={wallet} />
       </ScrollView>
     </SafeScreen>
   );
