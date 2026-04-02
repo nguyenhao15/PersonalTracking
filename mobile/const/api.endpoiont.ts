@@ -4,3 +4,5 @@ export const CATEGORIES_API = '/categories';
 export const AUTH_API = '/auth';
 export const WALLET_API = '/wallet';
 export const USER_API = '/users';
+export const BUDGET_API = '/budgets';
+export const DASHBOARD_API = '/dashboard';
