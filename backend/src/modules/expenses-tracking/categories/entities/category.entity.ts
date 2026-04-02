@@ -23,4 +23,9 @@ export class Category extends BaseAuditEntity {
 
   @OneToMany(() => Transaction, (transaction) => transaction.category)
   transactions: Transaction[];
+
+  @Column({
+    default: true,
+  })
+  includeInSummary: boolean;
 }

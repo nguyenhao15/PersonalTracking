@@ -16,6 +16,7 @@ import { DebtTrasactionsModule } from './modules/expenses-tracking/debt-trasacti
 import { UserModule } from './core/security/user/user.module';
 import { AuthModule } from './core/security/auth/auth.module';
 import { AuditSubscriber } from './core/security/common/subscribers/audit.subscriber';
+import { DashboardModule } from './modules/expenses-tracking/dashboard/dashboard.module';
 
 @Module({
   imports: [
@@ -49,6 +50,7 @@ import { AuditSubscriber } from './core/security/common/subscribers/audit.subscr
     DebtTrasactionsModule,
     UserModule,
     AuthModule,
+    DashboardModule,
   ],
   controllers: [AppController],
   providers: [AppService, AuditSubscriber],

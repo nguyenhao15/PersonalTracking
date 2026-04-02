@@ -1,5 +1,5 @@
 import { BaseAuditEntity } from 'src/core/security/common/entities/base.entity';
-import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
+import { Column, Entity, Index, JoinColumn, ManyToOne } from 'typeorm';
 import { Wallet } from '../../wallet/entities/wallet.entity';
 import { Category } from '../../categories/entities/category.entity';
 import { CategoryType } from '../../categories/dto/category-type.enum';
@@ -13,12 +13,14 @@ export class Transaction extends BaseAuditEntity {
   description: string;
 
   @Column()
+  @Index()
   date: Date;
 
   @ManyToOne(() => Category, (category) => category.transactions, {
     onDelete: 'RESTRICT', // Đảm bảo không mất dữ liệu thu chi khi xóa danh mục
   })
   @JoinColumn({ name: 'categoryId' })
+  @Index()
   category: Category;
 
   @Column()

@@ -14,5 +14,6 @@ import { CategoriesModule } from '../categories/categories.module';
   ], // Thêm các Entity vào đây nếu có
   controllers: [TransactionsController],
   providers: [TransactionsService],
+  exports: [TypeOrmModule, TransactionsService],
 })
 export class TransactionsModule {}
