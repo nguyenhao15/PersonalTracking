@@ -1,3 +1,4 @@
+import BalanceCard from '@/components/BalanceCard';
 import ErrorPage from '@/components/ErrorPage';
 import LoadingPage from '@/components/LoadingPage';
 import SafeScreen from '@/components/SafeScreen';
@@ -5,20 +6,20 @@ import TransactionComponent from '@/components/TransactionComponent';
 import WalletComponent from '@/components/WalletComponent';
 import { useLogOut } from '@/hooks/useAuthentication';
 import { useInitialData } from '@/hooks/useInitialData';
-import { formatPrice } from '@/utils/formatValue';
+import { useAuthStore } from '@/stores/AuthStores';
 import { Ionicons } from '@expo/vector-icons';
-import React, { useState } from 'react';
+import React from 'react';
 import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 
 const Home = () => {
+  const { userInfo, accessToken, isHydrated } = useAuthStore();
+
   const { transactions, wallet, walletBalance, isLoading, error } =
     useInitialData();
   const { mutate: logout } = useLogOut();
   const handleLogout = () => {
     logout();
   };
-
-  const [searchQuery, setSearchQuery] = useState('');
 
   if (isLoading) {
     return <LoadingPage message='Loading expenses...' />;
@@ -27,8 +28,6 @@ const Home = () => {
   if (error) {
     return <ErrorPage error={error} />;
   }
-
-  console.log('Transaction:  ', transactions);
 
   return (
     <SafeScreen>
@@ -39,9 +38,9 @@ const Home = () => {
       >
         <View className='px-6 pb-2 pt-6'>
           <View className={`flex-row items-center justify-between mb-6`}>
-            <View>
+            <View className=''>
               <Text className='text-text-primary text-3xl font-bold tracking-tight'>
-                {`${formatPrice(walletBalance)}`}
+                {userInfo?.fullName || 'Hello, User!'}
               </Text>
               <Text className='text-text-secondary text-sm mt-1'>
                 Your expenses overview
@@ -58,6 +57,7 @@ const Home = () => {
           </View>
         </View>
 
+        <BalanceCard data={walletBalance} />
         <WalletComponent wallets={wallet.slice(0, 2)} />
         <TransactionComponent transactions={transactions} />
       </ScrollView>

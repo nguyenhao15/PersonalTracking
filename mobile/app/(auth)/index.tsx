@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 
 export default function LoginScreen() {
-  const { username: storedUsername, accessToken, isHydrated } = useAuthStore();
+  const { userInfo, accessToken, isHydrated } = useAuthStore();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -36,7 +36,7 @@ export default function LoginScreen() {
     );
   }
 
-  if (storedUsername && accessToken) {
+  if (userInfo && accessToken) {
     return <Redirect href='/(tabs)' />;
   }
 

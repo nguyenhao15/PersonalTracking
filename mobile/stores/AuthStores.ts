@@ -1,15 +1,16 @@
 import { queryClient } from '@/lib/queryClient';
+import { UserObject } from '@/validations/userSchema';
 import * as SecureStore from 'expo-secure-store';
 import { create } from 'zustand';
 
 type AuthResponse = {
-  username: string;
+  userInfo: UserObject;
   access_token: string;
   refresh_token?: string;
 };
 
 type AuthState = {
-  username: string | null;
+  userInfo: UserObject | null;
   accessToken: string | null;
   isHydrated: boolean;
   initializeAuth: () => Promise<void>;
@@ -19,20 +20,20 @@ type AuthState = {
 };
 
 export const useAuthStore = create<AuthState>((set) => ({
-  username: null,
+  userInfo: null,
   accessToken: null,
   isHydrated: false,
 
   initializeAuth: async () => {
     try {
-      const [token, username] = await Promise.all([
+      const [token, userInfo] = await Promise.all([
         SecureStore.getItemAsync('accessToken'),
-        SecureStore.getItemAsync('username'),
+        SecureStore.getItemAsync('userInfo'),
       ]);
 
       set({
         accessToken: token,
-        username,
+        userInfo: userInfo ? JSON.parse(userInfo) : null,
         isHydrated: true,
       });
     } catch (error) {
@@ -42,18 +43,18 @@ export const useAuthStore = create<AuthState>((set) => ({
   },
 
   setToken: async (data: AuthResponse) => {
-    const { access_token, refresh_token, username } = data;
+    const { access_token, refresh_token, userInfo } = data;
 
     await SecureStore.setItemAsync('accessToken', access_token);
     if (refresh_token) {
       await SecureStore.setItemAsync('refreshToken', refresh_token);
     }
 
-    await SecureStore.setItemAsync('username', username);
+    await SecureStore.setItemAsync('userInfo', JSON.stringify(userInfo));
 
     set({
       accessToken: access_token,
-      username,
+      userInfo: userInfo,
       isHydrated: true,
     });
   },
@@ -65,8 +66,8 @@ export const useAuthStore = create<AuthState>((set) => ({
   logOut: async () => {
     await SecureStore.deleteItemAsync('accessToken');
     await SecureStore.deleteItemAsync('refreshToken');
-    await SecureStore.deleteItemAsync('username');
-    set({ username: null, accessToken: null, isHydrated: true });
+    await SecureStore.deleteItemAsync('userInfo');
+    set({ userInfo: null, accessToken: null, isHydrated: true });
   },
 }));
 

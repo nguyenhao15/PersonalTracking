@@ -1,4 +1,4 @@
-abstract class BaseObject {
+export abstract class BaseObject {
   id?: string | number;
   createdAt?: string;
   updatedAt?: string;

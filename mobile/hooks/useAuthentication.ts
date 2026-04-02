@@ -1,5 +1,6 @@
 import { login, logout } from '@/actions/authActions';
 import { useAuthStore } from '@/stores/AuthStores';
+import { UserObject } from '@/validations/userSchema';
 import { useMutation } from '@tanstack/react-query';
 
 const USER_QUERY_KEY = ['user'] as const;
@@ -11,7 +12,11 @@ export const useLogin = () => {
       const response = await login(data);
       return response;
     },
-    onSuccess: async (data) => {
+    onSuccess: async (data: {
+      access_token: string;
+      refresh_token: string;
+      userInfo: UserObject;
+    }) => {
       await useAuthStore.getState().setToken(data);
     },
     onError: (error) => {

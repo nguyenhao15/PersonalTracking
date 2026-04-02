@@ -12,10 +12,14 @@ export class UserService {
   ) {}
 
   async updateHashedRefreshToken(userName: string, hashedRefreshToken: string) {
-    return await this.userRepository.update(
+    const isSuccess = await this.userRepository.update(
       { username: userName },
       { hashedRefreshToken },
     );
+    if (isSuccess.affected === 0) {
+      throw new Error('Failed to update hashed refresh token');
+    }
+    return this.findByUsername(userName);
   }
 
   async create(createUserDto: CreateUserDto) {
@@ -42,6 +46,13 @@ export class UserService {
 
   async findOne(id: number) {
     return await this.userRepository.findOneBy({ id });
+  }
+
+  updatePassword(userName: string, newPassword: string) {
+    return this.userRepository.update(
+      { username: userName },
+      { password: newPassword },
+    );
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {

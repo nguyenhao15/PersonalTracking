@@ -30,12 +30,12 @@ export class AuthService {
   async login(userName: string) {
     const { access_token, refresh_token } = await this.generateToken(userName);
     const hashedRefreshToken = await argon2.hash(refresh_token);
-    await this.userService.updateHashedRefreshToken(
+    const user = await this.userService.updateHashedRefreshToken(
       userName,
       hashedRefreshToken,
     );
     return {
-      username: userName,
+      userInfo: user,
       access_token,
       refresh_token,
     };
@@ -58,12 +58,12 @@ export class AuthService {
   async refreshToken(userName: string) {
     const { access_token, refresh_token } = await this.generateToken(userName);
     const hashedRefreshToken = await argon2.hash(refresh_token);
-    await this.userService.updateHashedRefreshToken(
+    const user = await this.userService.updateHashedRefreshToken(
       userName,
       hashedRefreshToken,
     );
     return {
-      username: userName,
+      userInfo: user,
       access_token,
       refresh_token,
     };
