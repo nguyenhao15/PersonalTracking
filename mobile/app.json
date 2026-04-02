@@ -7,12 +7,13 @@
     "icon": "./assets/images/icon.png",
     "scheme": "mobile",
     "userInterfaceStyle": "automatic",
-    "newArchEnabled": true,
+    "newArchEnabled": false,
     "ios": {
       "supportsTablet": true,
       "config": {
         "usesNonExemptEncryption": false
-      }
+      },
+      "bundleIdentifier": "com.anonymous.mobile"
     },
     "android": {
       "adaptiveIcon": {
@@ -21,8 +22,8 @@
         "backgroundImage": "./assets/images/android-icon-background.png",
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
       },
-      "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "package": "com.anonymous.mobile"
     },
     "web": {
       "output": "static",
@@ -42,23 +43,7 @@
           }
         }
       ],
-      "expo-secure-store",
-      [
-        "expo-font",
-        {
-          "fonts": [
-            "./assets/fonts/BeVietnamPro-Black.ttf",
-            "./assets/fonts/BeVietnamPro-Bold.ttf",
-            "./assets/fonts/BeVietnamPro-ExtraBold.ttf",
-            "./assets/fonts/BeVietnamPro-ExtraLight.ttf",
-            "./assets/fonts/BeVietnamPro-Light.ttf",
-            "./assets/fonts/BeVietnamPro-Medium.ttf",
-            "./assets/fonts/BeVietnamPro-Regular.ttf",
-            "./assets/fonts/BeVietnamPro-SemiBold.ttf",
-            "./assets/fonts/BeVietnamPro-Thin.ttf"
-          ]
-        }
-      ]
+      "expo-secure-store"
     ],
     "experiments": {
       "typedRoutes": true,

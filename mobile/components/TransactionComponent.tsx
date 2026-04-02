@@ -5,7 +5,6 @@ import {
   toArray,
 } from '@/utils/formatValue';
 import { TransactionObject } from '@/validations/types';
-import React from 'react';
 import { FlatList, Text, View } from 'react-native';
 interface TransactionComponentProps {
   transactions?: TransactionObject[] | null;
