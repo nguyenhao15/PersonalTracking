@@ -1,17 +1,19 @@
 import SafeScreen from '@/components/SafeScreen';
-import FormInput from '@/components/UI/FormInput';
 import {
   TransactionInput,
   transactionSchema,
 } from '@/validations/transactionSchema';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useRouter } from 'expo-router';
 import React from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
-import DateTimePicker from '@react-native-community/datetimepicker';
 
+import CardInputComponent from '@/components/UI/CardInputComponent';
+import FormCardPicker from '@/components/UI/FormCardPicker';
 import { View } from 'react-native';
 
 const add = ({ initial }: { initial?: TransactionInput }) => {
+  const router = useRouter();
   const methods = useForm<TransactionInput>({
     mode: 'onBlur',
     resolver: zodResolver(transactionSchema),
@@ -27,14 +29,39 @@ const add = ({ initial }: { initial?: TransactionInput }) => {
 
   return (
     <SafeScreen>
-      <View className='p-4'>
+      <View className='p-4 bg-white rounded-lg shadow-md'>
         <FormProvider {...methods}>
-          <FormInput
-            name='amount'
+          <CardInputComponent
+            label='Number'
+            inputType='number'
             control={control}
-            label='Amount'
+            name='amount'
             placeholder='Enter amount'
-            keyboardType='numeric'
+            errorMessage={errors.amount?.message}
+          />
+          <CardInputComponent
+            label='Date'
+            inputType='date'
+            control={control}
+            name='date'
+            minimumDate={new Date('2000-01-01')}
+            maximumDate={new Date()}
+            errorMessage={errors.date?.message}
+          />
+          <CardInputComponent
+            label='Description'
+            inputType='text'
+            control={control}
+            name='description'
+            placeholder='Enter description'
+            errorMessage={errors.description?.message}
+          />
+          <FormCardPicker
+            control={control}
+            name='card'
+            label='Card'
+            placeholder='Select a card'
+            onPress={() => {}}
           />
         </FormProvider>
       </View>

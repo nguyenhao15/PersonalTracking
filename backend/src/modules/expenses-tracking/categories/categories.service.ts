@@ -4,6 +4,7 @@ import { UpdateCategoryDto } from './dto/update-category.dto';
 import { Category } from './entities/category.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
+import { QueryUtils } from 'src/common/utils/query.utils';
 
 @Injectable()
 export class CategoriesService {
@@ -19,6 +20,11 @@ export class CategoriesService {
 
   findAll() {
     return `This action returns all categories`;
+  }
+
+  findByUser() {
+    const options = QueryUtils.applyOwnership<Category>();
+    return this.categoryRepository.find(options);
   }
 
   async findOne(id: number) {

@@ -25,6 +25,11 @@ export class CategoriesController {
     return this.categoriesService.findAll();
   }
 
+  @Get('user/categories')
+  findByUser() {
+    return this.categoriesService.findByUser();
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.categoriesService.findOne(+id);
