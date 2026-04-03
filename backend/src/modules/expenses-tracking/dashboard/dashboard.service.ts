@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { DashboardQueryDto } from './dto/handle-transaction.dto';
 import { QueryUtils } from 'src/common/utils/query.utils';
 import { CategoryType } from '../categories/dto/category-type.enum';
+import { log } from 'console';
 
 @Injectable()
 export class DashboardService {

@@ -19,7 +19,7 @@ const Dashboard = ({ query }: { query: DashboardQuery }) => {
   return (
     <View>
       <Text>Dashboard</Text>
-      <Text>{JSON.stringify(data)}</Text>
+      <Text className='text-white font-bold'>{JSON.stringify(data)}</Text>
     </View>
   );
 };

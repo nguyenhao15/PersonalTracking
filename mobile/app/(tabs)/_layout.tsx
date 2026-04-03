@@ -1,3 +1,4 @@
+import { MENU_ITEMS } from '@/const/app.const';
 import { useAuthStore } from '@/stores/AuthStores';
 import { Ionicons } from '@expo/vector-icons';
 import { BlurView } from 'expo-blur';
@@ -27,14 +28,15 @@ const TabsLayout = () => {
       screenOptions={{
         tabBarActiveTintColor: '#007AFF',
         tabBarInactiveTintColor: '#8E8E93',
+        tabBarShowLabel: false,
         tabBarStyle: {
           position: 'absolute',
           backgroundColor: 'transparent',
           borderTopWidth: 0,
-          elevation: 0,
-          height: 32 + insets.bottom,
+          elevation: 2,
+          height: 15 + insets.bottom,
           paddingTop: 4,
-          marginHorizontal: 100,
+          marginHorizontal: 16,
           marginBottom: insets.bottom,
           borderRadius: 24,
           overflow: 'hidden',
@@ -54,24 +56,19 @@ const TabsLayout = () => {
         headerShown: false,
       }}
     >
-      <Tabs.Screen
-        name='index'
-        options={{
-          title: 'Home',
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name='home' color={color} size={size} />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name='report'
-        options={{
-          title: 'Report',
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name='bar-chart' color={color} size={size} />
-          ),
-        }}
-      />
+      {MENU_ITEMS.map(
+        (item: { id: string; title: string; icon: string; screen: string }) => (
+          <Tabs.Screen
+            key={item.id}
+            name={item.screen}
+            options={{
+              tabBarIcon: ({ color, size }) => (
+                <Ionicons name={item.icon as any} color={color} size={size} />
+              ),
+            }}
+          />
+        ),
+      )}
     </Tabs>
   );
 };

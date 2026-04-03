@@ -1,6 +1,4 @@
-import { GroupBy } from '@/api/dashboard.api';
 import BalanceCard from '@/components/BalanceCard';
-import Dashboard from '@/components/Dashboard';
 import ErrorPage from '@/components/ErrorPage';
 import LoadingPage from '@/components/LoadingPage';
 import SafeScreen from '@/components/SafeScreen';
@@ -61,15 +59,17 @@ const Home = () => {
 
         <BalanceCard data={walletBalance} />
         <WalletComponent wallets={wallet.slice(0, 2)} />
-        <TransactionComponent transactions={transactions} />
-        <Dashboard
+        <View className=' mt-2'>
+          <TransactionComponent transactions={transactions} />
+        </View>
+        {/* <Dashboard
           query={{
             startDate: new Date(new Date().setDate(new Date().getDate() - 30)),
             endDate: new Date(),
             groupBy: GroupBy.DAY,
             excludeHidden: true,
           }}
-        />
+        /> */}
       </ScrollView>
     </SafeScreen>
   );
