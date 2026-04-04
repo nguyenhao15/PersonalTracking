@@ -10,6 +10,8 @@ import {
 import { CategoriesService } from './categories.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
+import { CategoryType } from './dto/category-type.enum';
+import { log } from 'console';
 
 @Controller('categories')
 export class CategoriesController {
@@ -25,9 +27,9 @@ export class CategoriesController {
     return this.categoriesService.findAll();
   }
 
-  @Get('user/categories')
-  findByUser() {
-    return this.categoriesService.findByUser();
+  @Get('user/categories/:type')
+  findByUser(@Param('type') type: CategoryType) {
+    return this.categoriesService.findByUser(type);
   }
 
   @Get(':id')

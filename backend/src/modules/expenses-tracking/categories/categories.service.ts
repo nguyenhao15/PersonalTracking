@@ -5,6 +5,7 @@ import { Category } from './entities/category.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { QueryUtils } from 'src/common/utils/query.utils';
+import { CategoryType } from './dto/category-type.enum';
 
 @Injectable()
 export class CategoriesService {
@@ -22,8 +23,12 @@ export class CategoriesService {
     return `This action returns all categories`;
   }
 
-  findByUser() {
-    const options = QueryUtils.applyOwnership<Category>();
+  findByUser(type: CategoryType) {
+    const options = QueryUtils.applyOwnership<Category>({
+      where: {
+        categoryType: type as any,
+      },
+    });
     return this.categoryRepository.find(options);
   }
 

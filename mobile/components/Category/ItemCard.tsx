@@ -3,11 +3,15 @@ import React from 'react';
 
 const CategoryCard = ({
   isSelected,
+  title,
+  description,
   item,
   onPress,
 }: {
   isSelected: boolean;
   item: any;
+  title: string;
+  description: string;
   onPress: (item: any) => void;
 }) => {
   const handleOnPress = () => {
@@ -22,12 +26,12 @@ const CategoryCard = ({
         <Text
           className={`text-lg font-bold mb-2 ${isSelected ? 'text-white' : 'text-black'}`}
         >
-          {item.name}
+          {title}
         </Text>
         <Text
           className={`text-sm ${isSelected ? 'text-white' : 'text-gray-500'}`}
         >
-          {item.description}
+          {description}
         </Text>
       </View>
     </Pressable>

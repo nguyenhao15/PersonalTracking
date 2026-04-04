@@ -1,19 +1,31 @@
 import { useGetCategories } from '@/hooks/useCategory';
 import React, { useState } from 'react';
 import { FlatList, Text, TextInput, View } from 'react-native';
-import LoadingPage from '../LoadingPage';
-import ErrorPage from '../ErrorPage';
-import CategoryCard from './CategoryCard';
+import LoadingPage from './LoadingPage';
+import ErrorPage from './ErrorPage';
+import CategoryCard from './Category/ItemCard';
+import { useInitialForForm } from '@/hooks/useInitialForForm';
 
-const CategorySelect = ({
-  selectedCategory,
-  onSelect,
-}: {
+interface CardSelectListProps {
   selectedCategory?: any;
   onSelect: (category: string) => void;
-}) => {
+  data: any[];
+  placeholder: string;
+  type: 'EXPENSE' | 'INCOME';
+  isLoading?: boolean;
+  error?: any;
+}
+
+const CardSelectList = ({
+  selectedCategory,
+  onSelect,
+  data,
+  placeholder,
+  type,
+  isLoading,
+  error,
+}: CardSelectListProps) => {
   const [searchQuery, setSearchQuery] = useState('');
-  const { data, isLoading, error } = useGetCategories();
 
   const filteredCategories = data
     ? data.filter((category: any) =>
@@ -21,11 +33,13 @@ const CategorySelect = ({
       )
     : [];
 
+  console.log(error?.response?.data?.message);
+
   return (
-    <View className='p-4  items-center justify-center'>
+    <View className='p-4 h-full items-center justify-center'>
       <TextInput
         className='w-full p-2 mb-4 border rounded'
-        placeholder='Search categories...'
+        placeholder={placeholder}
         value={searchQuery}
         onChangeText={setSearchQuery}
       />
@@ -41,13 +55,15 @@ const CategorySelect = ({
         <FlatList
           className='w-full p-2 h-full'
           data={filteredCategories}
-          renderItem={({ item: category }) => (
-            <View key={category.id} className='w-full mb-3'>
+          renderItem={({ item: item }) => (
+            <View key={item?.id} className='w-full mb-3'>
               <CategoryCard
-                key={category.id}
-                item={category}
-                onPress={() => onSelect(category)}
-                isSelected={selectedCategory === category.id}
+                key={item?.id}
+                item={item}
+                title={item?.name}
+                description={item?.description || ''}
+                onPress={() => onSelect(item)}
+                isSelected={selectedCategory === item?.id}
               />
             </View>
           )}
@@ -57,4 +73,4 @@ const CategorySelect = ({
   );
 };
 
-export default CategorySelect;
+export default CardSelectList;

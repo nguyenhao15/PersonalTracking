@@ -11,13 +11,14 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 
 import { Text, TextInput, TouchableOpacity, View } from 'react-native';
 import BaseModal from '@/components/BaseModal';
-import CategorySelect from '@/components/Category/CategorySelect';
+import CategorySelect from '@/components/CardSelectList';
 
 import PressableCardComponent from '@/components/UI/PressableCardComponent';
+import SelectModal from '@/components/SelectModal';
 
 const add = ({ initial }: { initial?: TransactionInput }) => {
   const [isCardModalOpen, setCardModalOpen] = useState(false);
-
+  const [labelObject, setLabelObject] = useState<{ [key: string]: string }>({});
   const [modalTitle, setModalTitle] = useState('');
   const router = useRouter();
   const methods = useForm<TransactionInput>({
@@ -27,8 +28,8 @@ const add = ({ initial }: { initial?: TransactionInput }) => {
       amount: 0,
       date: new Date(),
       description: '',
-      categoryId: '',
-      walletId: '',
+      categoryId: undefined,
+      walletId: undefined,
     },
   });
 
@@ -51,9 +52,14 @@ const add = ({ initial }: { initial?: TransactionInput }) => {
   ]);
 
   const handleOnSelectCategory = (category: any) => {
-    console.log('Category: ', category);
-
     setValue('categoryId', category.id);
+    setLabelObject((prev) => ({ ...prev, category: category.name }));
+    setCardModalOpen(false);
+  };
+
+  const handleOnSelectWallet = (wallet: any) => {
+    setValue('walletId', wallet.id);
+    setLabelObject((prev) => ({ ...prev, wallet: wallet.name }));
     setCardModalOpen(false);
   };
 
@@ -107,14 +113,17 @@ const add = ({ initial }: { initial?: TransactionInput }) => {
 
             <PressableCardComponent
               title='Wallet'
-              value={walletId ? walletId : undefined}
+              value={walletId ? walletId.name : undefined}
               error={errors.walletId?.message}
               iconName='wallet'
               onPress={() => handleOpenCardModal('Choose wallet')}
             />
             <PressableCardComponent
               title='Category'
-              value={categoryId ? categoryId : undefined}
+              value={
+                labelObject.category ||
+                (categoryId ? categoryId.name : undefined)
+              }
               error={errors.categoryId?.message}
               iconName='pricetag'
               onPress={() => handleOpenCardModal('Choose category')}
@@ -130,36 +139,18 @@ const add = ({ initial }: { initial?: TransactionInput }) => {
           <Text className='text-white font-bold'>Save</Text>
         </TouchableOpacity>
       </View>
-      <BaseModal
-        visible={isCardModalOpen}
-        onClose={() => setCardModalOpen(false)}
-        title={modalTitle}
-      >
-        {modalTitle === 'Choose category' && (
-          <CategorySelect
-            selectedCategory={methods.getValues('categoryId')}
-            onSelect={handleOnSelectCategory}
-          />
-        )}
-
-        {modalTitle === 'Choose date' && (
-          <View className='items-center justify-center w-full'>
-            <DateTimePicker
-              style={{ width: '100%' }}
-              value={date || new Date()}
-              mode='date'
-              display='inline'
-              onValueChange={(event, selectedDate) => {
-                if (selectedDate) {
-                  methods.setValue('date', selectedDate);
-                  setCardModalOpen(false);
-                }
-              }}
-            />
-          </View>
-        )}
-        {/* Add more modals for wallet and currency selection as needed */}
-      </BaseModal>
+      <SelectModal
+        modalTitle={modalTitle}
+        isCardModalOpen={isCardModalOpen}
+        setCardModalOpen={setCardModalOpen}
+        type={
+          modalTitle.includes('category')
+            ? 'category'
+            : modalTitle.includes('wallet')
+              ? 'wallet'
+              : 'date'
+        }
+      />
     </SafeScreen>
   );
 };
