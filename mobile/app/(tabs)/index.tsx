@@ -62,14 +62,6 @@ const Home = () => {
         <View className=' mt-2'>
           <TransactionComponent transactions={transactions} />
         </View>
-        {/* <Dashboard
-          query={{
-            startDate: new Date(new Date().setDate(new Date().getDate() - 30)),
-            endDate: new Date(),
-            groupBy: GroupBy.DAY,
-            excludeHidden: true,
-          }}
-        /> */}
       </ScrollView>
     </SafeScreen>
   );

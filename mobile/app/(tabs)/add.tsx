@@ -5,14 +5,18 @@ import {
 } from '@/validations/transactionSchema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'expo-router';
-import React from 'react';
+import React, { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
 import CardInputComponent from '@/components/UI/CardInputComponent';
 import FormCardPicker from '@/components/UI/FormCardPicker';
 import { View } from 'react-native';
+import ModalScreen from '@/app-example/app/modal';
+import BaseModal from '@/components/BaseModal';
+import CategorySelect from '@/components/Category/CategorySelect';
 
 const add = ({ initial }: { initial?: TransactionInput }) => {
+  const [isCardModalOpen, setCardModalOpen] = useState(false);
   const router = useRouter();
   const methods = useForm<TransactionInput>({
     mode: 'onBlur',
@@ -61,10 +65,17 @@ const add = ({ initial }: { initial?: TransactionInput }) => {
             name='card'
             label='Card'
             placeholder='Select a card'
-            onPress={() => {}}
+            onPress={() => setCardModalOpen(true)}
           />
         </FormProvider>
       </View>
+      <BaseModal
+        visible={isCardModalOpen}
+        onClose={() => setCardModalOpen(false)}
+        title='Choose card'
+      >
+        <CategorySelect onSelect={() => {}} />
+      </BaseModal>
     </SafeScreen>
   );
 };
