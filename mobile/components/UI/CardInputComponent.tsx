@@ -40,6 +40,7 @@ const CardInputComponent = ({
           name={name}
           minimumDate={minimumDate}
           maximumDate={maximumDate}
+          style={[styles.input, errorMessage && styles.inputError]}
         />
       ) : (
         <FormInput
@@ -55,7 +56,7 @@ const CardInputComponent = ({
 };
 
 const styles = StyleSheet.create({
-  container: { marginBottom: 15 },
+  container: { marginBottom: 15, flexDirection: 'row', alignItems: 'center' },
   label: {
     marginBottom: 5,
     fontWeight: 'bold',
@@ -65,6 +66,7 @@ const styles = StyleSheet.create({
   },
   input: {
     borderWidth: 1,
+    width: '100%',
     borderColor: '#ccc',
     paddingHorizontal: 12,
     paddingVertical: 14,

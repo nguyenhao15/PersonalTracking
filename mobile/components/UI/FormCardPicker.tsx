@@ -5,7 +5,6 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 interface FormCardPickerProps {
   control: any; // Replace with appropriate type from react-hook-form
   name: string;
-  label: string;
   placeholder?: string;
   onPress: () => void;
 }
@@ -13,14 +12,12 @@ interface FormCardPickerProps {
 const FormCardPicker = ({
   control,
   name,
-  label,
+
   placeholder,
   onPress,
 }: FormCardPickerProps) => {
   return (
     <View style={styles.container}>
-      <Text style={styles.label}>{label}</Text>
-
       <Controller
         control={control}
         name={name}
@@ -35,7 +32,7 @@ const FormCardPicker = ({
               <Text
                 style={value ? styles.textSelected : styles.textPlaceholder}
               >
-                {value ? value.name : placeholder}
+                {value ? value : placeholder}
               </Text>
               <Text style={styles.iconArrow}>›</Text>
             </TouchableOpacity>

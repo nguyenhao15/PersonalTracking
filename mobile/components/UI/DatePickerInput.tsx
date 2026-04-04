@@ -7,6 +7,7 @@ interface BaseDatePickerInputProps {
   placeholder?: string;
   isError?: boolean;
   minimumDate?: Date;
+  style?: any;
   maximumDate?: Date;
   value?: string | Date;
   onChange?: (value: string) => void;
@@ -56,6 +57,7 @@ const DatePickerField = ({
   isError,
   minimumDate,
   maximumDate,
+  style,
 }: BaseDatePickerInputProps) => {
   const [showPicker, setShowPicker] = useState(false);
 
@@ -91,7 +93,8 @@ const DatePickerField = ({
         <DateTimePicker
           value={selectedDate}
           mode='date'
-          display='inline'
+          display='spinner'
+          style={style}
           themeVariant='light'
           onValueChange={handleChange}
           minimumDate={minimumDate}
