@@ -30,3 +30,10 @@ export const MENU_ITEMS = [
     screen: 'transaction',
   },
 ];
+
+export const TAB_ITEMS = [
+  { key: 'expense', label: 'Expense' },
+  { key: 'income', label: 'Income' },
+  { key: 'loan', label: 'Loan' },
+  { key: 'transfer', label: 'Transfer' },
+];

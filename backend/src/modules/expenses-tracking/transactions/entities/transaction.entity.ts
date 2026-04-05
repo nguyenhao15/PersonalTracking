@@ -44,4 +44,7 @@ export class Transaction extends BaseAuditEntity {
     default: CategoryType.EXPENSE,
   })
   transactionType: CategoryType;
+
+  @Column({ default: false })
+  excludedFromReports: boolean;
 }

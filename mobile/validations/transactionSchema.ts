@@ -1,25 +1,34 @@
-import { any, object, z } from 'zod';
+import { any, number, object, z } from 'zod';
 
-interface validObject {
-  id: string;
-  [field: string]: any;
-}
+const coerceNumber = (schema: z.ZodNumber) =>
+  z
+    .preprocess((val) => {
+      if (typeof val === 'string' && val.trim() === '') {
+        return NaN;
+      }
+      return Number(val);
+    }, schema)
+    .refine((val) => !isNaN(Number(val)), {
+      message: 'Position level is required',
+    });
 
 export const transactionSchema = z.object({
-  amount: z.number().min(0, { message: 'Amount must be a positive number' }),
+  amount: coerceNumber(
+    z.number().min(0, { message: 'Amount must be a positive number' }),
+  ),
   date: z.date().refine((date) => !isNaN(Date.parse(date.toString())), {
     message: 'Invalid date format',
   }),
-  walletId: z
-    .object<validObject>()
-    .refine((obj) => (obj as validObject).id.trim() !== '', {
+  walletId: coerceNumber(
+    z.number().refine((value) => value > 0, {
       message: 'Wallet is required',
     }),
-  categoryId: z
-    .object<validObject>()
-    .refine((obj) => (obj as validObject).id.trim() !== '', {
+  ),
+  categoryId: coerceNumber(
+    z.number().refine((value) => value > 0, {
       message: 'Category is required',
     }),
+  ),
   description: z.string().optional(),
 });
 

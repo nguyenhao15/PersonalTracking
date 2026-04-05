@@ -1,27 +1,40 @@
-import { View, Text } from 'react-native';
-import React from 'react';
-import BaseModal from './BaseModal';
 import { useInitialForForm } from '@/hooks/useInitialForForm';
-import CardSelectList from './CardSelectList';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import React, { useState } from 'react';
+import { TextInput, View } from 'react-native';
+import BaseModal from './BaseModal';
+import CardSelectList from './CardSelectList';
 
 interface SelectModalProps {
+  defaultValue?: any;
   modalTitle: string;
   isCardModalOpen: boolean;
   setCardModalOpen: (open: boolean) => void;
   onSelectItem: (item: any) => void;
-  type: 'category' | 'wallet' | 'date';
+  type: 'category' | 'wallet' | 'date' | 'description';
+  transactionType: 'expense' | 'income';
 }
 
 const SelectModal = ({
+  defaultValue,
   modalTitle = 'Select',
   isCardModalOpen,
   setCardModalOpen,
   onSelectItem,
   type,
+  transactionType,
 }: SelectModalProps) => {
+  const [description, setDescription] = useState(
+    defaultValue?.description || '',
+  );
+
+  const handleOnClose = () => {
+    setCardModalOpen(false);
+    setDescription(description || defaultValue?.description);
+  };
+
   const { categories, wallets, isLoading, error } = useInitialForForm({
-    type: type === 'category' ? 'expense' : 'income',
+    type: transactionType,
   });
 
   const returnArray = () => {
@@ -36,13 +49,32 @@ const SelectModal = ({
   return (
     <BaseModal
       visible={isCardModalOpen}
-      onClose={() => setCardModalOpen(false)}
+      onClose={handleOnClose}
       title={modalTitle}
     >
-      {type === 'date' ? (
+      {type === 'description' ? (
+        <View className='p-4 items-center '>
+          <TextInput
+            className='w-full p-2 mb-4 rounded text-top'
+            placeholder='Enter description...'
+            returnKeyType='done'
+            value={description}
+            onChangeText={setDescription}
+            returnKeyLabel='Xác nhận'
+            autoFocus
+            onSubmitEditing={(e) => {
+              e.preventDefault();
+              onSelectItem(e);
+              setCardModalOpen(false);
+            }}
+          />
+        </View>
+      ) : type === 'date' ? (
         <View className=' items-center mt-2 h-fit rounded-md bg-slate-200'>
           <DateTimePicker
-            value={new Date()}
+            value={
+              defaultValue?.date ? new Date(defaultValue.date) : new Date()
+            }
             onValueChange={(event, selectedDate) => {
               if (selectedDate) {
                 onSelectItem(selectedDate);
@@ -55,7 +87,7 @@ const SelectModal = ({
         </View>
       ) : (
         <CardSelectList
-          type={type === 'category' ? 'expense' : 'income'}
+          type={transactionType}
           data={returnArray()}
           placeholder={`Search ${type === 'category' ? 'categories' : 'wallets'}...`}
           onSelect={(item) => {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Modal, Pressable, View, Text } from 'react-native';
+import { Modal, Pressable, Text, View } from 'react-native';
 import SafeScreen from './SafeScreen';
 
 type BaseModalProps = {
@@ -15,6 +15,9 @@ export default function BaseModal({
   title,
   children,
 }: BaseModalProps) {
+  if (!visible) {
+    return null; // Không render gì nếu modal không mở
+  }
   return (
     <SafeScreen>
       <Modal

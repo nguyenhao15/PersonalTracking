@@ -1,5 +1,5 @@
 import { Type } from 'class-transformer';
-import { IsDate, IsInt, IsString } from 'class-validator';
+import { IsBoolean, IsDate, IsInt, IsString } from 'class-validator';
 import { CategoryType } from '../../categories/dto/category-type.enum';
 
 export class CreateTransactionDto {
@@ -32,4 +32,7 @@ export class CreateTransactionDto {
     message: 'Transaction type must be a string',
   })
   transactionType: CategoryType;
+
+  @IsBoolean()
+  excludedFromReports: boolean;
 }
