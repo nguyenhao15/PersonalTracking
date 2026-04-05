@@ -1,7 +1,7 @@
 import { getCategoryActions } from '@/actions/categoryActions';
 import { useQuery } from '@tanstack/react-query';
 
-export const useGetCategories = (type: 'EXPENSE' | 'INCOME', options = {}) => {
+export const useGetCategories = (type: 'expense' | 'income', options = {}) => {
   return useQuery({
     queryKey: ['categories', type],
     queryFn: async () => {

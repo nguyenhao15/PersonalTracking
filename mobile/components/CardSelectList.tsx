@@ -11,7 +11,7 @@ interface CardSelectListProps {
   onSelect: (category: string) => void;
   data: any[];
   placeholder: string;
-  type: 'EXPENSE' | 'INCOME';
+  type: 'expense' | 'income';
   isLoading?: boolean;
   error?: any;
 }
@@ -28,12 +28,10 @@ const CardSelectList = ({
   const [searchQuery, setSearchQuery] = useState('');
 
   const filteredCategories = data
-    ? data.filter((category: any) =>
-        category.name.toLowerCase().includes(searchQuery.toLowerCase()),
+    ? data.filter((items: any) =>
+        items.titleField.toLowerCase().includes(searchQuery.toLowerCase()),
       )
     : [];
-
-  console.log(error?.response?.data?.message);
 
   return (
     <View className='p-4 h-full items-center justify-center'>
@@ -60,8 +58,8 @@ const CardSelectList = ({
               <CategoryCard
                 key={item?.id}
                 item={item}
-                title={item?.name}
-                description={item?.description || ''}
+                title={item?.titleField || item?.name || ''}
+                description={item?.descriptionField || ''}
                 onPress={() => onSelect(item)}
                 isSelected={selectedCategory === item?.id}
               />

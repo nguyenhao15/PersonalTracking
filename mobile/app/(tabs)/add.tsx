@@ -51,15 +51,16 @@ const add = ({ initial }: { initial?: TransactionInput }) => {
     'walletId',
   ]);
 
-  const handleOnSelectCategory = (category: any) => {
-    setValue('categoryId', category.id);
-    setLabelObject((prev) => ({ ...prev, category: category.name }));
-    setCardModalOpen(false);
-  };
-
-  const handleOnSelectWallet = (wallet: any) => {
-    setValue('walletId', wallet.id);
-    setLabelObject((prev) => ({ ...prev, wallet: wallet.name }));
+  const handleOnSelectItem = (item: any) => {
+    if (modalTitle.includes('category')) {
+      setValue('categoryId', item.id);
+      setLabelObject((prev) => ({ ...prev, category: item.name }));
+    } else if (modalTitle.includes('wallet')) {
+      setValue('walletId', item.id);
+      setLabelObject((prev) => ({ ...prev, wallet: item.walletName }));
+    } else if (modalTitle.includes('date')) {
+      setValue('date', item);
+    }
     setCardModalOpen(false);
   };
 
@@ -113,7 +114,9 @@ const add = ({ initial }: { initial?: TransactionInput }) => {
 
             <PressableCardComponent
               title='Wallet'
-              value={walletId ? walletId.name : undefined}
+              value={
+                labelObject.wallet || (walletId ? walletId.name : undefined)
+              }
               error={errors.walletId?.message}
               iconName='wallet'
               onPress={() => handleOpenCardModal('Choose wallet')}
@@ -142,6 +145,7 @@ const add = ({ initial }: { initial?: TransactionInput }) => {
       <SelectModal
         modalTitle={modalTitle}
         isCardModalOpen={isCardModalOpen}
+        onSelectItem={handleOnSelectItem}
         setCardModalOpen={setCardModalOpen}
         type={
           modalTitle.includes('category')

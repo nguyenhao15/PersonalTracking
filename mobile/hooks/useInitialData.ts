@@ -7,6 +7,7 @@ export const useInitialData = () => {
     isLoading: isLoadingTransactions,
     error: transactionsError,
   } = useGetTransactions();
+
   const {
     data: wallet,
     isLoading: isLoadingWallet,
