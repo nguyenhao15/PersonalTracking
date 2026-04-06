@@ -1,4 +1,5 @@
 import { useGetWallets } from '@/hooks/useWallets';
+import { formatPrice } from '@/utils/formatValue';
 import React, { useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
 import BaseModal from './BaseModal';
@@ -9,12 +10,14 @@ interface WalletSelectComponentProps {
   onSelectWallet: (wallet: any) => void;
   initialWallet: any;
   resetAction?: () => void;
+  errorMessage?: string;
 }
 
 const WalletSelectComponent = ({
   onSelectWallet,
   initialWallet,
   resetAction,
+  errorMessage,
 }: WalletSelectComponentProps) => {
   const [openModal, setOpenModal] = useState(false);
   const [selectedWallet, setSelectedWallet] = useState<any>(null);
@@ -25,7 +28,7 @@ const WalletSelectComponent = ({
     return data.map((wallet: any) => ({
       id: wallet.id,
       titleField: wallet.walletName,
-      descriptionField: `Balance: ${wallet.balance}`,
+      descriptionField: `Balance: ${formatPrice(wallet.balance)}`,
     }));
   };
 
@@ -47,7 +50,7 @@ const WalletSelectComponent = ({
 
   const handleSelectWallet = (wallet: any) => {
     setSelectedWallet(wallet);
-    onSelectWallet && onSelectWallet(wallet);
+    onSelectWallet && onSelectWallet(wallet.id);
     setOpenModal(false);
   };
 
@@ -59,6 +62,7 @@ const WalletSelectComponent = ({
         iconName='wallet'
         label='Wallet'
         isRequired={true}
+        errorMessage={errorMessage}
         onPress={() => setOpenModal(true)}
       >
         <Text
@@ -72,7 +76,7 @@ const WalletSelectComponent = ({
           data={formatWallets()}
           isLoading={isLoading}
           error={error}
-          selectedCategory={selectedWallet}
+          selectedCategory={selectedWallet?.id}
           placeholder='Select a wallet...'
           onSelect={handleSelectWallet}
         />

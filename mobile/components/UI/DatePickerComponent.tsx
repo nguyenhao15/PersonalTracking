@@ -61,14 +61,16 @@ const DatePickerComponent = ({
         </Text>
       </LabelContainer>
       <BaseModal visible={openModal} onClose={() => setOpenModal(false)}>
-        <DateTimePicker
-          display='inline'
-          mode='date'
-          value={selectedDate}
-          onValueChange={(event, date) =>
-            handleOnChangeAction(date || selectedDate)
-          }
-        />
+        <View className='bg-white rounded-lg p-4 items-center justify-center '>
+          <DateTimePicker
+            display='inline'
+            mode='date'
+            value={selectedDate}
+            onValueChange={(event, date) =>
+              handleOnChangeAction(date || selectedDate)
+            }
+          />
+        </View>
       </BaseModal>
     </View>
   );

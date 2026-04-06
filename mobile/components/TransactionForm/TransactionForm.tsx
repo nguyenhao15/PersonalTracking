@@ -6,16 +6,11 @@ import {
 import { zodResolver } from '@hookform/resolvers/zod';
 import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import {
-  ScrollView,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 
 import InputWithModalComponent from '../InputWithModalComponent';
 import TagSelectComponent from '../TagSelectComponent';
+import AmountInputComponent from '../UI/AmountInputComponent';
 import CategorySelectComponent from '../UI/CategorySelectComponent';
 import DatePickerComponent from '../UI/DatePickerComponent';
 import LabelContainer from '../UI/LabelContainer';
@@ -67,9 +62,11 @@ const TransactionForm = ({ type }: { type: 'expense' | 'income' }) => {
     setCardModalOpen(true);
   };
 
-  const onSubmit = async (data: TransactionInput) => {
+  const onSubmit: React.Dispatch<
+    React.SetStateAction<TransactionInput>
+  > = async (data) => {
     const finalData = {
-      ...data,
+      ...(data as TransactionInput),
       transactionType: type,
     };
 
@@ -88,55 +85,58 @@ const TransactionForm = ({ type }: { type: 'expense' | 'income' }) => {
   return (
     <ScrollView className='p-4 gap-4'>
       <View className='gap-4 mb-2'>
-        <View className='mb-10 gap-4 h-32 items-center justify-between'>
-          <TouchableOpacity
-            onPress={() => handleOpenCardModal('Choose currency')}
-            className='self-start items-center justify-center mx-auto mb-1 px-3 py-2 bg-gray-200 rounded-md'
-          >
-            <Text className='font-bold'>VND</Text>
-          </TouchableOpacity>
-          <Controller
-            control={control}
-            name='amount'
-            render={({ field: { onChange, onBlur, value } }) => (
-              <TextInput
-                style={{
-                  width: '100%',
-                  fontSize: 30,
-                  textAlign: 'center',
-                  padding: 20,
-                  borderBottomWidth: 1,
-                  borderColor: '#ccc',
-                  marginBottom: 10,
-                }}
-                keyboardType='numeric'
-                placeholder='0'
-                onChangeText={onChange}
-                onBlur={onBlur}
-              />
-            )}
-          />
-        </View>
-
-        <DatePickerComponent
-          label='Date'
-          iconName='calendar'
-          iconColor='black'
-          placeholder='Select a date...'
-          onChangeAction={(date) => setValue('date', date)}
-          initialValue={watch('date')}
+        <Controller
+          control={control}
+          name='amount'
+          render={({ field: { onChange, onBlur, value } }) => (
+            <AmountInputComponent
+              value={value ? String(value) : ''}
+              onChange={onChange}
+              onBlur={onBlur}
+              errorMessage={errors.amount?.message}
+            />
+          )}
         />
 
-        <WalletSelectComponent
-          initialWallet={watch('walletId')}
-          onSelectWallet={(wallet) => setValue('walletId', wallet.id)}
-          resetAction={reset}
+        <Controller
+          control={control}
+          name='date'
+          render={({ field: { onChange, onBlur, value } }) => (
+            <DatePickerComponent
+              label='Date'
+              iconName='calendar'
+              iconColor='black'
+              placeholder='Select a date...'
+              onChangeAction={onChange}
+              initialValue={value}
+            />
+          )}
         />
-        <CategorySelectComponent
-          transactionType={type}
-          initialCategory={watch('categoryId')}
-          resetActions={reset}
-          onSelectCategory={(category) => setValue('categoryId', category.id)}
+
+        <Controller
+          control={control}
+          name='walletId'
+          render={({ field: { onChange, onBlur, value } }) => (
+            <WalletSelectComponent
+              initialWallet={value}
+              onSelectWallet={onChange}
+              resetAction={reset}
+            />
+          )}
+        />
+
+        <Controller
+          control={control}
+          name='categoryId'
+          render={({ field: { onChange, onBlur, value } }) => (
+            <CategorySelectComponent
+              transactionType={type}
+              initialCategory={value}
+              resetActions={reset}
+              onSelectCategory={onChange}
+
+            />
+          )}
         />
         <InputWithModalComponent
           label='Description'
@@ -148,10 +148,16 @@ const TransactionForm = ({ type }: { type: 'expense' | 'income' }) => {
           onResetAction={reset}
         />
         {type === 'expense' && (
-          <TagSelectComponent
-            onChangeTag={(tag) => setValue('tag', tag)}
-            initialTag={watch('tag')}
-            onResetAction={reset}
+          <Controller
+            control={control}
+            name='tag'
+            render={({ field: { onChange, onBlur, value } }) => (
+              <TagSelectComponent
+                onChangeTag={onChange}
+                initialTag={value}
+                onResetAction={reset}
+              />
+            )}
           />
         )}
         <LabelContainer
@@ -160,6 +166,7 @@ const TransactionForm = ({ type }: { type: 'expense' | 'income' }) => {
           direction='column'
           label='Excluded Report'
           isRequired={true}
+          errorMessage={errors.excludedFromReports?.message}
         >
           <SwitchControl
             isLabelVisible={false}

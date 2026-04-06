@@ -2,13 +2,17 @@ import React, { useState } from 'react';
 import { Text, TextInput, TouchableOpacity, View } from 'react-native';
 
 interface AmountInputComponentProps {
+  value?: string | number;
   onChange: (text: string) => void;
   onBlur: () => void;
+  errorMessage?: string;
 }
 
 const AmountInputComponent = ({
+  value,
   onChange,
   onBlur,
+  errorMessage,
 }: AmountInputComponentProps) => {
   const [isCardModalOpen, setCardModalOpen] = useState(false);
 
@@ -32,7 +36,7 @@ const AmountInputComponent = ({
           textAlign: 'center',
           padding: 20,
           borderBottomWidth: 1,
-          borderColor: '#ccc',
+          borderColor: errorMessage ? '#ef4444' : '#ccc',
           marginBottom: 10,
         }}
         keyboardType='numeric'

@@ -10,6 +10,7 @@ interface CategorySelectComponentProps {
   onSelectCategory: (category: any) => void;
   initialCategory: any;
   resetActions?: () => void;
+  errorMessage?: string;
 }
 
 const CategorySelectComponent = ({
@@ -17,6 +18,7 @@ const CategorySelectComponent = ({
   onSelectCategory,
   initialCategory,
   resetActions,
+  errorMessage,
 }: CategorySelectComponentProps) => {
   const [selectedCategory, setSelectedCategory] = useState<any>(null);
   const [openModal, setOpenModal] = useState(false);
@@ -51,7 +53,7 @@ const CategorySelectComponent = ({
 
   const handleSelectCategory = (category: any) => {
     setSelectedCategory(category);
-    onSelectCategory && onSelectCategory(category);
+    onSelectCategory && onSelectCategory(category.id);
     setOpenModal(false);
   };
 
@@ -63,6 +65,7 @@ const CategorySelectComponent = ({
         iconName='pricetag'
         label='Category'
         isRequired={true}
+        errorMessage={errorMessage}
         onPress={() => setOpenModal(true)}
       >
         <Text
@@ -78,7 +81,7 @@ const CategorySelectComponent = ({
           data={formatCategories()}
           isLoading={isLoading}
           error={error}
-          selectedCategory={selectedCategory}
+          selectedCategory={selectedCategory?.id}
           placeholder='Select a category...'
           onSelect={handleSelectCategory}
         />
