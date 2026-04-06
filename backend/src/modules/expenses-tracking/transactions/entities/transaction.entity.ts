@@ -39,9 +39,9 @@ export class Transaction extends BaseAuditEntity {
   @Column({
     enum: TagEnum,
     type: 'enum',
-    default: TagEnum.NC,
+    default: TagEnum.NN,
   })
-  tag: string;
+  tag: TagEnum;
 
   @Column({
     enum: CategoryType,

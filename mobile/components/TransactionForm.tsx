@@ -15,6 +15,7 @@ import {
 } from 'react-native';
 import CategorySelectComponent from './CategorySelectComponent';
 import InputWithModalComponent from './InputWithModalComponent';
+import TagSelectComponent from './TagSelectComponent';
 import LabelContainer from './UI/LabelContainer';
 import PressableCardComponent from './UI/PressableCardComponent';
 import SwitchControl from './UI/SwitchControl';
@@ -25,7 +26,11 @@ const TransactionForm = ({ type }: { type: 'expense' | 'income' }) => {
   const [labelObject, setLabelObject] = useState<{ [key: string]: string }>({});
   const [modalTitle, setModalTitle] = useState('');
 
-  const { mutateAsync, isPending, error } = useCreateTransaction();
+  const {
+    mutateAsync,
+    isPending,
+    error: errorFromApi,
+  } = useCreateTransaction();
   const methods = useForm<TransactionInput>({
     mode: 'onBlur',
     resolver: zodResolver(transactionSchema),
@@ -61,8 +66,6 @@ const TransactionForm = ({ type }: { type: 'expense' | 'income' }) => {
   };
 
   const onSubmit = async (data: TransactionInput) => {
-    console.log('Data: ', data);
-
     const finalData = {
       ...data,
       transactionType: type,
@@ -72,7 +75,11 @@ const TransactionForm = ({ type }: { type: 'expense' | 'income' }) => {
       await mutateAsync(finalData);
       reset();
     } catch (error) {
-      console.log(error);
+      console.log(
+        errorFromApi?.response?.data?.message ||
+          errorFromApi?.message ||
+          'An error occurred',
+      );
     }
   };
 
@@ -120,10 +127,12 @@ const TransactionForm = ({ type }: { type: 'expense' | 'income' }) => {
         <WalletSelectComponent
           initialWallet={watch('walletId')}
           onSelectWallet={(wallet) => setValue('walletId', wallet.id)}
+          resetAction={reset}
         />
         <CategorySelectComponent
           transactionType={type}
           initialCategory={watch('categoryId')}
+          resetActions={reset}
           onSelectCategory={(category) => setValue('categoryId', category.id)}
         />
         <InputWithModalComponent
@@ -133,6 +142,10 @@ const TransactionForm = ({ type }: { type: 'expense' | 'income' }) => {
           placeholder='Enter description...'
           onChangeAction={(text) => setValue('description', text)}
           initialValue={watch('description') || ''}
+        />
+        <TagSelectComponent
+          onChangeTag={(tag) => setValue('tag', tag)}
+          initialTag={watch('tag')}
         />
         <LabelContainer
           isHasIcon={false}

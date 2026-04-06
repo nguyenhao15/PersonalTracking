@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-const tagEnum = z.enum(['NTH', 'MUST', 'NC']);
+const tagEnum = z.enum(['nice-to-have', 'must-have', 'not-necessary']);
 
 const coerceNumber = (schema: z.ZodNumber) =>
   z

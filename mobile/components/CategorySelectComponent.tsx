@@ -9,12 +9,14 @@ interface CategorySelectComponentProps {
   transactionType: 'expense' | 'income';
   onSelectCategory: (category: any) => void;
   initialCategory: any;
+  resetActions?: () => void;
 }
 
 const CategorySelectComponent = ({
   transactionType,
   onSelectCategory,
   initialCategory,
+  resetActions,
 }: CategorySelectComponentProps) => {
   const [selectedCategory, setSelectedCategory] = useState<any>(null);
   const [openModal, setOpenModal] = useState(false);
@@ -23,9 +25,9 @@ const CategorySelectComponent = ({
   const formatCategories = () => {
     if (!data) return [];
     return data.map((category: any) => ({
-      id: category.id,
       titleField: category.name,
       descriptionField: `Description: ${category.description}`,
+      ...category,
     }));
   };
 
@@ -33,13 +35,19 @@ const CategorySelectComponent = ({
     if (initialCategory) {
       const formattedCategories = formatCategories();
       const foundCategory = formattedCategories.find(
-        (category: any) => category.id === initialCategory.id,
+        (category: any) => category.id === initialCategory,
       );
       if (foundCategory) {
         setSelectedCategory(foundCategory);
+      } else {
+        setSelectedCategory(null);
       }
     }
   }, [initialCategory, data]);
+
+  useEffect(() => {
+    setSelectedCategory(null);
+  }, [resetActions]);
 
   const handleSelectCategory = (category: any) => {
     setSelectedCategory(category);

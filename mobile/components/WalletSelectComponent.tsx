@@ -8,11 +8,13 @@ import LabelContainer from './UI/LabelContainer';
 interface WalletSelectComponentProps {
   onSelectWallet: (wallet: any) => void;
   initialWallet: any;
+  resetAction?: () => void;
 }
 
 const WalletSelectComponent = ({
   onSelectWallet,
   initialWallet,
+  resetAction,
 }: WalletSelectComponentProps) => {
   const [openModal, setOpenModal] = useState(false);
   const [selectedWallet, setSelectedWallet] = useState<any>(null);
@@ -28,16 +30,20 @@ const WalletSelectComponent = ({
   };
 
   useEffect(() => {
-    if (initialWallet) {
-      const formattedWallets = formatWallets();
-      const foundWallet = formattedWallets.find(
-        (wallet: any) => wallet.id === initialWallet.id,
-      );
-      if (foundWallet) {
-        setSelectedWallet(foundWallet);
-      }
+    const formattedWallets = formatWallets();
+    const foundWallet = formattedWallets.find(
+      (wallet: any) => wallet.id === initialWallet,
+    );
+    if (foundWallet) {
+      setSelectedWallet(foundWallet);
+    } else {
+      setSelectedWallet(null);
     }
   }, [initialWallet]);
+
+  useEffect(() => {
+    setSelectedWallet(null);
+  }, [resetAction]);
 
   const handleSelectWallet = (wallet: any) => {
     setSelectedWallet(wallet);
