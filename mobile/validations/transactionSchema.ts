@@ -1,5 +1,7 @@
 import { z } from 'zod';
 
+const tagEnum = z.enum(['NTH', 'MUST', 'NC']);
+
 const coerceNumber = (schema: z.ZodNumber) =>
   z
     .preprocess((val) => {
@@ -29,8 +31,9 @@ export const transactionSchema = z.object({
       message: 'Category is required',
     }),
   ),
+  tag: tagEnum,
   description: z.string().optional(),
-  excludeReport: z.boolean().optional().default(false),
+  excludedFromReports: z.boolean().optional().default(false),
 });
 
 export type TransactionInput = z.infer<typeof transactionSchema>;

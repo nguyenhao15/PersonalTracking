@@ -1,4 +1,4 @@
-import { useGetTransactions } from './useExpenses';
+import { useGetTransactions } from './useTransaction';
 import { useGetWalletBalance, useGetWallets } from './useWallets';
 
 export const useInitialData = () => {

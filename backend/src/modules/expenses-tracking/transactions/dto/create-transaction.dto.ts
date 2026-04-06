@@ -1,6 +1,7 @@
 import { Type } from 'class-transformer';
 import { IsBoolean, IsDate, IsInt, IsString } from 'class-validator';
 import { CategoryType } from '../../categories/dto/category-type.enum';
+import { TagEnum } from '../../utils/app.const';
 
 export class CreateTransactionDto {
   @IsInt({
@@ -26,7 +27,7 @@ export class CreateTransactionDto {
   @IsString({
     message: 'Tag must be a string',
   })
-  tag: string;
+  tag: TagEnum;
 
   @IsString({
     message: 'Transaction type must be a string',

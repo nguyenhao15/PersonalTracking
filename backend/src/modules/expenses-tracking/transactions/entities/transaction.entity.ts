@@ -3,6 +3,7 @@ import { Column, Entity, Index, JoinColumn, ManyToOne } from 'typeorm';
 import { Wallet } from '../../wallet/entities/wallet.entity';
 import { Category } from '../../categories/entities/category.entity';
 import { CategoryType } from '../../categories/dto/category-type.enum';
+import { TagEnum } from '../../utils/app.const';
 
 @Entity()
 export class Transaction extends BaseAuditEntity {
@@ -35,7 +36,11 @@ export class Transaction extends BaseAuditEntity {
   @JoinColumn({ name: 'walletId' })
   wallet: Wallet;
 
-  @Column()
+  @Column({
+    enum: TagEnum,
+    type: 'enum',
+    default: TagEnum.NC,
+  })
   tag: string;
 
   @Column({

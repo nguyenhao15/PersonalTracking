@@ -1,3 +1,4 @@
+import { useCreateTransaction } from '@/hooks/useTransaction';
 import {
   TransactionInput,
   transactionSchema,
@@ -14,7 +15,6 @@ import {
 } from 'react-native';
 import CategorySelectComponent from './CategorySelectComponent';
 import InputWithModalComponent from './InputWithModalComponent';
-import SelectModal from './SelectModal';
 import LabelContainer from './UI/LabelContainer';
 import PressableCardComponent from './UI/PressableCardComponent';
 import SwitchControl from './UI/SwitchControl';
@@ -24,6 +24,8 @@ const TransactionForm = ({ type }: { type: 'expense' | 'income' }) => {
   const [isCardModalOpen, setCardModalOpen] = useState(false);
   const [labelObject, setLabelObject] = useState<{ [key: string]: string }>({});
   const [modalTitle, setModalTitle] = useState('');
+
+  const { mutateAsync, isPending, error } = useCreateTransaction();
   const methods = useForm<TransactionInput>({
     mode: 'onBlur',
     resolver: zodResolver(transactionSchema),
@@ -33,7 +35,7 @@ const TransactionForm = ({ type }: { type: 'expense' | 'income' }) => {
       description: '',
       categoryId: 0,
       walletId: 0,
-      excludeReport: false,
+      excludedFromReports: false,
     },
   });
 
@@ -47,30 +49,31 @@ const TransactionForm = ({ type }: { type: 'expense' | 'income' }) => {
     formState: { errors },
   } = methods;
 
-  const [excludeReport, date, description] = watch([
-    'excludeReport',
+  const [excludedFromReports, date, description] = watch([
+    'excludedFromReports',
     'date',
     'description',
   ]);
 
-  const handleOnSelectItem = (item: any) => {
-    if (modalTitle.includes('category')) {
-      setValue('categoryId', item.id);
-      setLabelObject((prev) => ({ ...prev, category: item.name }));
-    } else if (modalTitle.includes('wallet')) {
-      setValue('walletId', item.id);
-      setLabelObject((prev) => ({ ...prev, wallet: item.walletName }));
-    } else if (modalTitle.includes('date')) {
-      setValue('date', item);
-    } else if (modalTitle.includes('description')) {
-      setValue('description', item.nativeEvent.text);
-    }
-    setCardModalOpen(false);
-  };
-
   const handleOpenCardModal = (title: string) => {
     setModalTitle(title);
     setCardModalOpen(true);
+  };
+
+  const onSubmit = async (data: TransactionInput) => {
+    console.log('Data: ', data);
+
+    const finalData = {
+      ...data,
+      transactionType: type,
+    };
+
+    try {
+      await mutateAsync(finalData);
+      reset();
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -140,16 +143,14 @@ const TransactionForm = ({ type }: { type: 'expense' | 'income' }) => {
         >
           <SwitchControl
             isLabelVisible={false}
-            label={excludeReport ? 'Yes' : 'No'}
-            onChangeAction={(value) => setValue('excludeReport', value)}
-            defaultValue={excludeReport}
+            label={excludedFromReports ? 'Yes' : 'No'}
+            onChangeAction={(value) => setValue('excludedFromReports', value)}
+            defaultValue={excludedFromReports}
           />
         </LabelContainer>
 
         <TouchableOpacity
-          onPress={handleSubmit((data) => {
-            console.log('Form data: ', data);
-          })}
+          onPress={handleSubmit(onSubmit)}
           style={
             type === 'expense'
               ? { backgroundColor: '#ef4444' }
@@ -162,24 +163,6 @@ const TransactionForm = ({ type }: { type: 'expense' | 'income' }) => {
           </Text>
         </TouchableOpacity>
       </View>
-
-      <SelectModal
-        defaultValue={getValues()}
-        modalTitle={modalTitle}
-        isCardModalOpen={isCardModalOpen}
-        onSelectItem={handleOnSelectItem}
-        setCardModalOpen={setCardModalOpen}
-        transactionType={type}
-        type={
-          modalTitle.includes('category')
-            ? 'category'
-            : modalTitle.includes('wallet')
-              ? 'wallet'
-              : modalTitle.includes('date')
-                ? 'date'
-                : 'description'
-        }
-      />
     </ScrollView>
   );
 };
