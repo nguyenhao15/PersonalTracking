@@ -20,7 +20,6 @@ export class TransactionsService {
   ) {}
 
   async create(createTransactionDto: CreateTransactionDto) {
-    log('Creating transaction with data:', createTransactionDto);
     const wallet = await this.walletService.findOne(
       createTransactionDto.walletId,
     );

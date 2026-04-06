@@ -41,6 +41,7 @@ const TransactionForm = ({ type }: { type: 'expense' | 'income' }) => {
       categoryId: 0,
       walletId: 0,
       excludedFromReports: false,
+      tag: 'nice-to-have',
     },
   });
 
@@ -142,11 +143,15 @@ const TransactionForm = ({ type }: { type: 'expense' | 'income' }) => {
           placeholder='Enter description...'
           onChangeAction={(text) => setValue('description', text)}
           initialValue={watch('description') || ''}
+          onResetAction={reset}
         />
-        <TagSelectComponent
-          onChangeTag={(tag) => setValue('tag', tag)}
-          initialTag={watch('tag')}
-        />
+        {type === 'expense' && (
+          <TagSelectComponent
+            onChangeTag={(tag) => setValue('tag', tag)}
+            initialTag={watch('tag')}
+            onResetAction={reset}
+          />
+        )}
         <LabelContainer
           isHasIcon={false}
           iconColor='black'

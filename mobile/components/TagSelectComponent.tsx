@@ -10,23 +10,39 @@ const tagEnum = [
 
 interface TagSelectComponentProps {
   onChangeTag: (tag: string) => void;
-  initialTag: string;
+  initialTag: 'nice-to-have' | 'must-have' | 'not-necessary' | '';
+  onResetAction?: () => void;
 }
 
 const TagSelectComponent = ({
   onChangeTag,
   initialTag,
+  onResetAction,
 }: TagSelectComponentProps) => {
-  const [selectedTag, setSelectedTag] = useState<string>('');
+  const [selectedTag, setSelectedTag] = useState('');
 
-  const handleTagPress = (tag: string) => {
+  const handleTagPress = (tag: any) => {
     setSelectedTag(tag);
     onChangeTag && onChangeTag(tag);
   };
 
+  console.log('Initial Tag: ', initialTag);
+
+  useEffect(() => {
+    if (onResetAction) {
+      onResetAction();
+      setSelectedTag('');
+    }
+  }, [onResetAction]);
+
   useEffect(() => {
     const selected = tagEnum.find((tag) => tag.value === initialTag);
-    setSelectedTag(selected ? selected.value : '');
+
+    if (selected) {
+      setSelectedTag(selected.value);
+    } else {
+      setSelectedTag('');
+    }
   }, [initialTag]);
 
   return (
@@ -42,14 +58,14 @@ const TagSelectComponent = ({
         {tagEnum.map((tag) => (
           <View
             key={tag.value}
-            className={`px-3 rounded bg-white-100 py-2 border flex items-center justify-center ${
+            className={`px-3 rounded bg-white-100 py-4 border-2 flex items-center justify-center ${
               selectedTag === tag.value
                 ? 'border-yellow-500'
                 : 'border-gray-300'
             }`}
             onTouchEnd={() => handleTagPress(tag.value)}
           >
-            <Text className='text-sm text-slate-900 font-bold'>
+            <Text className='text-md text-slate-900 font-bold'>
               {tag.label}
             </Text>
           </View>
