@@ -1,6 +1,5 @@
 import React from 'react';
 import { Modal, Pressable, Text, View } from 'react-native';
-import SafeScreen from './SafeScreen';
 
 type BaseModalProps = {
   visible: boolean;
@@ -19,38 +18,34 @@ export default function BaseModal({
     return null; // Không render gì nếu modal không mở
   }
   return (
-    <SafeScreen>
-      <Modal
-        visible={visible}
-        transparent
-        className='item-start'
-        animationType='slide'
-        onRequestClose={onClose}
+    <Modal
+      visible={visible}
+      transparent
+      className='item-start'
+      animationType='slide'
+      onRequestClose={onClose}
+    >
+      <Pressable
+        className='justify-start'
+        style={{
+          flex: 1,
+          backgroundColor: 'rgba(0,0,0,0.4)',
+        }}
+        onPress={onClose}
+      />
+      <View
+        style={{
+          height: '90%',
+          backgroundColor: 'white',
+          padding: 16,
+          flexShrink: 1,
+        }}
       >
-        <Pressable
-          className='justify-start'
-          style={{
-            flex: 1,
-            backgroundColor: 'rgba(0,0,0,0.4)',
-          }}
-          onPress={onClose}
-        />
-        <View
-          style={{
-            height: '90%',
-            backgroundColor: 'white',
-            borderTopLeftRadius: 16,
-            borderTopRightRadius: 16,
-            padding: 16,
-            flexShrink: 1,
-          }}
-        >
-          {!!title && (
-            <Text style={{ fontWeight: '700', fontSize: 16 }}>{title}</Text>
-          )}
-          {children}
-        </View>
-      </Modal>
-    </SafeScreen>
+        {!!title && (
+          <Text style={{ fontWeight: '700', fontSize: 16 }}>{title}</Text>
+        )}
+        {children}
+      </View>
+    </Modal>
   );
 }

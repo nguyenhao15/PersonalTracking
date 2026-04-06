@@ -1,17 +1,14 @@
-import { useGetCategories } from '@/hooks/useCategory';
 import React, { useState } from 'react';
 import { FlatList, Text, TextInput, View } from 'react-native';
-import LoadingPage from './LoadingPage';
-import ErrorPage from './ErrorPage';
 import CategoryCard from './Category/ItemCard';
-import { useInitialForForm } from '@/hooks/useInitialForForm';
+import ErrorPage from './ErrorPage';
+import LoadingPage from './LoadingPage';
 
 interface CardSelectListProps {
   selectedCategory?: any;
   onSelect: (category: string) => void;
   data: any[];
   placeholder: string;
-  type: 'expense' | 'income';
   isLoading?: boolean;
   error?: any;
 }
@@ -21,7 +18,6 @@ const CardSelectList = ({
   onSelect,
   data,
   placeholder,
-  type,
   isLoading,
   error,
 }: CardSelectListProps) => {

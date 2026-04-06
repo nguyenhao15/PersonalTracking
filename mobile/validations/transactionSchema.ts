@@ -1,4 +1,4 @@
-import { any, number, object, z } from 'zod';
+import { z } from 'zod';
 
 const coerceNumber = (schema: z.ZodNumber) =>
   z
@@ -30,6 +30,7 @@ export const transactionSchema = z.object({
     }),
   ),
   description: z.string().optional(),
+  excludeReport: z.boolean().optional().default(false),
 });
 
 export type TransactionInput = z.infer<typeof transactionSchema>;

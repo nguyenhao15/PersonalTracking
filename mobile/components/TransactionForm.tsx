@@ -5,9 +5,20 @@ import {
 import { zodResolver } from '@hookform/resolvers/zod';
 import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { Text, TextInput, TouchableOpacity, View } from 'react-native';
+import {
+  ScrollView,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import CategorySelectComponent from './CategorySelectComponent';
+import InputWithModalComponent from './InputWithModalComponent';
 import SelectModal from './SelectModal';
+import LabelContainer from './UI/LabelContainer';
 import PressableCardComponent from './UI/PressableCardComponent';
+import SwitchControl from './UI/SwitchControl';
+import WalletSelectComponent from './WalletSelectComponent';
 
 const TransactionForm = ({ type }: { type: 'expense' | 'income' }) => {
   const [isCardModalOpen, setCardModalOpen] = useState(false);
@@ -20,8 +31,9 @@ const TransactionForm = ({ type }: { type: 'expense' | 'income' }) => {
       amount: 0,
       date: new Date(),
       description: '',
-      categoryId: undefined,
-      walletId: undefined,
+      categoryId: 0,
+      walletId: 0,
+      excludeReport: false,
     },
   });
 
@@ -35,7 +47,11 @@ const TransactionForm = ({ type }: { type: 'expense' | 'income' }) => {
     formState: { errors },
   } = methods;
 
-  const [date, description] = watch(['date', 'description']);
+  const [excludeReport, date, description] = watch([
+    'excludeReport',
+    'date',
+    'description',
+  ]);
 
   const handleOnSelectItem = (item: any) => {
     if (modalTitle.includes('category')) {
@@ -58,7 +74,7 @@ const TransactionForm = ({ type }: { type: 'expense' | 'income' }) => {
   };
 
   return (
-    <View className='p-4 gap-4'>
+    <ScrollView className='p-4 gap-4'>
       <View className='gap-4 mb-2'>
         <View className='mb-10 gap-4 h-32 items-center justify-between'>
           <TouchableOpacity
@@ -98,27 +114,37 @@ const TransactionForm = ({ type }: { type: 'expense' | 'income' }) => {
           onPress={() => handleOpenCardModal('Choose date')}
         />
 
-        <PressableCardComponent
-          title='Wallet'
-          value={labelObject.wallet || ''}
-          error={errors.walletId?.message}
-          iconName='wallet'
-          onPress={() => handleOpenCardModal('Choose wallet')}
+        <WalletSelectComponent
+          initialWallet={watch('walletId')}
+          onSelectWallet={(wallet) => setValue('walletId', wallet.id)}
         />
-        <PressableCardComponent
-          title='Category'
-          value={labelObject.category || ''}
-          error={errors.categoryId?.message}
-          iconName='pricetag'
-          onPress={() => handleOpenCardModal('Choose category')}
+        <CategorySelectComponent
+          transactionType={type}
+          initialCategory={watch('categoryId')}
+          onSelectCategory={(category) => setValue('categoryId', category.id)}
         />
-        <PressableCardComponent
-          title='Description'
-          value={description || ''}
-          error={errors.description?.message}
-          iconName='document-text'
-          onPress={() => handleOpenCardModal('Choose description')}
+        <InputWithModalComponent
+          label='Description'
+          iconName='pencil'
+          iconColor='gray'
+          placeholder='Enter description...'
+          onChangeAction={(text) => setValue('description', text)}
+          initialValue={watch('description') || ''}
         />
+        <LabelContainer
+          isHasIcon={false}
+          iconColor='black'
+          direction='column'
+          label='Excluded Report'
+          isRequired={true}
+        >
+          <SwitchControl
+            isLabelVisible={false}
+            label={excludeReport ? 'Yes' : 'No'}
+            onChangeAction={(value) => setValue('excludeReport', value)}
+            defaultValue={excludeReport}
+          />
+        </LabelContainer>
 
         <TouchableOpacity
           onPress={handleSubmit((data) => {
@@ -154,7 +180,7 @@ const TransactionForm = ({ type }: { type: 'expense' | 'income' }) => {
                 : 'description'
         }
       />
-    </View>
+    </ScrollView>
   );
 };
 

@@ -14,7 +14,7 @@ const add = ({ initial }: { initial?: TransactionInput }) => {
 
   return (
     <SafeScreen>
-      <View className='p-4 my-2 bg-white rounded-lg shadow-md'>
+      <View className='p-4 my-2 max-h-[90%] bg-white rounded-lg shadow-md'>
         <TabChoices value={type} onChange={handleTabChange} />
         <TransactionForm type={type} />
       </View>
