@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Text, TextInput, View } from 'react-native';
-import BaseModal from './BaseModal';
-import LabelContainer from './UI/LabelContainer';
+import BaseModal from '../BaseModal';
+import LabelContainer from './LabelContainer';
 
 interface TextInputComponentProps {
   label: string;

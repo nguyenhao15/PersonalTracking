@@ -8,14 +8,14 @@ import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 
-import InputWithModalComponent from '../InputWithModalComponent';
-import TagSelectComponent from '../TagSelectComponent';
 import AmountInputComponent from '../UI/AmountInputComponent';
 import CategorySelectComponent from '../UI/CategorySelectComponent';
 import DatePickerComponent from '../UI/DatePickerComponent';
+import InputWithModalComponent from '../UI/InputWithModalComponent';
 import LabelContainer from '../UI/LabelContainer';
 import SwitchControl from '../UI/SwitchControl';
-import WalletSelectComponent from '../WalletSelectComponent';
+import TagSelectComponent from '../UI/TagSelectComponent';
+import WalletSelectComponent from '../UI/WalletSelectComponent';
 
 const TransactionForm = ({ type }: { type: 'expense' | 'income' }) => {
   const [isCardModalOpen, setCardModalOpen] = useState(false);
@@ -134,7 +134,6 @@ const TransactionForm = ({ type }: { type: 'expense' | 'income' }) => {
               initialCategory={value}
               resetActions={reset}
               onSelectCategory={onChange}
-
             />
           )}
         />

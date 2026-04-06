@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
-import LabelContainer from './UI/LabelContainer';
+import LabelContainer from './LabelContainer';
 
 const tagEnum = [
   { value: 'nice-to-have', label: 'Nice to have' },

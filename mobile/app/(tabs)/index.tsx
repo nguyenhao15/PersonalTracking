@@ -3,7 +3,7 @@ import ErrorPage from '@/components/ErrorPage';
 import LoadingPage from '@/components/LoadingPage';
 import SafeScreen from '@/components/SafeScreen';
 import TransactionComponent from '@/components/TransactionComponent';
-import WalletComponent from '@/components/WalletComponent';
+import WalletComponent from '@/components/Wallet/WalletComponent';
 import { useLogOut } from '@/hooks/useAuthentication';
 import { useInitialData } from '@/hooks/useInitialData';
 import { useAuthStore } from '@/stores/AuthStores';

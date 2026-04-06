@@ -4,11 +4,11 @@ import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import z from 'zod';
-import InputWithModalComponent from './InputWithModalComponent';
 import AmountInputComponent from './UI/AmountInputComponent';
 import DatePickerComponent from './UI/DatePickerComponent';
 import InputInlineComponent from './UI/InputInlineComponent';
-import WalletSelectComponent from './WalletSelectComponent';
+import InputWithModalComponent from './UI/InputWithModalComponent';
+import WalletSelectComponent from './UI/WalletSelectComponent';
 
 type TransferFormProps = {
   onSubmitTransfer?: (data: TransferInput) => Promise<void> | void;

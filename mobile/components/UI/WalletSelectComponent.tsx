@@ -2,9 +2,9 @@ import { useGetWallets } from '@/hooks/useWallets';
 import { formatPrice } from '@/utils/formatValue';
 import React, { useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
-import BaseModal from './BaseModal';
-import CardSelectList from './CardSelectList';
-import LabelContainer from './UI/LabelContainer';
+import BaseModal from '../BaseModal';
+import CardSelectList from '../CardSelectList';
+import LabelContainer from './LabelContainer';
 
 interface WalletSelectComponentProps {
   onSelectWallet: (wallet: any) => void;
