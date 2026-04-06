@@ -1,9 +1,9 @@
 import { useGetCategories } from '@/hooks/useCategory';
 import React, { useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
-import BaseModal from './BaseModal';
-import CardSelectList from './CardSelectList';
-import LabelContainer from './UI/LabelContainer';
+import BaseModal from '../BaseModal';
+import CardSelectList from '../CardSelectList';
+import LabelContainer from './LabelContainer';
 
 interface CategorySelectComponentProps {
   transactionType: 'expense' | 'income';

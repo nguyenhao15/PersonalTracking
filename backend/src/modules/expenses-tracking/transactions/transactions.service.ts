@@ -8,7 +8,6 @@ import { WalletService } from '../wallet/wallet.service';
 import { CategoriesService } from '../categories/categories.service';
 import { QueryUtils } from 'src/common/utils/query.utils';
 import { CategoryType } from '../categories/dto/category-type.enum';
-import { log } from 'console';
 
 @Injectable()
 export class TransactionsService {

@@ -7,7 +7,7 @@ export class Transfer extends BaseAuditEntity {
 
   @Column()
   description: string;
-
+ 
   @Column()
   date: Date;
 

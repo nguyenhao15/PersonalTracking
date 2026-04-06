@@ -13,13 +13,14 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import CategorySelectComponent from './CategorySelectComponent';
-import InputWithModalComponent from './InputWithModalComponent';
-import TagSelectComponent from './TagSelectComponent';
-import LabelContainer from './UI/LabelContainer';
-import PressableCardComponent from './UI/PressableCardComponent';
-import SwitchControl from './UI/SwitchControl';
-import WalletSelectComponent from './WalletSelectComponent';
+
+import InputWithModalComponent from '../InputWithModalComponent';
+import TagSelectComponent from '../TagSelectComponent';
+import CategorySelectComponent from '../UI/CategorySelectComponent';
+import DatePickerComponent from '../UI/DatePickerComponent';
+import LabelContainer from '../UI/LabelContainer';
+import SwitchControl from '../UI/SwitchControl';
+import WalletSelectComponent from '../WalletSelectComponent';
 
 const TransactionForm = ({ type }: { type: 'expense' | 'income' }) => {
   const [isCardModalOpen, setCardModalOpen] = useState(false);
@@ -117,12 +118,13 @@ const TransactionForm = ({ type }: { type: 'expense' | 'income' }) => {
           />
         </View>
 
-        <PressableCardComponent
-          title='Date'
-          value={date ? new Date(date).toLocaleDateString() : undefined}
-          error={errors.date?.message}
+        <DatePickerComponent
+          label='Date'
           iconName='calendar'
-          onPress={() => handleOpenCardModal('Choose date')}
+          iconColor='black'
+          placeholder='Select a date...'
+          onChangeAction={(date) => setValue('date', date)}
+          initialValue={watch('date')}
         />
 
         <WalletSelectComponent

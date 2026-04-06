@@ -34,6 +34,6 @@ export const MENU_ITEMS = [
 export const TAB_ITEMS = [
   { key: 'expense', label: 'Expense' },
   { key: 'income', label: 'Income' },
-  { key: 'loan', label: 'Loan' },
   { key: 'transfer', label: 'Transfer' },
+  { key: 'loan', label: 'Loan' },
 ];
