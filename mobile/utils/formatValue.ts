@@ -1,4 +1,7 @@
-export const formatPrice = (amount: number, currency = 'VND') => {
+export const formatPrice = (
+  amount: number | string | null | undefined,
+  currency = 'VND',
+) => {
   const numberAmount = Number(amount);
   if (isNaN(numberAmount)) return 'N/A';
   return new Intl.NumberFormat('vi-VN', {

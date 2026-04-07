@@ -3,7 +3,7 @@ import { formatPrice } from '@/utils/formatValue';
 import React, { useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
 import BaseModal from '../BaseModal';
-import WalletForm from '../Wallet/WalletForm';
+import CardSelectList from '../CardSelectList';
 import LabelContainer from './LabelContainer';
 
 interface WalletSelectComponentProps {
@@ -75,7 +75,7 @@ const WalletSelectComponent = ({
         </Text>
       </LabelContainer>
       <BaseModal visible={openModal} onClose={() => setOpenModal(false)}>
-        {/* <CardSelectList
+        <CardSelectList
           data={formatWallets()}
           isLoading={isLoading}
           error={error}
@@ -88,8 +88,7 @@ const WalletSelectComponent = ({
             // Handle add new wallet behavior here
             setOpenModal(false);
           }}
-        /> */}
-        <WalletForm />
+        />
       </BaseModal>
     </View>
   );

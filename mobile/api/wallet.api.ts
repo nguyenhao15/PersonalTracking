@@ -9,5 +9,8 @@ export const walletApi = {
   getWalletBalance: () => {
     return axiosClient.get(`${WALLET_API}/user/total-balance`);
   },
-  
+
+  createWallet: (data: any) => {
+    return axiosClient.post(WALLET_API, data);
+  },
 };

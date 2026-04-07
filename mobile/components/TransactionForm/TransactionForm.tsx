@@ -91,6 +91,7 @@ const TransactionForm = ({ type }: { type: 'expense' | 'income' }) => {
       <View className='gap-4 mb-2'>
         <AmountInputComponent
           control={control}
+          currency='VND'
           name='amount'
           errorMessage={errors.amount?.message}
         />

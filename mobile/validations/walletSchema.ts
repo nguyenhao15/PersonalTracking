@@ -7,10 +7,10 @@ export interface WalletType {
 
 export const WalletTypeEnum: WalletType[] = [
   { label: 'Tiền mặt', value: 'cash' },
-  { label: 'Tài khoản ngân hàng', value: 'bank_account' },
-  { label: 'Thẻ tín dụng', value: 'credit_card' },
-  { label: 'Ví điện tử', value: 'e_wallet' },
-  { label: 'Tài khoản đầu tư', value: 'investment_account' },
+  { label: 'Tài khoản ngân hàng', value: 'bank' },
+  { label: 'Thẻ tín dụng', value: 'credit' },
+  { label: 'Ví điện tử', value: 'e-wallet' },
+  { label: 'Tài khoản tiết kiệm', value: 'savings' },
 ];
 
 const coerceNumber = (schema: z.ZodNumber) =>

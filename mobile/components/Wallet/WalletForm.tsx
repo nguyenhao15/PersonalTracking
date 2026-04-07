@@ -1,3 +1,4 @@
+import { useCreateWallet } from '@/hooks/useWallets';
 import { walletSchema, WalletTypeEnum } from '@/validations/walletSchema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import React from 'react';
@@ -8,6 +9,8 @@ import InputInlineComponent from '../UI/InputInlineComponent';
 import TagSelectComponent from '../UI/TagSelectComponent';
 
 const WalletForm = () => {
+  const { mutateAsync: createWallet, isPending: isCreatingWallet } =
+    useCreateWallet();
   const methods = useForm({
     resolver: zodResolver(walletSchema),
     mode: 'onBlur',
@@ -27,6 +30,17 @@ const WalletForm = () => {
     formState: { errors, isSubmitting },
   } = methods;
 
+  const onSubmit = async (data: any) => {
+    console.log('Data iss: ', data);
+
+    try {
+      await createWallet(data);
+      reset();
+    } catch (error) {
+      console.error('Error creating wallet:', error?.response?.data?.message);
+    }
+  };
+
   return (
     <ScrollView className='gap-2'>
       <Text className='text-lg self-center font-bold text-text-primary'>
@@ -42,8 +56,8 @@ const WalletForm = () => {
             control={control}
             name='walletName'
             errorMessage={errors.walletName?.message}
-            isDisabled={isSubmitting}
-            isLoading={isSubmitting}
+            isDisabled={isCreatingWallet}
+            isLoading={isCreatingWallet}
           />
 
           <InputInlineComponent
@@ -54,15 +68,15 @@ const WalletForm = () => {
             control={control}
             name='currency'
             errorMessage={errors.currency?.message}
-            isDisabled={isSubmitting}
-            isLoading={isSubmitting}
+            isDisabled={isCreatingWallet}
+            isLoading={isCreatingWallet}
           />
 
           <InputInlineComponent
             label='Initial Balance'
             keyboardType='numeric'
-            isDisabled={isSubmitting}
-            isLoading={isSubmitting}
+            isDisabled={isCreatingWallet}
+            isLoading={isCreatingWallet}
             isRequired
             placeholder='Enter initial balance'
             control={control}
@@ -70,8 +84,8 @@ const WalletForm = () => {
             errorMessage={errors.balance?.message}
           />
           <InputInlineComponent
-            isDisabled={isSubmitting}
-            isLoading={isSubmitting}
+            isDisabled={isCreatingWallet}
+            isLoading={isCreatingWallet}
             label='Description'
             isMultiline
             keyboardType='default'
@@ -99,8 +113,8 @@ const WalletForm = () => {
       </FormProvider>
       <Button
         title='Create Wallet'
-        onPress={handleSubmit((data) => console.log('Wallet data: ', data))}
-        isLoading={isSubmitting}
+        onPress={handleSubmit(onSubmit)}
+        isLoading={isCreatingWallet}
       />
     </ScrollView>
   );
