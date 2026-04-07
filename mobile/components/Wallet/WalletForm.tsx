@@ -3,12 +3,12 @@ import { walletSchema, WalletTypeEnum } from '@/validations/walletSchema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import React from 'react';
 import { Controller, FormProvider, useForm } from 'react-hook-form';
-import { ScrollView, Text, View } from 'react-native';
+import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import Button from '../UI/Button';
 import InputInlineComponent from '../UI/InputInlineComponent';
 import TagSelectComponent from '../UI/TagSelectComponent';
 
-const WalletForm = () => {
+const WalletForm = ({ backAction }: { backAction?: () => void }) => {
   const { mutateAsync: createWallet, isPending: isCreatingWallet } =
     useCreateWallet();
   const methods = useForm({
@@ -34,6 +34,7 @@ const WalletForm = () => {
     try {
       await createWallet(data);
       reset();
+      backAction && backAction();
     } catch (error) {
       console.error('Error creating wallet:', error?.response?.data?.message);
     }
@@ -41,9 +42,17 @@ const WalletForm = () => {
 
   return (
     <ScrollView className='gap-2'>
-      <Text className='text-lg self-center font-bold text-text-primary'>
-        Create New Wallet
-      </Text>
+      <View>
+        <TouchableOpacity
+          onPress={backAction}
+          className='bg-surface-light p-2 px-4 rounded-lg self-start'
+        >
+          <Text className='text-text-secondary font-bold'> Back</Text>
+        </TouchableOpacity>
+        <Text className='text-lg self-center font-bold text-text-primary'>
+          Create New Wallet
+        </Text>
+      </View>
       <FormProvider {...methods}>
         <View className='gap-2 p-4'>
           <InputInlineComponent

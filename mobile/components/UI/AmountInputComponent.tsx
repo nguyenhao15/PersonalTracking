@@ -20,6 +20,8 @@ interface AmountInputComponentProps<
   originalAmountFieldName?: string;
   errorMessage?: string;
   setValueFromParent?: (value: any) => void;
+  isDisabled?: boolean;
+  isLoading?: boolean;
 }
 
 const AmountInputComponent = <
@@ -36,6 +38,8 @@ const AmountInputComponent = <
   originalCurrencyFieldName,
   setValueFromParent,
   originalAmountFieldName,
+  isDisabled = false,
+  isLoading = false,
 }: AmountInputComponentProps<TFieldValues, TName>) => {
   const isControlled = !!control && !!originalAmountFieldName;
   const [exchangeRate, setExchangeRate] = useState<number | string>(1);
@@ -74,7 +78,7 @@ const AmountInputComponent = <
           fontSize: 30,
           textAlign: 'center',
           padding: 20,
-          borderBottomWidth: 1,
+          borderBottomWidth: isDisabled || isLoading ? 0 : 2,
           borderColor: errorMessage ? '#ef4444' : '#d1d5db',
           marginBottom: 10,
           color: 'white',
@@ -85,6 +89,10 @@ const AmountInputComponent = <
         placeholderTextColor='#9ca3af'
         value={formatThousands(Number(fieldValue))}
         onChangeText={onChangeText}
+        isDisabled={isDisabled}
+        editable={!isDisabled && !isLoading}
+        selectTextOnFocus={!isDisabled && !isLoading}
+        isLoading={isLoading}
         onBlur={fieldOnBlur}
       />
     );
@@ -118,6 +126,7 @@ const AmountInputComponent = <
   return (
     <View className='mb-2 gap-4 items-center justify-between'>
       <TouchableOpacity
+        disabled={isDisabled || isLoading}
         onPress={handleOpenCardModal}
         className='self-start items-center justify-center mx-auto mb-1 px-3 py-2 bg-background-lighter rounded-md'
       >

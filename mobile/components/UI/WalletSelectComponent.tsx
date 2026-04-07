@@ -5,6 +5,7 @@ import React, { useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
 import BaseModal from '../BaseModal';
 import CardSelectList from '../CardSelectList';
+import WalletForm from '../Wallet/WalletForm';
 import LabelContainer from './LabelContainer';
 
 interface WalletSelectComponentProps {
@@ -27,6 +28,7 @@ const WalletSelectComponent = ({
   throwCurrencyId,
 }: WalletSelectComponentProps) => {
   const [openModal, setOpenModal] = useState(false);
+  const [addingNewWallet, setAddingNewWallet] = useState(false);
   const [selectedWallet, setSelectedWallet] = useState<any>(null);
   const { data, isLoading, error } = useGetWallets();
 
@@ -82,21 +84,32 @@ const WalletSelectComponent = ({
           {selectedWallet ? selectedWallet.titleField : 'Select a wallet...'}
         </Text>
       </LabelContainer>
-      <BaseModal visible={openModal} onClose={() => setOpenModal(false)}>
-        <CardSelectList
-          data={formatWallets()}
-          isLoading={isLoading}
-          error={error}
-          selectedItem={selectedWallet?.id}
-          placeholder='Select a wallet...'
-          onSelect={handleSelectWallet}
-          canAddNewItem={true}
-          addLabel='Add New Wallet'
-          addBehavior={() => {
-            // Handle add new wallet behavior here
-            setOpenModal(false);
-          }}
-        />
+
+      <BaseModal
+        visible={openModal}
+        onClose={() => {
+          (setOpenModal(false), setAddingNewWallet(false));
+        }}
+      >
+        {addingNewWallet && (
+          <WalletForm backAction={() => setAddingNewWallet(false)} />
+        )}
+        {!addingNewWallet && (
+          <CardSelectList
+            data={formatWallets()}
+            isLoading={isLoading}
+            error={error}
+            selectedItem={selectedWallet?.id}
+            placeholder='Select a wallet...'
+            onSelect={handleSelectWallet}
+            canAddNewItem={true}
+            addLabel='Add New Wallet'
+            addBehavior={() => {
+              // Handle add new wallet behavior here
+              setAddingNewWallet(true);
+            }}
+          />
+        )}
       </BaseModal>
     </View>
   );

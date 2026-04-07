@@ -71,10 +71,11 @@ const TransferForm = ({ onSubmitTransfer }: TransferFormProps) => {
   return (
     <ScrollView className='p-4 gap-4'>
       <AmountInputComponent
-        walletCurrencyId={walletCurrencyId}
         control={control}
-        name='amount'
+        originalAmountFieldName='amount'
         errorMessage={errors.amount?.message}
+        isDisabled={isSubmitting}
+        isLoading={isSubmitting}
       />
 
       <View className='gap-4 mb-6'>
