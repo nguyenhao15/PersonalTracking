@@ -84,14 +84,11 @@ const TransactionForm = ({ type }: { type: 'expense' | 'income' }) => {
     }
   };
 
-  console.log('Errors: ', errors);
-
   return (
     <ScrollView className='p-4 gap-4'>
       <View className='gap-4 mb-2'>
         <AmountInputComponent
           control={control}
-          currency='VND'
           name='amount'
           errorMessage={errors.amount?.message}
         />

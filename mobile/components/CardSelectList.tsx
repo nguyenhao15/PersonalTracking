@@ -57,6 +57,7 @@ const CardSelectList = ({
         className='w-full p-4 mb-4 border rounded text-text-primary'
         placeholder={placeholder}
         placeholderTextColor='#888'
+        style={{ fontSize: 18 }}
         value={searchQuery}
         onChangeText={setSearchQuery}
       />
@@ -84,7 +85,9 @@ const CardSelectList = ({
                 title={item?.titleField || item?.name || ''}
                 description={item?.descriptionField || ''}
                 onPress={() => onSelect(item)}
-                isSelected={selectedItem === item?.id}
+                isSelected={
+                  selectedItem === item?.id || selectedItem === item?.titleField
+                }
               />
             </View>
           )}

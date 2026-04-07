@@ -3,7 +3,13 @@ import React from 'react';
 import { View } from 'react-native';
 import CardSelectList from '../CardSelectList';
 
-const CurrencyComponent = () => {
+const CurrencyComponent = ({
+  selectedCurrency,
+  onSelectItem,
+}: {
+  selectedCurrency?: string;
+  onSelectItem: (currency: string) => void;
+}) => {
   const { data: currencies, isLoading, error } = useGetCurrency();
 
   const raw = currencies?.data || {};
@@ -22,9 +28,9 @@ const CurrencyComponent = () => {
       <CardSelectList
         data={normalized}
         onSelect={(item) => {
-          console.log('Selected currency:', item);
+          onSelectItem(item || '');
         }}
-        selectedItem={'vnd'}
+        selectedItem={selectedCurrency}
         isLoading={isLoading}
         error={error}
         placeholder='Select currency'

@@ -1,4 +1,4 @@
-import { formatPrice } from '@/utils/formatValue';
+import { formatPrice, formatThousands } from '@/utils/formatValue';
 import React, { useState } from 'react';
 import { Controller, FieldPath, FieldValues } from 'react-hook-form';
 import { Text, TextInput, TouchableOpacity, View } from 'react-native';
@@ -14,8 +14,8 @@ interface AmountInputComponentProps<
   onBlur?: () => void;
   control?: any;
   name?: TName;
+  walletCurrencyId: string;
   errorMessage?: string;
-  currency: string;
 }
 
 const AmountInputComponent = <
@@ -25,22 +25,35 @@ const AmountInputComponent = <
   value,
   onChange,
   onBlur,
+  walletCurrencyId,
   errorMessage,
   control,
   name,
-  currency = 'VND',
 }: AmountInputComponentProps<TFieldValues, TName>) => {
+  const isControlled = !!control && !!name;
+  const [exchangeRate, setExchangeRate] = useState(1);
   const [isCardModalOpen, setCardModalOpen] = useState(false);
-
+  const [currency, setCurrency] = useState({
+    titleField: 'VND',
+    descriptionField: 'Vietnamese Dong',
+    id: 'vnd',
+  });
   const handleOpenCardModal = () => {
     setCardModalOpen(true);
   };
+
+  const handleSelectCurrency = (currency: any) => {
+    setCurrency(currency);
+    setCardModalOpen(false);
+  };
+
+  console.log('Wallet Currecny Id :', walletCurrencyId);
 
   const renderAmountInput = (
     fieldValue: string | number,
     fieldOnChange: (text: string) => void,
     fieldOnBlur: () => void,
-    restFieldProps = {},
+    ...restFieldProps: any
   ) => {
     const onChangeText = (text: string) => {
       const rawValue = text.replace(/\D/g, '');
@@ -59,12 +72,31 @@ const AmountInputComponent = <
           marginBottom: 10,
           color: 'white',
         }}
+        {...restFieldProps}
         keyboardType='numeric'
         placeholder='0'
         placeholderTextColor='#9ca3af'
-        value={fieldValue ? formatPrice(fieldValue, currency) : ''}
+        value={formatThousands(fieldValue)}
         onChangeText={onChangeText}
         onBlur={fieldOnBlur}
+      />
+    );
+  };
+
+  const renderCurrencyInput = (
+    currencyOnChange: (currency: string) => void,
+    ...restFieldProps: any
+  ) => {
+    const handleSelectCurrency = (currency: any) => {
+      setCurrency(currency);
+      setCardModalOpen(false);
+      currencyOnChange(currency);
+    };
+    return (
+      <CurrencyComponent
+        selectedCurrency={currency.id}
+        onSelectItem={handleSelectCurrency}
+        {...restFieldProps}
       />
     );
   };
@@ -75,10 +107,12 @@ const AmountInputComponent = <
         onPress={handleOpenCardModal}
         className='self-start items-center justify-center mx-auto mb-1 px-3 py-2 bg-background-lighter rounded-md'
       >
-        <Text className='font-bold text-text-primary'>{currency}</Text>
+        <Text className='font-bold text-text-primary'>
+          {currency?.descriptionField}
+        </Text>
       </TouchableOpacity>
 
-      {control && name ? (
+      {isControlled ? (
         <Controller
           control={control}
           name={name}
@@ -108,6 +142,11 @@ const AmountInputComponent = <
       {errorMessage ? (
         <Text className='text-red-500 text-sm'>{errorMessage}</Text>
       ) : null}
+      {exchangeRate !== 1 && (
+        <Text className='text-gray-400 text-sm'>
+          {`Exchange Rate: ${formatPrice(exchangeRate, 'VND')} = 1 ${currency.titleField.toUpperCase()}`}
+        </Text>
+      )}
       <BaseModal
         visible={isCardModalOpen}
         onClose={() => setCardModalOpen(false)}
@@ -116,8 +155,31 @@ const AmountInputComponent = <
           <Text className='text-lg text-text-primary font-bold mb-4'>
             Select Currency
           </Text>
-          <CurrencyComponent />
+          <TextInput
+            placeholder='Exchange rate...'
+            placeholderTextColor='#9ca3af'
+            placeholderClassName='text-lg text-text-primary font-bold mb-4'
+            keyboardType='numeric'
+            className='w-full py-3 self-center text-xl text-text-primary font-bold border-b-2 border-gray-300 mb-4'
+            value={exchangeRate.toString()}
+            onChangeText={(text) => setExchangeRate(Number(text))}
+          />
         </View>
+        {isControlled ? (
+          <Controller
+            control={control}
+            name={name}
+            render={({
+              field: {
+                onChange: fieldOnChange,
+                value: fieldValue,
+                ...restFieldProps
+              },
+            }) => renderCurrencyInput(fieldOnChange, restFieldProps)}
+          />
+        ) : (
+          renderCurrencyInput(handleSelectCurrency || (() => {}))
+        )}
       </BaseModal>
     </View>
   );

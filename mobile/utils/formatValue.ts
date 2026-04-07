@@ -4,10 +4,24 @@ export const formatPrice = (
 ) => {
   const numberAmount = Number(amount);
   if (isNaN(numberAmount)) return 'N/A';
+
   return new Intl.NumberFormat('vi-VN', {
     style: 'currency',
     currency: currency,
   }).format(numberAmount);
+};
+
+export const formatThousands = (input: string | number | null | undefined) => {
+  if (input === null || input === undefined || input === '') {
+    return '';
+  }
+
+  const digits = String(input).replace(/[^\d]/g, '');
+  if (!digits) {
+    return '';
+  }
+
+  return Number(digits).toLocaleString('vi-VN');
 };
 
 export const formatDate = (dateValue: string | number | Date) => {

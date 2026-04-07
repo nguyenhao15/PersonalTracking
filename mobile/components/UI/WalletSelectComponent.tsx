@@ -1,5 +1,6 @@
 import { useGetWallets } from '@/hooks/useWallets';
 import { formatPrice } from '@/utils/formatValue';
+import { WalletObject } from '@/validations/types';
 import React, { useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
 import BaseModal from '../BaseModal';
@@ -7,19 +8,23 @@ import CardSelectList from '../CardSelectList';
 import LabelContainer from './LabelContainer';
 
 interface WalletSelectComponentProps {
+  label?: string;
   onSelectWallet: (wallet: any) => void;
   onBlur?: () => void;
   initialWallet: any;
   resetAction?: () => void;
   errorMessage?: string;
+  throwCurrencyId?: (currencyId: string) => void;
 }
 
 const WalletSelectComponent = ({
+  label = 'From Wallet',
   onSelectWallet,
   onBlur,
   initialWallet,
   resetAction,
   errorMessage,
+  throwCurrencyId,
 }: WalletSelectComponentProps) => {
   const [openModal, setOpenModal] = useState(false);
   const [selectedWallet, setSelectedWallet] = useState<any>(null);
@@ -27,10 +32,10 @@ const WalletSelectComponent = ({
 
   const formatWallets = () => {
     if (!data) return [];
-    return data.map((wallet: any) => ({
-      id: wallet.id,
+    return data.map((wallet: WalletObject) => ({
       titleField: wallet.walletName,
       descriptionField: `Balance: ${formatPrice(wallet.balance)}`,
+      ...wallet,
     }));
   };
 
@@ -41,6 +46,7 @@ const WalletSelectComponent = ({
     );
     if (foundWallet) {
       setSelectedWallet(foundWallet);
+      throwCurrencyId && throwCurrencyId(foundWallet.currency);
     } else {
       setSelectedWallet(null);
     }
@@ -53,6 +59,8 @@ const WalletSelectComponent = ({
   const handleSelectWallet = (wallet: any) => {
     setSelectedWallet(wallet);
     onSelectWallet && onSelectWallet(wallet.id);
+    throwCurrencyId && throwCurrencyId(wallet.currency);
+
     onBlur && onBlur();
     setOpenModal(false);
   };
@@ -63,7 +71,7 @@ const WalletSelectComponent = ({
         isHasIcon
         iconColor='white'
         iconName='wallet'
-        label='Wallet'
+        label={label}
         isRequired={true}
         errorMessage={errorMessage}
         onPress={() => setOpenModal(true)}

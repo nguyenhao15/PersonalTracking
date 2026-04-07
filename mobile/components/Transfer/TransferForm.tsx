@@ -1,6 +1,6 @@
 import { TransferInput, transferSchema } from '@/validations/transferSchema';
 import { zodResolver } from '@hookform/resolvers/zod';
-import React from 'react';
+import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import z from 'zod';
@@ -18,6 +18,7 @@ type TransferFormInput = z.input<typeof transferSchema>;
 type TransferFormOutput = z.output<typeof transferSchema>;
 
 const TransferForm = ({ onSubmitTransfer }: TransferFormProps) => {
+  const [walletCurrencyId, setWalletCurrencyId] = useState<string>('');
   const methods = useForm<TransferFormInput, any, TransferFormOutput>({
     mode: 'onBlur',
     resolver: zodResolver(transferSchema),
@@ -67,9 +68,12 @@ const TransferForm = ({ onSubmitTransfer }: TransferFormProps) => {
     });
   };
 
+  console.log('Wallet Current cy: ', walletCurrencyId);
+
   return (
     <ScrollView className='p-4 gap-4'>
       <AmountInputComponent
+        walletCurrencyId={walletCurrencyId}
         control={control}
         name='amount'
         errorMessage={errors.amount?.message}
@@ -82,6 +86,7 @@ const TransferForm = ({ onSubmitTransfer }: TransferFormProps) => {
           render={({ field: { onChange, onBlur, value } }) => (
             <WalletSelectComponent
               initialWallet={value}
+              throwCurrencyId={setWalletCurrencyId}
               onSelectWallet={onChange}
               resetAction={reset}
               errorMessage={errors.fromWalletId?.message}
@@ -94,6 +99,7 @@ const TransferForm = ({ onSubmitTransfer }: TransferFormProps) => {
           name='toWalletId'
           render={({ field: { onChange, onBlur, value } }) => (
             <WalletSelectComponent
+              label='To Wallet'
               initialWallet={value}
               onSelectWallet={onChange}
               onBlur={onBlur}
@@ -116,6 +122,7 @@ const TransferForm = ({ onSubmitTransfer }: TransferFormProps) => {
 
         <InputInlineComponent
           label='Transfer Fee'
+          keyboardType='numeric'
           name='fee'
           control={control}
           iconName='cash'

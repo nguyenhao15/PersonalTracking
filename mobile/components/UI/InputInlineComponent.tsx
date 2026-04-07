@@ -1,3 +1,4 @@
+import { formatThousands } from '@/utils/formatValue';
 import React from 'react';
 import { Controller } from 'react-hook-form';
 import { TextInput } from 'react-native';
@@ -54,24 +55,32 @@ const InputInlineComponent = ({
     fieldChange: (text: string) => void;
     fieldValue: string | number;
     fieldBlur: () => void;
-  }) => (
-    <TextInput
-      editable={!isDisabled && !isLoading}
-      selectTextOnFocus={!isDisabled && !isLoading}
-      multiline={isMultiline}
-      className={`w-full py-3 self-center text-xl ${isMultiline ? 'h-32' : ''} text-text-primary font-bold border-b-2 ${isLoading || isDisabled ? 'opacity-50 border-b-transparent' : errorMessage ? 'border-red-500' : 'border-gray-300'}`}
-      keyboardType={keyboardType}
-      placeholder={placeholder}
-      value={normalizeInputValue(fieldValue)}
-      placeholderTextColor={'#9ca3af'}
-      onBlur={fieldBlur}
-      onChangeText={fieldChange}
-      {...rest}
-    />
-  );
+  }) => {
+    const handleOnChangeText = (text: string) => {
+      fieldChange(text);
+    };
+
+    return (
+      <TextInput
+        editable={!isDisabled && !isLoading}
+        selectTextOnFocus={!isDisabled && !isLoading}
+        multiline={isMultiline}
+        className={`w-full py-3 self-center text-xl ${isMultiline ? 'h-32' : ''} text-text-primary font-bold border-b-2 ${isLoading || isDisabled ? 'opacity-50 border-b-transparent' : errorMessage ? 'border-red-500' : 'border-gray-300'}`}
+        keyboardType={keyboardType}
+        placeholder={placeholder}
+        value={formatThousands(fieldValue)}
+        placeholderTextColor={'#9ca3af'}
+        onBlur={fieldBlur}
+        onSubmitEditing={fieldBlur}
+        onChangeText={handleOnChangeText}
+        {...rest}
+      />
+    );
+  };
 
   return (
     <LabelContainer
+      isLoading={isLoading}
       isHasIcon={!!iconName}
       iconColor={iconColor}
       iconName={iconName}
