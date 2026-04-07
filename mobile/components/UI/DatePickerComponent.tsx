@@ -29,7 +29,6 @@ const DatePickerComponent = ({
   const [openModal, setOpenModal] = useState(false);
 
   const themeUser = useColorScheme();
-  console.log('Theme User: ', themeUser);
 
   const handleOnChangeAction = (date: Date) => {
     setSelectedDate(date);

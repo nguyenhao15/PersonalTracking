@@ -18,7 +18,6 @@ const add = ({ initial }: { initial?: TransactionInput }) => {
   };
 
   const onSubmitTransfer = async (data: TransactionInput) => {
-    console.log('Transfer data:', data);
     // Handle transfer submission logic here
   };
 

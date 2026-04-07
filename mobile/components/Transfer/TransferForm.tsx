@@ -68,8 +68,6 @@ const TransferForm = ({ onSubmitTransfer }: TransferFormProps) => {
     });
   };
 
-  console.log('Wallet Current cy: ', walletCurrencyId);
-
   return (
     <ScrollView className='p-4 gap-4'>
       <AmountInputComponent

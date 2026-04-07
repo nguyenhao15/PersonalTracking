@@ -26,8 +26,6 @@ const TagSelectComponent = ({
     onChangeTag && onChangeTag(tag);
   };
 
-  console.log('Initial Tag: ', initialTag);
-
   useEffect(() => {
     if (onResetAction) {
       onResetAction();

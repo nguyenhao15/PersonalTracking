@@ -65,7 +65,23 @@ const InputInlineComponent = ({
         editable={!isDisabled && !isLoading}
         selectTextOnFocus={!isDisabled && !isLoading}
         multiline={isMultiline}
-        className={`w-full py-3 self-center text-xl ${isMultiline ? 'h-32' : ''} text-text-primary font-bold border-b-2 ${isLoading || isDisabled ? 'opacity-50 border-b-transparent' : errorMessage ? 'border-red-500' : 'border-gray-300'}`}
+        className='text-text-primary font-bold'
+        style={{
+          width: '100%',
+          paddingVertical: 12,
+          alignSelf: 'center',
+          fontSize: 18,
+          fontWeight: 'bold',
+          borderBottomWidth: 2,
+          borderBottomColor:
+            isLoading || isDisabled
+              ? 'rgba(156, 163, 175, 0.5)'
+              : errorMessage
+                ? '#ef4444'
+                : '#d1d5db',
+          height: isMultiline ? 128 : undefined,
+          opacity: isLoading || isDisabled ? 0.5 : 1,
+        }}
         keyboardType={keyboardType}
         placeholder={placeholder}
         value={formatThousands(fieldValue)}

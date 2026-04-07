@@ -4,7 +4,7 @@ import {
   transactionSchema,
 } from '@/validations/transactionSchema';
 import { zodResolver } from '@hookform/resolvers/zod';
-import React from 'react';
+import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 
@@ -24,6 +24,7 @@ const tagEnum = [
 ];
 
 const TransactionForm = ({ type }: { type: 'expense' | 'income' }) => {
+  const [walletCurrencyId, setWalletCurrencyId] = useState<string>(''); // State to hold the currency ID of the selected wallet
   const {
     mutateAsync,
     isPending,
@@ -91,6 +92,7 @@ const TransactionForm = ({ type }: { type: 'expense' | 'income' }) => {
           control={control}
           name='amount'
           errorMessage={errors.amount?.message}
+          walletCurrencyId={walletCurrencyId}
         />
 
         <Controller
@@ -116,6 +118,7 @@ const TransactionForm = ({ type }: { type: 'expense' | 'income' }) => {
               initialWallet={value}
               onSelectWallet={onChange}
               resetAction={reset}
+              throwCurrencyId={setWalletCurrencyId}
               errorMessage={errors.walletId?.message}
             />
           )}

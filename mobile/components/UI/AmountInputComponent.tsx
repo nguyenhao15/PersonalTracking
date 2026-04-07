@@ -42,12 +42,13 @@ const AmountInputComponent = <
     setCardModalOpen(true);
   };
 
+  const isDifferentCurrency =
+    walletCurrencyId && currency.id !== walletCurrencyId;
+
   const handleSelectCurrency = (currency: any) => {
     setCurrency(currency);
     setCardModalOpen(false);
   };
-
-  console.log('Wallet Currecny Id :', walletCurrencyId);
 
   const renderAmountInput = (
     fieldValue: string | number,
@@ -57,7 +58,17 @@ const AmountInputComponent = <
   ) => {
     const onChangeText = (text: string) => {
       const rawValue = text.replace(/\D/g, '');
-      fieldOnChange(rawValue);
+      const updateValue = isDifferentCurrency
+        ? Number(rawValue) * exchangeRate
+        : Number(rawValue);
+      fieldOnChange(updateValue.toString());
+    };
+
+    const displayValue = (textnum: number | string) => {
+      const handleDisplayValue = isDifferentCurrency
+        ? formatThousands(Number(textnum) * exchangeRate)
+        : formatThousands(textnum);
+      return handleDisplayValue;
     };
 
     return (
@@ -76,7 +87,7 @@ const AmountInputComponent = <
         keyboardType='numeric'
         placeholder='0'
         placeholderTextColor='#9ca3af'
-        value={formatThousands(fieldValue)}
+        value={displayValue(fieldValue)}
         onChangeText={onChangeText}
         onBlur={fieldOnBlur}
       />

@@ -49,9 +49,10 @@ const LabelContainer = ({
             {label}
             {isRequired && <Text className='text-red-500'>*</Text>}
           </Text>
-          {children}
+          <View className='w-full'>{children}</View>
+
           {errorMessage && (
-            <Text className='text-red-400 mt-2 text-xs font-bold '>
+            <Text className='text-red-400 text-xs font-bold '>
               {errorMessage}
             </Text>
           )}

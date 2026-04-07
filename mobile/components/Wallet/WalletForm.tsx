@@ -31,8 +31,6 @@ const WalletForm = () => {
   } = methods;
 
   const onSubmit = async (data: any) => {
-    console.log('Data iss: ', data);
-
     try {
       await createWallet(data);
       reset();
