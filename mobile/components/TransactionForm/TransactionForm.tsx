@@ -34,7 +34,11 @@ const TransactionForm = ({ type }: { type: 'expense' | 'income' }) => {
     mode: 'onBlur',
     resolver: zodResolver(transactionSchema),
     defaultValues: {
-      amount: 0,
+      baseAmount: 0,
+      baseCurrency: 'VND',
+      originalAmount: 0,
+      originalCurrency: 'VND',
+      exchangeRate: 1,
       date: new Date(),
       description: '',
       categoryId: 0,
@@ -54,15 +58,9 @@ const TransactionForm = ({ type }: { type: 'expense' | 'income' }) => {
     formState: { errors },
   } = methods;
 
-  const [excludedFromReports, date, description] = watch([
-    'excludedFromReports',
-    'date',
-    'description',
-  ]);
-
-  const handleOpenCardModal = (title: string) => {
-    setModalTitle(title);
-    setCardModalOpen(true);
+  const handleOnChangeCurrency = (currencyId: string) => {
+    setWalletCurrencyId(currencyId);
+    setValue('baseCurrency', currencyId.toLowerCase());
   };
 
   const onSubmit: React.Dispatch<
@@ -90,9 +88,15 @@ const TransactionForm = ({ type }: { type: 'expense' | 'income' }) => {
       <View className='gap-4 mb-2'>
         <AmountInputComponent
           control={control}
-          name='amount'
-          errorMessage={errors.amount?.message}
-          walletCurrencyId={walletCurrencyId}
+          setValueFromParent={(value: any) => setValue('baseAmount', value)}
+          exchangeRateFieldName='exchangeRate'
+          originalCurrencyFieldName='originalCurrency'
+          originalAmountFieldName='originalAmount'
+          errorMessage={
+            errors.originalAmount?.message || errors.baseAmount?.message
+          }
+          value={watch('originalAmount')}
+          baseAmountFieldName={'baseAmount'}
         />
 
         <Controller
@@ -118,7 +122,7 @@ const TransactionForm = ({ type }: { type: 'expense' | 'income' }) => {
               initialWallet={value}
               onSelectWallet={onChange}
               resetAction={reset}
-              throwCurrencyId={setWalletCurrencyId}
+              throwCurrencyId={handleOnChangeCurrency}
               errorMessage={errors.walletId?.message}
             />
           )}
@@ -139,10 +143,14 @@ const TransactionForm = ({ type }: { type: 'expense' | 'income' }) => {
         />
         <InputWithModalComponent
           label='Description'
+          name='description'
+          control={control}
           iconName='pencil'
           iconColor='white'
           placeholder='Enter description...'
-          onChangeAction={(text) => setValue('description', text)}
+          onChangeAction={(text) => {
+            setValue('description', text);
+          }}
           initialValue={watch('description') || ''}
           onResetAction={reset}
         />

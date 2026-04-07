@@ -5,7 +5,6 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 const SafeScreen = ({ children }: { children: React.ReactNode }) => {
   const insets = useSafeAreaInsets();
   const themeUser = useColorScheme();
-  console.log('Theme: ', themeUser);
 
   return (
     <View

@@ -15,8 +15,17 @@ const coerceNumber = (schema: z.ZodNumber) =>
     });
 
 export const transactionSchema = z.object({
-  amount: coerceNumber(
+  baseAmount: coerceNumber(
     z.number().min(0, { message: 'Amount must be a positive number' }),
+  ),
+  baseCurrency: z.string().min(1, { message: 'Currency is required' }),
+  originalAmount: coerceNumber(
+    z.number().min(0, { message: 'Amount must be a positive number' }),
+  ),
+  originalCurrency: z.string().min(1, { message: 'Currency is required' }),
+
+  exchangeRate: coerceNumber(
+    z.number().min(0, { message: 'Exchange rate must be a positive number' }),
   ),
   date: z.date().refine((date) => !isNaN(Date.parse(date.toString())), {
     message: 'Invalid date format',

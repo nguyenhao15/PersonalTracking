@@ -1,9 +1,10 @@
 import { formatPrice, formatThousands } from '@/utils/formatValue';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Controller, FieldPath, FieldValues } from 'react-hook-form';
 import { Text, TextInput, TouchableOpacity, View } from 'react-native';
 import BaseModal from '../BaseModal';
 import CurrencyComponent from '../Currencies/CurrencyComponent';
+import ExchangeRateInputComponent from './ExchangeRateInputComponent';
 
 interface AmountInputComponentProps<
   TFieldValues extends FieldValues = FieldValues,
@@ -13,9 +14,12 @@ interface AmountInputComponentProps<
   onChange?: (text: string) => void;
   onBlur?: () => void;
   control?: any;
-  name?: TName;
-  walletCurrencyId: string;
+  baseAmountFieldName?: string;
+  exchangeRateFieldName?: string;
+  originalCurrencyFieldName?: string;
+  originalAmountFieldName?: string;
   errorMessage?: string;
+  setValueFromParent?: (value: any) => void;
 }
 
 const AmountInputComponent = <
@@ -25,25 +29,26 @@ const AmountInputComponent = <
   value,
   onChange,
   onBlur,
-  walletCurrencyId,
   errorMessage,
   control,
-  name,
+  exchangeRateFieldName,
+  baseAmountFieldName,
+  originalCurrencyFieldName,
+  setValueFromParent,
+  originalAmountFieldName,
 }: AmountInputComponentProps<TFieldValues, TName>) => {
-  const isControlled = !!control && !!name;
-  const [exchangeRate, setExchangeRate] = useState(1);
+  const isControlled = !!control && !!originalAmountFieldName;
+  const [exchangeRate, setExchangeRate] = useState<number | string>(1);
   const [isCardModalOpen, setCardModalOpen] = useState(false);
   const [currency, setCurrency] = useState({
     titleField: 'VND',
     descriptionField: 'Vietnamese Dong',
     id: 'vnd',
   });
+
   const handleOpenCardModal = () => {
     setCardModalOpen(true);
   };
-
-  const isDifferentCurrency =
-    walletCurrencyId && currency.id !== walletCurrencyId;
 
   const handleSelectCurrency = (currency: any) => {
     setCurrency(currency);
@@ -57,18 +62,9 @@ const AmountInputComponent = <
     ...restFieldProps: any
   ) => {
     const onChangeText = (text: string) => {
-      const rawValue = text.replace(/\D/g, '');
-      const updateValue = isDifferentCurrency
-        ? Number(rawValue) * exchangeRate
-        : Number(rawValue);
+      const rawValue = text.replace(/\./g, '');
+      const updateValue = Number(rawValue);
       fieldOnChange(updateValue.toString());
-    };
-
-    const displayValue = (textnum: number | string) => {
-      const handleDisplayValue = isDifferentCurrency
-        ? formatThousands(Number(textnum) * exchangeRate)
-        : formatThousands(textnum);
-      return handleDisplayValue;
     };
 
     return (
@@ -87,7 +83,7 @@ const AmountInputComponent = <
         keyboardType='numeric'
         placeholder='0'
         placeholderTextColor='#9ca3af'
-        value={displayValue(fieldValue)}
+        value={formatThousands(Number(fieldValue))}
         onChangeText={onChangeText}
         onBlur={fieldOnBlur}
       />
@@ -101,7 +97,7 @@ const AmountInputComponent = <
     const handleSelectCurrency = (currency: any) => {
       setCurrency(currency);
       setCardModalOpen(false);
-      currencyOnChange(currency);
+      currencyOnChange(currency.id);
     };
     return (
       <CurrencyComponent
@@ -111,6 +107,13 @@ const AmountInputComponent = <
       />
     );
   };
+
+  useEffect(() => {
+    if (isControlled && baseAmountFieldName && exchangeRateFieldName) {
+      setValueFromParent &&
+        setValueFromParent(Number(value || 0) * Number(exchangeRate));
+    }
+  }, [exchangeRate, value]);
 
   return (
     <View className='mb-2 gap-4 items-center justify-between'>
@@ -126,7 +129,7 @@ const AmountInputComponent = <
       {isControlled ? (
         <Controller
           control={control}
-          name={name}
+          name={originalAmountFieldName as TName}
           render={({
             field: {
               onChange: fieldOnChange,
@@ -166,20 +169,18 @@ const AmountInputComponent = <
           <Text className='text-lg text-text-primary font-bold mb-4'>
             Select Currency
           </Text>
-          <TextInput
-            placeholder='Exchange rate...'
-            placeholderTextColor='#9ca3af'
-            placeholderClassName='text-lg text-text-primary font-bold mb-4'
-            keyboardType='numeric'
-            className='w-full py-3 self-center text-xl text-text-primary font-bold border-b-2 border-gray-300 mb-4'
-            value={exchangeRate.toString()}
-            onChangeText={(text) => setExchangeRate(Number(text))}
+          <ExchangeRateInputComponent
+            control={control}
+            exchangeRateFieldName={exchangeRateFieldName || ''}
+            placeholder='Enter exchange rate...'
+            errorMessage={errorMessage}
+            onChange={setExchangeRate}
           />
         </View>
         {isControlled ? (
           <Controller
             control={control}
-            name={name}
+            name={originalCurrencyFieldName as TName}
             render={({
               field: {
                 onChange: fieldOnChange,

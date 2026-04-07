@@ -20,7 +20,7 @@ export class Transaction extends BaseAuditEntity {
   originalCurrency: string;
 
   @Column({ nullable: false, default: 1 })
-  exchangeRate?: number;
+  exchangeRate: number;
 
   @Column()
   description: string;

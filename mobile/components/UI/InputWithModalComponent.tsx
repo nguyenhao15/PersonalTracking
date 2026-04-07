@@ -55,20 +55,26 @@ const InputWithModalComponent = ({
     fieldChange: (text: string) => void;
     fieldValue: string;
     fieldBlur: () => void;
-  }) => (
-    <TextInput
-      className='w-full p-2 my-4 rounded text-text-primary'
-      placeholder={placeholder || 'Enter text...'}
-      value={content}
-      onChangeText={setContent}
-      returnKeyType='done'
-      autoFocus
-      returnKeyLabel='Done'
-      onSubmitEditing={() => fieldChange(content)}
-      onBlur={fieldBlur}
-      {...rest}
-    />
-  );
+  }) => {
+    const handleOnChangeText = (text: string) => {
+      fieldChange(text);
+      setOpenModal(false);
+    };
+    return (
+      <TextInput
+        className='w-full p-2 my-4 rounded text-text-primary'
+        placeholder={placeholder || 'Enter text...'}
+        value={content}
+        onChangeText={setContent}
+        returnKeyType='done'
+        autoFocus
+        returnKeyLabel='Done'
+        onSubmitEditing={() => handleOnChangeText(content)}
+        onBlur={fieldBlur}
+        {...rest}
+      />
+    );
+  };
 
   return (
     <View className='flex gap-2'>
