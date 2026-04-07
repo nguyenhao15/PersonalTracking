@@ -82,7 +82,7 @@ const InputWithModalComponent = ({
         errorMessage={errorMessage}
       >
         <Text
-          className={`${content ? 'font-bold text-black ' : 'text-gray-500'} mt-2 self-start text-lg`}
+          className={`${content ? 'font-bold text-text-secondary ' : 'text-text-primary'} mt-2 self-start text-lg`}
         >
           {content ? content : placeholder || 'Enter text...'}
         </Text>

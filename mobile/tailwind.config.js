@@ -1,3 +1,5 @@
+const { positive } = require('zod');
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   // NOTE: Update this to include the paths to all files that contain Nativewind classes.
@@ -6,6 +8,11 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        status: {
+          positive: '#4CAF50',
+          negative: '#F44336',
+          warning: '#FFC107',
+        },
         primary: {
           DEFAULT: '#1DB954', // spotify green
           light: '#1ED760',

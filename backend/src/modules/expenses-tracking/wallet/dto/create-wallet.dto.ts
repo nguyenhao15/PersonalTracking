@@ -1,4 +1,5 @@
-import { IsBoolean, IsNumber, IsString } from 'class-validator';
+import { IsBoolean, IsEnum, IsNumber, IsString } from 'class-validator';
+import { WalletTypeEnum } from '../../utils/app.const';
 
 export class CreateWalletDto {
   @IsString()
@@ -7,8 +8,10 @@ export class CreateWalletDto {
   @IsNumber()
   balance: number;
 
-  @IsString()
-  walletType: string;
+  @IsEnum(WalletTypeEnum, {
+    message: `walletType must be one of the following: ${Object.values(WalletTypeEnum).join(', ')}`,
+  })
+  walletType: WalletTypeEnum;
 
   @IsString()
   description: string;

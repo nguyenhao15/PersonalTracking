@@ -17,6 +17,12 @@ import SwitchControl from '../UI/SwitchControl';
 import TagSelectComponent from '../UI/TagSelectComponent';
 import WalletSelectComponent from '../UI/WalletSelectComponent';
 
+const tagEnum = [
+  { value: 'nice-to-have', label: 'Nice to have' },
+  { value: 'must-have', label: 'Must have' },
+  { value: 'not-necessary', label: 'Not necessary' },
+];
+
 const TransactionForm = ({ type }: { type: 'expense' | 'income' }) => {
   const {
     mutateAsync,
@@ -145,6 +151,7 @@ const TransactionForm = ({ type }: { type: 'expense' | 'income' }) => {
             name='tag'
             render={({ field: { onChange, value, ...field } }) => (
               <TagSelectComponent
+                data={tagEnum}
                 onChangeTag={onChange}
                 initialTag={value}
                 onResetAction={reset}
@@ -179,12 +186,7 @@ const TransactionForm = ({ type }: { type: 'expense' | 'income' }) => {
 
         <TouchableOpacity
           onPress={handleSubmit(onSubmit)}
-          style={
-            type === 'expense'
-              ? { backgroundColor: '#ef4444' }
-              : { backgroundColor: '#10b981' }
-          }
-          className='w-full py-3 rounded-md items-center justify-center mt-4'
+          className={`w-full py-3 rounded-md items-center justify-center mt-4 ${type === 'expense' ? 'bg-status-negative' : 'bg-status-positive'}`}
         >
           <Text className='text-white font-bold'>
             Create {type === 'expense' ? 'Expense' : 'Income'}

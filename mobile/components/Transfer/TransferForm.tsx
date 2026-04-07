@@ -39,7 +39,7 @@ const TransferForm = ({ onSubmitTransfer }: TransferFormProps) => {
     setError,
     setValue,
     watch,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = methods;
 
   const submitTransfer = async (data: TransferFormOutput) => {
@@ -106,7 +106,7 @@ const TransferForm = ({ onSubmitTransfer }: TransferFormProps) => {
         <DatePickerComponent
           label='Transfer Date'
           iconName='calendar'
-          iconColor='black'
+          iconColor='white'
           placeholder='Select transfer date...'
           onChangeAction={(date) =>
             setValue('date', date, { shouldValidate: true })
@@ -119,15 +119,17 @@ const TransferForm = ({ onSubmitTransfer }: TransferFormProps) => {
           name='fee'
           control={control}
           iconName='cash'
-          iconColor='gray'
+          iconColor='white'
           placeholder='0'
           errorMessage={errors.fee?.message}
+          isDisabled={isSubmitting}
+          isLoading={isSubmitting}
         />
 
         <InputWithModalComponent
           label='Description'
           iconName='pencil'
-          iconColor='gray'
+          iconColor='white'
           control={control}
           name='description'
           errorMessage={errors.description?.message}

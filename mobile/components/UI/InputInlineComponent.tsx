@@ -15,12 +15,17 @@ interface InputInlineComponentProps {
   errorMessage?: string;
   control?: any;
   name?: string;
+  keyboardType?: 'default' | 'numeric' | 'email-address' | 'phone-pad';
+  isMultiline?: boolean;
+  isLoading: boolean;
+  isDisabled: boolean;
 }
 
 const InputInlineComponent = ({
   label,
   iconName,
   iconColor,
+  isMultiline = false,
   isRequired,
   placeholder,
   value,
@@ -29,6 +34,9 @@ const InputInlineComponent = ({
   errorMessage,
   control,
   name,
+  keyboardType = 'default',
+  isLoading,
+  isDisabled,
 }: InputInlineComponentProps) => {
   const normalizeInputValue = (inputValue?: string | number) => {
     if (inputValue === null || inputValue === undefined) {
@@ -48,10 +56,14 @@ const InputInlineComponent = ({
     fieldBlur: () => void;
   }) => (
     <TextInput
-      className='w-full my-2 p-2 font-bold text-text-primary'
-      keyboardType='numeric'
+      editable={!isDisabled && !isLoading}
+      selectTextOnFocus={!isDisabled && !isLoading}
+      multiline={isMultiline}
+      className={`w-full py-3 self-center text-xl ${isMultiline ? 'h-32' : ''} text-text-primary font-bold border-b-2 ${isLoading || isDisabled ? 'opacity-50 border-b-transparent' : errorMessage ? 'border-red-500' : 'border-gray-300'}`}
+      keyboardType={keyboardType}
       placeholder={placeholder}
       value={normalizeInputValue(fieldValue)}
+      placeholderTextColor={'#9ca3af'}
       onBlur={fieldBlur}
       onChangeText={fieldChange}
       {...rest}
@@ -60,9 +72,10 @@ const InputInlineComponent = ({
 
   return (
     <LabelContainer
-      isHasIcon
+      isHasIcon={!!iconName}
       iconColor={iconColor}
       iconName={iconName}
+      isRequired={isRequired}
       label={label}
       errorMessage={errorMessage}
     >

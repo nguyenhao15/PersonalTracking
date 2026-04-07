@@ -2,21 +2,17 @@ import React, { useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
 import LabelContainer from './LabelContainer';
 
-const tagEnum = [
-  { value: 'nice-to-have', label: 'Nice to have' },
-  { value: 'must-have', label: 'Must have' },
-  { value: 'not-necessary', label: 'Not necessary' },
-];
-
 interface TagSelectComponentProps {
+  data: { value: string; label: string }[];
   onChangeTag: (tag: string) => void;
-  initialTag: 'nice-to-have' | 'must-have' | 'not-necessary' | '';
+  initialTag: string | undefined;
   onResetAction?: () => void;
   errorMessage?: string;
   rest?: any;
 }
 
 const TagSelectComponent = ({
+  data = [],
   onChangeTag,
   initialTag,
   onResetAction,
@@ -40,7 +36,7 @@ const TagSelectComponent = ({
   }, [onResetAction]);
 
   useEffect(() => {
-    const selected = tagEnum.find((tag) => tag.value === initialTag);
+    const selected = data.find((tag) => tag.value === initialTag);
 
     if (selected) {
       setSelectedTag(selected.value);
@@ -60,7 +56,7 @@ const TagSelectComponent = ({
       isHasIcon={false}
     >
       <View className='flex-row flex-wrap gap-2 mt-2'>
-        {tagEnum.map((tag) => (
+        {data.map((tag) => (
           <View
             key={tag.value}
             className={`px-3 rounded  py-4 border-2 flex items-center justify-center ${

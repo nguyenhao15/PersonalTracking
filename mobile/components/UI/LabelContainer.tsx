@@ -12,6 +12,7 @@ interface LabelContainerProps {
   iconColor?: string;
   direction?: 'row' | 'column';
   onPress?: () => void;
+  isLoading?: boolean;
 }
 
 const LabelContainer = ({
@@ -50,7 +51,7 @@ const LabelContainer = ({
           </Text>
           {children}
           {errorMessage && (
-            <Text className='text-red-400 text-xs font-bold '>
+            <Text className='text-red-400 mt-2 text-xs font-bold '>
               {errorMessage}
             </Text>
           )}

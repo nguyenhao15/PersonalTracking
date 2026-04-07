@@ -1,6 +1,7 @@
 import { BaseAuditEntity } from 'src/core/security/common/entities/base.entity';
 import { Column, Entity, OneToMany, Unique } from 'typeorm';
 import { Transaction } from '../../transactions/entities/transaction.entity';
+import { WalletTypeEnum } from '../../utils/app.const';
 
 @Entity()
 export class Wallet extends BaseAuditEntity {
@@ -11,8 +12,12 @@ export class Wallet extends BaseAuditEntity {
   @Column()
   balance: number;
 
-  @Column()
-  walletType: string;
+  @Column({
+    type: 'enum',
+    enum: WalletTypeEnum,
+    default: WalletTypeEnum.CASH,
+  })
+  walletType: WalletTypeEnum;
 
   @Column()
   description: string;
