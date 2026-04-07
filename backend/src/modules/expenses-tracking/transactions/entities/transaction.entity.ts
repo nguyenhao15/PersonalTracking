@@ -8,7 +8,19 @@ import { TagEnum } from '../../utils/app.const';
 @Entity()
 export class Transaction extends BaseAuditEntity {
   @Column()
-  amount: number;
+  baseAmount: number;
+
+  @Column()
+  baseCurrency: string;
+
+  @Column()
+  originalAmount: number;
+
+  @Column()
+  originalCurrency: string;
+
+  @Column({ nullable: false, default: 1 })
+  exchangeRate?: number;
 
   @Column()
   description: string;

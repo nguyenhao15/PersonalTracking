@@ -5,9 +5,29 @@ import { TagEnum } from '../../utils/app.const';
 
 export class CreateTransactionDto {
   @IsInt({
-    message: 'Amount must be a positive integer',
+    message: 'Base amount must be a positive integer',
   })
-  amount: number;
+  baseAmount: number;
+
+  @IsString({
+    message: 'Base currency must be a string',
+  })
+  baseCurrency: string;
+
+  @IsInt({
+    message: 'Original amount must be a positive integer',
+  })
+  originalAmount: number;
+
+  @IsString({
+    message: 'Original currency must be a string',
+  })
+  originalCurrency: string;
+
+  @IsInt({
+    message: 'Exchange rate must be a positive integer',
+  })
+  exchangeRate: number;
 
   @IsString({
     message: 'Description must be a string',

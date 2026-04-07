@@ -22,15 +22,13 @@ export class TransactionsService {
     const wallet = await this.walletService.findOne(
       createTransactionDto.walletId,
     );
-    const category = await this.categoryService.findOne(
-      createTransactionDto.categoryId,
-    );
+    await this.categoryService.findOne(createTransactionDto.categoryId);
     const transaction = this.transactionRepository.create(createTransactionDto);
 
     const updateAmount =
       createTransactionDto.transactionType === CategoryType.EXPENSE
-        ? -createTransactionDto.amount
-        : createTransactionDto.amount;
+        ? -createTransactionDto.baseAmount
+        : createTransactionDto.baseAmount;
 
     await this.walletService.updateBalance(wallet, updateAmount);
     return this.transactionRepository.save(transaction);
@@ -49,7 +47,10 @@ export class TransactionsService {
       .leftJoin('transaction.category', 'category')
       .select([
         'transaction.id',
-        'transaction.amount',
+        'transaction.baseAmount',
+        'transaction.baseCurrency',
+        'transaction.originalAmount',
+        'transaction.originalCurrency',
         'transaction.description',
         'transaction.date',
         'transaction.tag',
@@ -84,8 +85,8 @@ export class TransactionsService {
     const newTransactionType =
       updateTransactionDto.transactionType ?? transaction.transactionType;
 
-    const oldAmount = transaction.amount;
-    const newAmount = updateTransactionDto.amount ?? transaction.amount;
+    const oldAmount = transaction.baseAmount;
+    const newAmount = updateTransactionDto.baseAmount ?? transaction.baseAmount;
 
     const wallet = await this.walletService.findOne(
       transaction.wallet?.id ?? transaction.wallet.id,
@@ -113,7 +114,7 @@ export class TransactionsService {
     if (!transaction) {
       return null;
     }
-    const amount = transaction.amount ?? 0;
+    const amount = transaction.baseAmount ?? 0;
     const wallet = await this.walletService.findOne(
       transaction.wallet?.id ?? transaction.wallet.id,
     );
