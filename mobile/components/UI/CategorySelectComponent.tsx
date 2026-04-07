@@ -81,7 +81,7 @@ const CategorySelectComponent = ({
           data={formatCategories()}
           isLoading={isLoading}
           error={error}
-          selectedCategory={selectedCategory?.id}
+          selectedItem={selectedCategory?.id}
           placeholder='Select a category...'
           onSelect={handleSelectCategory}
         />

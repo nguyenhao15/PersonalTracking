@@ -8,6 +8,7 @@ import LabelContainer from './LabelContainer';
 
 interface WalletSelectComponentProps {
   onSelectWallet: (wallet: any) => void;
+  onBlur?: () => void;
   initialWallet: any;
   resetAction?: () => void;
   errorMessage?: string;
@@ -15,6 +16,7 @@ interface WalletSelectComponentProps {
 
 const WalletSelectComponent = ({
   onSelectWallet,
+  onBlur,
   initialWallet,
   resetAction,
   errorMessage,
@@ -51,6 +53,7 @@ const WalletSelectComponent = ({
   const handleSelectWallet = (wallet: any) => {
     setSelectedWallet(wallet);
     onSelectWallet && onSelectWallet(wallet.id);
+    onBlur && onBlur();
     setOpenModal(false);
   };
 
@@ -76,9 +79,15 @@ const WalletSelectComponent = ({
           data={formatWallets()}
           isLoading={isLoading}
           error={error}
-          selectedCategory={selectedWallet?.id}
+          selectedItem={selectedWallet?.id}
           placeholder='Select a wallet...'
           onSelect={handleSelectWallet}
+          canAddNewItem={true}
+          addLabel='Add New Wallet'
+          addBehavior={() => {
+            // Handle add new wallet behavior here
+            setOpenModal(false);
+          }}
         />
       </BaseModal>
     </View>

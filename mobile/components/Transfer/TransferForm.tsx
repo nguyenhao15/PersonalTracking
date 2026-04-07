@@ -4,11 +4,11 @@ import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import z from 'zod';
-import AmountInputComponent from './UI/AmountInputComponent';
-import DatePickerComponent from './UI/DatePickerComponent';
-import InputInlineComponent from './UI/InputInlineComponent';
-import InputWithModalComponent from './UI/InputWithModalComponent';
-import WalletSelectComponent from './UI/WalletSelectComponent';
+import AmountInputComponent from '../UI/AmountInputComponent';
+import DatePickerComponent from '../UI/DatePickerComponent';
+import InputInlineComponent from '../UI/InputInlineComponent';
+import InputWithModalComponent from '../UI/InputWithModalComponent';
+import WalletSelectComponent from '../UI/WalletSelectComponent';
 
 type TransferFormProps = {
   onSubmitTransfer?: (data: TransferInput) => Promise<void> | void;
@@ -69,17 +69,10 @@ const TransferForm = ({ onSubmitTransfer }: TransferFormProps) => {
 
   return (
     <ScrollView className='p-4 gap-4'>
-      <Controller
+      <AmountInputComponent
         control={control}
         name='amount'
-        render={({ field: { onChange, onBlur, value } }) => (
-          <AmountInputComponent
-            value={value ? String(value) : ''}
-            onChange={onChange}
-            onBlur={onBlur}
-            errorMessage={errors.amount?.message}
-          />
-        )}
+        errorMessage={errors.amount?.message}
       />
 
       <View className='gap-4 mb-6'>
@@ -103,6 +96,7 @@ const TransferForm = ({ onSubmitTransfer }: TransferFormProps) => {
             <WalletSelectComponent
               initialWallet={value}
               onSelectWallet={onChange}
+              onBlur={onBlur}
               resetAction={reset}
               errorMessage={errors.toWalletId?.message}
             />
@@ -120,27 +114,23 @@ const TransferForm = ({ onSubmitTransfer }: TransferFormProps) => {
           initialValue={watch('date')}
         />
 
-        <Controller
-          control={control}
+        <InputInlineComponent
+          label='Transfer Fee'
           name='fee'
-          render={({ field: { onChange, onBlur, value } }) => (
-            <InputInlineComponent
-              label='Transfer Fee'
-              iconName='cash'
-              iconColor='gray'
-              placeholder='0'
-              value={value ? String(value) : ''}
-              onChange={onChange}
-              onBlur={onBlur}
-              errorMessage={errors.fee?.message}
-            />
-          )}
+          control={control}
+          iconName='cash'
+          iconColor='gray'
+          placeholder='0'
+          errorMessage={errors.fee?.message}
         />
 
         <InputWithModalComponent
           label='Description'
           iconName='pencil'
           iconColor='gray'
+          control={control}
+          name='description'
+          errorMessage={errors.description?.message}
           placeholder='Add transfer note...'
           onChangeAction={(text) =>
             setValue('description', text, { shouldValidate: true })

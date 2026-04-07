@@ -1,25 +1,37 @@
 import React, { useState } from 'react';
-import { FlatList, Text, TextInput, View } from 'react-native';
+import {
+  FlatList,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import CategoryCard from './Category/ItemCard';
 import ErrorPage from './ErrorPage';
 import LoadingPage from './LoadingPage';
 
 interface CardSelectListProps {
-  selectedCategory?: any;
+  selectedItem?: any;
   onSelect: (category: string) => void;
   data: any[];
   placeholder: string;
   isLoading?: boolean;
   error?: any;
+  canAddNewItem?: boolean;
+  addBehavior?: () => void;
+  addLabel?: string;
 }
 
 const CardSelectList = ({
-  selectedCategory,
+  selectedItem,
   onSelect,
   data,
   placeholder,
   isLoading,
   error,
+  canAddNewItem = false,
+  addBehavior,
+  addLabel = 'Add New',
 }: CardSelectListProps) => {
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -31,6 +43,16 @@ const CardSelectList = ({
 
   return (
     <View className='p-4 h-full items-center justify-center'>
+      <TouchableOpacity className='self-end'>
+        {canAddNewItem && (
+          <Text
+            className='text-white w-fit bg-[#2a9d8f] rounded border-transparent shadow-black p-2 text-md font-bold mb-4'
+            onPress={addBehavior}
+          >
+            {addLabel}
+          </Text>
+        )}
+      </TouchableOpacity>
       <TextInput
         className='w-full p-2 mb-4 border rounded'
         placeholder={placeholder}
@@ -38,8 +60,10 @@ const CardSelectList = ({
         onChangeText={setSearchQuery}
       />
 
-      <Text className='text-lg font-bold mb-4'>Select Category</Text>
-      {isLoading && <LoadingPage message='Loading categories...' />}
+      <Text className='text-lg font-bold mb-4'>{placeholder}</Text>
+      {isLoading && (
+        <LoadingPage message={`Loading ${placeholder.toLowerCase()}...`} />
+      )}
       {error && (
         <ErrorPage
           error={error.response?.data?.message || 'An error occurred'}
@@ -57,7 +81,7 @@ const CardSelectList = ({
                 title={item?.titleField || item?.name || ''}
                 description={item?.descriptionField || ''}
                 onPress={() => onSelect(item)}
-                isSelected={selectedCategory === item?.id}
+                isSelected={selectedItem === item?.id}
               />
             </View>
           )}

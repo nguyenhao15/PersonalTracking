@@ -82,20 +82,15 @@ const TransactionForm = ({ type }: { type: 'expense' | 'income' }) => {
     }
   };
 
+  console.log('Errors: ', errors);
+
   return (
     <ScrollView className='p-4 gap-4'>
       <View className='gap-4 mb-2'>
-        <Controller
+        <AmountInputComponent
           control={control}
           name='amount'
-          render={({ field: { onChange, onBlur, value } }) => (
-            <AmountInputComponent
-              value={value ? String(value) : ''}
-              onChange={onChange}
-              onBlur={onBlur}
-              errorMessage={errors.amount?.message}
-            />
-          )}
+          errorMessage={errors.amount?.message}
         />
 
         <Controller
@@ -121,6 +116,7 @@ const TransactionForm = ({ type }: { type: 'expense' | 'income' }) => {
               initialWallet={value}
               onSelectWallet={onChange}
               resetAction={reset}
+              errorMessage={errors.walletId?.message}
             />
           )}
         />
@@ -134,6 +130,7 @@ const TransactionForm = ({ type }: { type: 'expense' | 'income' }) => {
               initialCategory={value}
               resetActions={reset}
               onSelectCategory={onChange}
+              errorMessage={errors.categoryId?.message}
             />
           )}
         />
@@ -150,30 +147,39 @@ const TransactionForm = ({ type }: { type: 'expense' | 'income' }) => {
           <Controller
             control={control}
             name='tag'
-            render={({ field: { onChange, onBlur, value } }) => (
+            render={({ field: { onChange, value, ...field } }) => (
               <TagSelectComponent
                 onChangeTag={onChange}
                 initialTag={value}
                 onResetAction={reset}
+                {...field}
+                errorMessage={errors.tag?.message}
               />
             )}
           />
         )}
-        <LabelContainer
-          isHasIcon={false}
-          iconColor='black'
-          direction='column'
-          label='Excluded Report'
-          isRequired={true}
-          errorMessage={errors.excludedFromReports?.message}
-        >
-          <SwitchControl
-            isLabelVisible={false}
-            label={excludedFromReports ? 'Yes' : 'No'}
-            onChangeAction={(value) => setValue('excludedFromReports', value)}
-            defaultValue={excludedFromReports}
-          />
-        </LabelContainer>
+        <Controller
+          name='excludedFromReports'
+          control={control}
+          render={({ field: { onChange, value, ...field } }) => (
+            <LabelContainer
+              isHasIcon={false}
+              iconColor='black'
+              direction='column'
+              label='Excluded Report'
+              isRequired={true}
+              errorMessage={errors.excludedFromReports?.message}
+            >
+              <SwitchControl
+                isLabelVisible={false}
+                label={value ? 'Yes' : 'No'}
+                onChangeAction={onChange}
+                defaultValue={value}
+                {...field}
+              />
+            </LabelContainer>
+          )}
+        />
 
         <TouchableOpacity
           onPress={handleSubmit(onSubmit)}

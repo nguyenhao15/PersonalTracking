@@ -7,9 +7,9 @@ interface LabelContainerProps {
   children: React.ReactNode;
   isRequired?: boolean;
   errorMessage?: string;
-  isHasIcon: boolean;
+  isHasIcon?: boolean;
   iconName?: string;
-  iconColor: string;
+  iconColor?: string;
   direction?: 'row' | 'column';
   onPress?: () => void;
 }
@@ -25,9 +25,12 @@ const LabelContainer = ({
   iconColor = 'tomato',
   onPress,
 }: LabelContainerProps) => {
+  const isError = !!errorMessage;
   return (
     <Pressable className='gap-2' onPress={onPress}>
-      <View className='flex flex-row items-center gap-3 p-6 bg-white rounded-lg shadow-md'>
+      <View
+        className={`flex flex-row items-center gap-3 p-6 bg-white rounded-lg shadow-md ${isError ? 'border border-red-500' : ''}`}
+      >
         {isHasIcon && (
           <Ionicons
             name={
@@ -46,11 +49,13 @@ const LabelContainer = ({
             {isRequired && <Text className='text-red-500'>*</Text>}
           </Text>
           {children}
+          {errorMessage && (
+            <Text className='text-red-400 text-xs font-bold '>
+              {errorMessage}
+            </Text>
+          )}
         </View>
       </View>
-      {errorMessage && (
-        <Text className='text-red-400 font-bold '>{errorMessage}</Text>
-      )}
     </Pressable>
   );
 };

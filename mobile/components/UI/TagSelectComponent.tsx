@@ -12,12 +12,16 @@ interface TagSelectComponentProps {
   onChangeTag: (tag: string) => void;
   initialTag: 'nice-to-have' | 'must-have' | 'not-necessary' | '';
   onResetAction?: () => void;
+  errorMessage?: string;
+  rest?: any;
 }
 
 const TagSelectComponent = ({
   onChangeTag,
   initialTag,
   onResetAction,
+  errorMessage,
+  ...rest
 }: TagSelectComponentProps) => {
   const [selectedTag, setSelectedTag] = useState('');
 
@@ -52,6 +56,7 @@ const TagSelectComponent = ({
       iconName='tag'
       iconColor='#f59e0b'
       isRequired
+      errorMessage={errorMessage}
       isHasIcon={false}
     >
       <View className='flex-row flex-wrap gap-2 mt-2'>
@@ -64,6 +69,7 @@ const TagSelectComponent = ({
                 : 'border-gray-300'
             }`}
             onTouchEnd={() => handleTagPress(tag.value)}
+            {...rest}
           >
             <Text className='text-md text-slate-900 font-bold'>
               {tag.label}

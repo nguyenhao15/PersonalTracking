@@ -1,49 +1,118 @@
 import React, { useState } from 'react';
+import { Controller, FieldPath, FieldValues } from 'react-hook-form';
 import { Text, TextInput, TouchableOpacity, View } from 'react-native';
+import BaseModal from '../BaseModal';
 
-interface AmountInputComponentProps {
+interface AmountInputComponentProps<
+  TFieldValues extends FieldValues = FieldValues,
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
+> {
   value?: string | number;
-  onChange: (text: string) => void;
-  onBlur: () => void;
+  onChange?: (text: string) => void;
+  onBlur?: () => void;
+  control?: any;
+  name?: TName;
   errorMessage?: string;
 }
 
-const AmountInputComponent = ({
+const AmountInputComponent = <
+  TFieldValues extends FieldValues = FieldValues,
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
+>({
   value,
   onChange,
   onBlur,
   errorMessage,
-}: AmountInputComponentProps) => {
+  control,
+  name,
+}: AmountInputComponentProps<TFieldValues, TName>) => {
   const [isCardModalOpen, setCardModalOpen] = useState(false);
 
-  const handleOpenCardModal = (title: string) => {
+  const handleOpenCardModal = () => {
     setCardModalOpen(true);
   };
+
+  const renderAmountInput = (
+    fieldValue: string | number,
+    fieldOnChange: (text: string) => void,
+    fieldOnBlur: () => void,
+    restFieldProps = {},
+  ) => (
+    <TextInput
+      style={{
+        width: '100%',
+        fontSize: 30,
+        textAlign: 'center',
+        padding: 20,
+        borderBottomWidth: 1,
+        borderColor: errorMessage ? '#ef4444' : '#ccc',
+        marginBottom: 10,
+      }}
+      keyboardType='numeric'
+      placeholder='0'
+      value={fieldValue ? String(fieldValue) : ''}
+      onChangeText={fieldOnChange}
+      onBlur={fieldOnBlur}
+    />
+  );
 
   return (
     <View className='mb-10 gap-4 h-32 items-center justify-between'>
       <TouchableOpacity
-        onPress={() => handleOpenCardModal('Choose currency')}
+        onPress={handleOpenCardModal}
         className='self-start items-center justify-center mx-auto mb-1 px-3 py-2 bg-gray-200 rounded-md'
       >
         <Text className='font-bold'>VND</Text>
       </TouchableOpacity>
 
-      <TextInput
-        style={{
-          width: '100%',
-          fontSize: 30,
-          textAlign: 'center',
-          padding: 20,
-          borderBottomWidth: 1,
-          borderColor: errorMessage ? '#ef4444' : '#ccc',
-          marginBottom: 10,
-        }}
-        keyboardType='numeric'
-        placeholder='0'
-        onChangeText={onChange}
-        onBlur={onBlur}
-      />
+      {control && name ? (
+        <Controller
+          control={control}
+          name={name}
+          render={({
+            field: {
+              onChange: fieldOnChange,
+              onBlur: fieldOnBlur,
+              value: fieldValue,
+              ...restFieldProps
+            },
+          }) =>
+            renderAmountInput(
+              fieldValue,
+              fieldOnChange,
+              fieldOnBlur,
+              restFieldProps,
+            )
+          }
+        />
+      ) : (
+        renderAmountInput(
+          value || '',
+          onChange || (() => {}),
+          onBlur || (() => {}),
+        )
+      )}
+      {errorMessage ? (
+        <Text className='text-red-500 text-sm'>{errorMessage}</Text>
+      ) : null}
+      <BaseModal
+        visible={isCardModalOpen}
+        onClose={() => setCardModalOpen(false)}
+      >
+        <View className='p-4'>
+          <Text className='text-lg font-bold mb-4'>Select Currency</Text>
+          {/* Add your currency selection options here */}
+          <TouchableOpacity
+            onPress={() => {
+              // Handle currency selection logic here
+              setCardModalOpen(false);
+            }}
+            className='w-full py-3 rounded-md items-center justify-center mt-2 bg-blue-500'
+          >
+            <Text className='text-white font-bold'>VND</Text>
+          </TouchableOpacity>
+        </View>
+      </BaseModal>
     </View>
   );
 };

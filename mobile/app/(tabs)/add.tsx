@@ -1,7 +1,7 @@
 import SafeScreen from '@/components/SafeScreen';
 import TabChoices from '@/components/TabChoices';
 import TransactionForm from '@/components/TransactionForm/TransactionForm';
-import TransferForm from '@/components/TransferForm';
+import TransferForm from '@/components/Transfer/TransferForm';
 import { TransactionInput } from '@/validations/transactionSchema';
 import React, { useState } from 'react';
 import { View } from 'react-native';

@@ -6,6 +6,7 @@ interface SwitchControlProps {
   label: string;
   onChangeAction?: (value: boolean) => void;
   defaultValue?: boolean;
+  rest?: any;
 }
 
 const SwitchControl = ({
@@ -13,6 +14,7 @@ const SwitchControl = ({
   defaultValue = false,
   isLabelVisible = true,
   label,
+  rest,
 }: SwitchControlProps) => {
   const [isEnabled, setIsEnabled] = useState(defaultValue);
   const toggleSwitch = () => {
@@ -32,6 +34,7 @@ const SwitchControl = ({
         ios_backgroundColor={'grey'}
         onValueChange={toggleSwitch}
         value={isEnabled}
+        {...rest}
       />
       {isLabelVisible && <Text className='ml-2 text-xl'>{label}</Text>}
     </View>

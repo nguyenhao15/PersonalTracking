@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Controller } from 'react-hook-form';
 import { Text, TextInput, View } from 'react-native';
 import BaseModal from '../BaseModal';
 import LabelContainer from './LabelContainer';
@@ -12,6 +13,9 @@ interface TextInputComponentProps {
   onChangeAction: (text: string) => void;
   initialValue?: string;
   onResetAction?: () => void;
+  control?: any;
+  name?: string;
+  errorMessage?: string;
 }
 
 const InputWithModalComponent = ({
@@ -23,13 +27,15 @@ const InputWithModalComponent = ({
   onChangeAction,
   initialValue,
   onResetAction,
+  control,
+  name,
+  errorMessage,
 }: TextInputComponentProps) => {
   const [content, setContent] = useState(initialValue || '');
   const [openModal, setOpenModal] = useState(false);
 
   const handleOnChangeAction = (text: string) => {
     setContent(text);
-    onChangeAction && onChangeAction(text);
     setOpenModal(false);
   };
 
@@ -40,6 +46,30 @@ const InputWithModalComponent = ({
     }
   }, [onResetAction]);
 
+  const renderInput = ({
+    fieldChange,
+    fieldValue,
+    fieldBlur,
+    ...rest
+  }: {
+    fieldChange: (text: string) => void;
+    fieldValue: string;
+    fieldBlur: () => void;
+  }) => (
+    <TextInput
+      className='w-full p-2 my-4 rounded'
+      placeholder={placeholder || 'Enter text...'}
+      value={content}
+      onChangeText={setContent}
+      returnKeyType='done'
+      autoFocus
+      returnKeyLabel='Done'
+      onSubmitEditing={() => fieldChange(content)}
+      onBlur={fieldBlur}
+      {...rest}
+    />
+  );
+
   return (
     <View className='flex gap-2'>
       <LabelContainer
@@ -49,6 +79,7 @@ const InputWithModalComponent = ({
         label={label}
         isRequired={isRequired}
         onPress={() => setOpenModal(true)}
+        errorMessage={errorMessage}
       >
         <Text
           className={`${content ? 'font-bold text-black ' : 'text-gray-500'} mt-2 self-start text-lg`}
@@ -61,16 +92,26 @@ const InputWithModalComponent = ({
         visible={openModal}
         onClose={() => setOpenModal(false)}
       >
-        <TextInput
-          className='w-full p-2 my-4 rounded'
-          placeholder={placeholder || 'Enter text...'}
-          value={content}
-          onChangeText={setContent}
-          returnKeyType='done'
-          autoFocus
-          returnKeyLabel='Done'
-          onSubmitEditing={() => handleOnChangeAction(content)}
-        />
+        {control && name ? (
+          <Controller
+            control={control}
+            name={name}
+            render={({ field: { onChange, onBlur, value, ...field } }) =>
+              renderInput({
+                fieldChange: onChange,
+                fieldValue: value,
+                fieldBlur: onBlur,
+                ...field,
+              })
+            }
+          />
+        ) : (
+          renderInput({
+            fieldChange: handleOnChangeAction,
+            fieldValue: content,
+            fieldBlur: () => {},
+          })
+        )}
       </BaseModal>
     </View>
   );
