@@ -2,12 +2,12 @@ import { WALLET_API } from '@/const/api.endpoiont';
 import axiosClient from '@/lib/axiosClient';
 
 export const walletApi = {
-  getUserWallets: () => {
-    return axiosClient.get(`${WALLET_API}/user/all`);
+  getUserWallets: ({ signal }: { signal?: AbortSignal }) => {
+    return axiosClient.get(`${WALLET_API}/user/all`, { signal });
   },
 
-  getWalletBalance: () => {
-    return axiosClient.get(`${WALLET_API}/user/total-balance`);
+  getWalletBalance: ({ signal }: { signal?: AbortSignal }) => {
+    return axiosClient.get(`${WALLET_API}/user/total-balance`, { signal });
   },
 
   createWallet: (data: any) => {

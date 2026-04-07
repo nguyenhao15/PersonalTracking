@@ -1,14 +1,11 @@
 import { getCategoryActions } from '@/actions/categoryActions';
-import { useQuery } from '@tanstack/react-query';
+import { useAppQuery } from '@/lib/queryHelpers';
 
 export const useGetCategories = (type: 'expense' | 'income', options = {}) => {
-  return useQuery({
+  return useAppQuery({
     queryKey: ['categories', type],
-    queryFn: async () => {
-      const response = await getCategoryActions(type);
-      return response;
-    },
-    staleTime: 'static',
+    request: async ({ signal }) => getCategoryActions({ type: type, signal }),
+    params: { type },
     ...options,
   });
 };

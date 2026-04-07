@@ -78,6 +78,8 @@ const CategorySelectComponent = ({
       </LabelContainer>
       <BaseModal visible={openModal} onClose={() => setOpenModal(false)}>
         <CardSelectList
+          addLabel={'Add Category'}
+          canAddNewItem
           data={formatCategories()}
           isLoading={isLoading}
           error={error}

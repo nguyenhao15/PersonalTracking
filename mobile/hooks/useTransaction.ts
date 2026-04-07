@@ -2,19 +2,20 @@ import {
   createTransactionAction,
   getTransactionAction,
 } from '@/actions/transactionActions';
+import { useAppQuery } from '@/lib/queryHelpers';
 import { TransactionInput } from '@/validations/transactionSchema';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 export const useGetTransactions = () => {
-  return useQuery({
+  return useAppQuery({
     queryKey: ['transactions'],
-    queryFn: async () => {
-      const res = await getTransactionAction();
+    request: async ({ signal }) => {
+      const res = await getTransactionAction({ signal });
       return res;
     },
+    params: {},
     throwOnError: true,
     retry: false,
-    staleTime: 1000 * 60 * 5, // 5 minutes
   });
 };
 

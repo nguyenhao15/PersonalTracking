@@ -105,7 +105,6 @@ const WalletSelectComponent = ({
             canAddNewItem={true}
             addLabel='Add New Wallet'
             addBehavior={() => {
-              // Handle add new wallet behavior here
               setAddingNewWallet(true);
             }}
           />

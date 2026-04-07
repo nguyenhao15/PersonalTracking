@@ -73,7 +73,7 @@ const TransferForm = ({ onSubmitTransfer }: TransferFormProps) => {
       <AmountInputComponent
         control={control}
         originalAmountFieldName='amount'
-        errorMessage={errors.amount?.message}
+        errorMessage={errors?.amount?.message}
         isDisabled={isSubmitting}
         isLoading={isSubmitting}
       />

@@ -66,6 +66,10 @@ const AmountInputComponent = <
     ...restFieldProps: any
   ) => {
     const onChangeText = (text: string) => {
+      if (text === '') {
+        fieldOnChange('');
+        return;
+      }
       const rawValue = text.replace(/\./g, '');
       const updateValue = Number(rawValue);
       fieldOnChange(updateValue.toString());
@@ -87,7 +91,7 @@ const AmountInputComponent = <
         keyboardType='numeric'
         placeholder='0'
         placeholderTextColor='#9ca3af'
-        value={formatThousands(Number(fieldValue))}
+        value={fieldValue && formatThousands(Number(fieldValue))}
         onChangeText={onChangeText}
         isDisabled={isDisabled}
         editable={!isDisabled && !isLoading}

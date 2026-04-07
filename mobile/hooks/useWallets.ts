@@ -3,27 +3,27 @@ import {
   getTotalBalanceByWallet,
   getWalletByUser,
 } from '@/actions/walletActions';
+import { useAppQuery } from '@/lib/queryHelpers';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 export const useGetWallets = () => {
-  return useQuery({
+  return useAppQuery({
     queryKey: ['wallets'],
-    queryFn: async () => {
-      const res = await getWalletByUser();
+    request: async ({ signal }) => {
+      const res = await getWalletByUser({ signal });
       return res;
     },
-    staleTime: 'static',
+    params: {},
   });
 };
 
 export const useGetWalletBalance = () => {
   return useQuery({
     queryKey: ['walletBalance'],
-    queryFn: async () => {
-      const res = await getTotalBalanceByWallet();
+    queryFn: async ({ signal }) => {
+      const res = await getTotalBalanceByWallet({ signal });
       return res;
     },
-    staleTime: 'static',
   });
 };
 

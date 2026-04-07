@@ -1,7 +1,11 @@
 import { transactionApi } from '@/api/transaction.api';
 
-export const getTransactionAction = async () => {
-  const res = await transactionApi.getTransactions();
+export const getTransactionAction = async ({
+  signal,
+}: {
+  signal?: AbortSignal;
+}) => {
+  const res = await transactionApi.getTransactions({ signal });
   return res.data;
 };
 

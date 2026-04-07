@@ -2,7 +2,15 @@ import { CATEGORIES_API } from '@/const/api.endpoiont';
 import axiosClient from '@/lib/axiosClient';
 
 export const categoryApi = {
-  getCategories: async (type: 'expense' | 'income') => {
-    return await axiosClient.get(`${CATEGORIES_API}/user/categories/${type}`);
+  getCategories: async ({
+    type,
+    signal,
+  }: {
+    type: 'expense' | 'income';
+    signal?: AbortSignal;
+  }) => {
+    return await axiosClient.get(`${CATEGORIES_API}/user/categories/${type}`, {
+      signal,
+    });
   },
 };
