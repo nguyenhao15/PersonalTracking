@@ -12,7 +12,9 @@ module.exports = {
           dark: '#1AA34A',
         },
         background: {
-          DEFAULT: '#fefae0', // light background
+          DEFAULT: '#121212', // dark background
+          light: '#181818',
+          lighter: '#282828',
         },
         surface: {
           DEFAULT: '#282828',

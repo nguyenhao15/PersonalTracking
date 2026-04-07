@@ -4,7 +4,7 @@ import {
   transactionSchema,
 } from '@/validations/transactionSchema';
 import { zodResolver } from '@hookform/resolvers/zod';
-import React, { useState } from 'react';
+import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 
@@ -18,10 +18,6 @@ import TagSelectComponent from '../UI/TagSelectComponent';
 import WalletSelectComponent from '../UI/WalletSelectComponent';
 
 const TransactionForm = ({ type }: { type: 'expense' | 'income' }) => {
-  const [isCardModalOpen, setCardModalOpen] = useState(false);
-  const [labelObject, setLabelObject] = useState<{ [key: string]: string }>({});
-  const [modalTitle, setModalTitle] = useState('');
-
   const {
     mutateAsync,
     isPending,
@@ -100,7 +96,7 @@ const TransactionForm = ({ type }: { type: 'expense' | 'income' }) => {
             <DatePickerComponent
               label='Date'
               iconName='calendar'
-              iconColor='black'
+              iconColor='white'
               placeholder='Select a date...'
               onChangeAction={onChange}
               initialValue={value}
@@ -137,7 +133,7 @@ const TransactionForm = ({ type }: { type: 'expense' | 'income' }) => {
         <InputWithModalComponent
           label='Description'
           iconName='pencil'
-          iconColor='gray'
+          iconColor='white'
           placeholder='Enter description...'
           onChangeAction={(text) => setValue('description', text)}
           initialValue={watch('description') || ''}
@@ -164,7 +160,7 @@ const TransactionForm = ({ type }: { type: 'expense' | 'income' }) => {
           render={({ field: { onChange, value, ...field } }) => (
             <LabelContainer
               isHasIcon={false}
-              iconColor='black'
+              iconColor='white'
               direction='column'
               label='Excluded Report'
               isRequired={true}

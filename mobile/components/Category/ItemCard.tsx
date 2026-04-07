@@ -1,5 +1,5 @@
-import { View, Text, Pressable } from 'react-native';
 import React from 'react';
+import { Pressable, Text, View } from 'react-native';
 
 const CategoryCard = ({
   isSelected,
@@ -21,15 +21,15 @@ const CategoryCard = ({
   return (
     <Pressable onPress={handleOnPress}>
       <View
-        className={`p-4 rounded-lg shadow-md ${isSelected ? 'bg-blue-500' : 'bg-white'}`}
+        className={`p-4 rounded-lg shadow-md ${isSelected ? 'bg-primary' : 'bg-background-lighter'}`}
       >
         <Text
-          className={`text-lg font-bold mb-2 ${isSelected ? 'text-white' : 'text-black'}`}
+          className={`text-lg font-bold mb-2 ${isSelected ? 'text-white' : 'text-text-primary'}`}
         >
           {title}
         </Text>
         <Text
-          className={`text-sm ${isSelected ? 'text-white' : 'text-gray-500'}`}
+          className={`text-sm ${isSelected ? 'text-white' : 'text-text-secondary'}`}
         >
           {description}
         </Text>

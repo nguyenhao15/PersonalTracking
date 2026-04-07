@@ -9,7 +9,13 @@ import { useInitialData } from '@/hooks/useInitialData';
 import { useAuthStore } from '@/stores/AuthStores';
 import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
-import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import {
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  useColorScheme,
+  View,
+} from 'react-native';
 
 const Home = () => {
   const { userInfo, accessToken, isHydrated } = useAuthStore();
@@ -20,6 +26,7 @@ const Home = () => {
   const handleLogout = () => {
     logout();
   };
+  const userTheme = useColorScheme();
 
   if (isLoading) {
     return <LoadingPage message='Loading expenses...' />;
@@ -32,7 +39,7 @@ const Home = () => {
   return (
     <SafeScreen>
       <ScrollView
-        className='flex-1'
+        className={`flex-1 bg-background-${userTheme} p-2`}
         contentContainerStyle={{ paddingBottom: 100 }}
         showsVerticalScrollIndicator={false}
       >

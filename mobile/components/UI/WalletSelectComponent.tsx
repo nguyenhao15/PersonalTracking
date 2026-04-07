@@ -61,7 +61,7 @@ const WalletSelectComponent = ({
     <View className='flex gap-2'>
       <LabelContainer
         isHasIcon
-        iconColor='black'
+        iconColor='white'
         iconName='wallet'
         label='Wallet'
         isRequired={true}
@@ -69,7 +69,7 @@ const WalletSelectComponent = ({
         onPress={() => setOpenModal(true)}
       >
         <Text
-          className={`${selectedWallet ? 'font-bold text-black ' : 'text-gray-500'} mt-2 self-start text-lg`}
+          className={`${selectedWallet ? 'font-bold text-text-primary' : 'text-text-secondary'} mt-2 self-start text-lg`}
         >
           {selectedWallet ? selectedWallet.titleField : 'Select a wallet...'}
         </Text>

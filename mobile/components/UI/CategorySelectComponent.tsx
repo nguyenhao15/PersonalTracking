@@ -61,7 +61,7 @@ const CategorySelectComponent = ({
     <View className='flex gap-2'>
       <LabelContainer
         isHasIcon
-        iconColor='black'
+        iconColor='white'
         iconName='pricetag'
         label='Category'
         isRequired={true}
@@ -69,7 +69,7 @@ const CategorySelectComponent = ({
         onPress={() => setOpenModal(true)}
       >
         <Text
-          className={`${selectedCategory ? 'font-bold text-black ' : 'text-gray-500'} mt-2 self-start text-lg`}
+          className={`${selectedCategory ? 'font-bold text-white ' : 'text-gray-500'} mt-2 self-start text-lg`}
         >
           {selectedCategory
             ? selectedCategory.titleField

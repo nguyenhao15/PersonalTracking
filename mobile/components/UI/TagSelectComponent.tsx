@@ -63,15 +63,15 @@ const TagSelectComponent = ({
         {tagEnum.map((tag) => (
           <View
             key={tag.value}
-            className={`px-3 rounded bg-white-100 py-4 border-2 flex items-center justify-center ${
+            className={`px-3 rounded  py-4 border-2 flex items-center justify-center ${
               selectedTag === tag.value
-                ? 'border-yellow-500'
-                : 'border-gray-300'
+                ? 'bg-primary border-primary'
+                : 'bg-background-light border-gray-300'
             }`}
             onTouchEnd={() => handleTagPress(tag.value)}
             {...rest}
           >
-            <Text className='text-md text-slate-900 font-bold'>
+            <Text className='text-md text-text-primary font-bold'>
               {tag.label}
             </Text>
           </View>

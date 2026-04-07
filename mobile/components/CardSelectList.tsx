@@ -54,13 +54,16 @@ const CardSelectList = ({
         )}
       </TouchableOpacity>
       <TextInput
-        className='w-full p-2 mb-4 border rounded'
+        className='w-full p-4 mb-4 border rounded text-text-primary'
         placeholder={placeholder}
+        placeholderTextColor='#888'
         value={searchQuery}
         onChangeText={setSearchQuery}
       />
 
-      <Text className='text-lg font-bold mb-4'>{placeholder}</Text>
+      <Text className='text-lg font-bold mb-4 text-text-primary'>
+        {placeholder}
+      </Text>
       {isLoading && (
         <LoadingPage message={`Loading ${placeholder.toLowerCase()}...`} />
       )}

@@ -22,14 +22,14 @@ const LabelContainer = ({
   isHasIcon = false,
   iconName = 'alert-circle',
   direction = 'column',
-  iconColor = 'tomato',
+  iconColor = 'white',
   onPress,
 }: LabelContainerProps) => {
   const isError = !!errorMessage;
   return (
     <Pressable className='gap-2' onPress={onPress}>
       <View
-        className={`flex flex-row items-center gap-3 p-6 bg-white rounded-lg shadow-md ${isError ? 'border border-red-500' : ''}`}
+        className={`flex flex-row items-center gap-3 p-6 bg-background-lighter rounded-lg shadow-md ${isError ? 'border border-red-500' : ''}`}
       >
         {isHasIcon && (
           <Ionicons
@@ -37,14 +37,14 @@ const LabelContainer = ({
               (iconName as keyof typeof Ionicons.glyphMap) || 'alert-circle'
             }
             size={15}
-            color={iconColor}
+            color={isError ? 'red' : iconColor}
           />
         )}
 
         <View
           className={`flex-1 ${direction === 'row' ? 'flex-row items-center' : 'flex-col items-start'}  px-2`}
         >
-          <Text className='text-xs text-slate-500 font-bold'>
+          <Text className='text-xs font-bold text-text-primary'>
             {label}
             {isRequired && <Text className='text-red-500'>*</Text>}
           </Text>

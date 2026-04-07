@@ -48,7 +48,7 @@ const InputInlineComponent = ({
     fieldBlur: () => void;
   }) => (
     <TextInput
-      className='w-full my-2 p-2 font-bold text-black'
+      className='w-full my-2 p-2 font-bold text-text-primary'
       keyboardType='numeric'
       placeholder={placeholder}
       value={normalizeInputValue(fieldValue)}

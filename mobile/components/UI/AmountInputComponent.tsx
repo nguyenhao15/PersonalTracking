@@ -45,11 +45,13 @@ const AmountInputComponent = <
         textAlign: 'center',
         padding: 20,
         borderBottomWidth: 1,
-        borderColor: errorMessage ? '#ef4444' : '#ccc',
+        borderColor: errorMessage ? '#ef4444' : '#d1d5db',
         marginBottom: 10,
+        color: 'white',
       }}
       keyboardType='numeric'
       placeholder='0'
+      placeholderTextColor='#9ca3af'
       value={fieldValue ? String(fieldValue) : ''}
       onChangeText={fieldOnChange}
       onBlur={fieldOnBlur}
@@ -60,9 +62,9 @@ const AmountInputComponent = <
     <View className='mb-10 gap-4 h-32 items-center justify-between'>
       <TouchableOpacity
         onPress={handleOpenCardModal}
-        className='self-start items-center justify-center mx-auto mb-1 px-3 py-2 bg-gray-200 rounded-md'
+        className='self-start items-center justify-center mx-auto mb-1 px-3 py-2 bg-background-lighter rounded-md'
       >
-        <Text className='font-bold'>VND</Text>
+        <Text className='font-bold text-text-primary'>VND</Text>
       </TouchableOpacity>
 
       {control && name ? (

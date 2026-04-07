@@ -29,20 +29,26 @@ export default function BaseModal({
         className='justify-start'
         style={{
           flex: 1,
-          backgroundColor: 'rgba(0,0,0,0.4)',
+          backgroundColor: 'rgba(0, 0, 0, 0.5)',
         }}
         onPress={onClose}
       />
       <View
         style={{
           height: '90%',
-          backgroundColor: 'white',
+
           padding: 16,
           flexShrink: 1,
         }}
+        className='bg-background-lighter rounded-t-lg absolute bottom-0 left-0 right-0'
       >
         {!!title && (
-          <Text style={{ fontWeight: '700', fontSize: 16 }}>{title}</Text>
+          <Text
+            style={{ fontWeight: '700', fontSize: 16 }}
+            className='text-white text-center mb-4'
+          >
+            {title}
+          </Text>
         )}
         {children}
       </View>

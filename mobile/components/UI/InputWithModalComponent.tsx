@@ -57,7 +57,7 @@ const InputWithModalComponent = ({
     fieldBlur: () => void;
   }) => (
     <TextInput
-      className='w-full p-2 my-4 rounded'
+      className='w-full p-2 my-4 rounded text-text-primary'
       placeholder={placeholder || 'Enter text...'}
       value={content}
       onChangeText={setContent}
