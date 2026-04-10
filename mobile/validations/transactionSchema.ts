@@ -46,3 +46,6 @@ export const transactionSchema = z.object({
 });
 
 export type TransactionInput = z.infer<typeof transactionSchema>;
+export type TransactionInputInform = z.input<typeof transactionSchema>;
+
+export type TransactionOutput = z.output<typeof transactionSchema>;

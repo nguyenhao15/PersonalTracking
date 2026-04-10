@@ -6,20 +6,20 @@ import { Transaction } from '../../transactions/entities/transaction.entity';
 @Entity()
 export class Category extends BaseAuditEntity {
   @Column()
-  name: string;
+  name!: string;
 
   @Column({ nullable: true })
-  description: string;
+  description!: string;
 
   @Column({
     type: 'enum',
     enum: CategoryType,
     default: CategoryType.EXPENSE,
   })
-  categoryType: CategoryType;
+  categoryType!: CategoryType;
 
   @Column({ default: true })
-  isActive: boolean;
+  isActive!: boolean;
 
   @OneToMany(() => Transaction, (transaction) => transaction.category)
   transactions: Transaction[];
@@ -27,5 +27,5 @@ export class Category extends BaseAuditEntity {
   @Column({
     default: true,
   })
-  includeInSummary: boolean;
+  includeInSummary!: boolean;
 }

@@ -1,13 +1,14 @@
 import { useCreateTransaction } from '@/hooks/useTransaction';
 import {
   TransactionInput,
+  TransactionInputInform,
+  TransactionOutput,
   transactionSchema,
 } from '@/validations/transactionSchema';
 import { zodResolver } from '@hookform/resolvers/zod';
-import React, { useState } from 'react';
+import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
-
 import AmountInputComponent from '../UI/AmountInputComponent';
 import CategorySelectComponent from '../UI/CategorySelectComponent';
 import DatePickerComponent from '../UI/DatePickerComponent';
@@ -24,15 +25,14 @@ const tagEnum = [
 ];
 
 const TransactionForm = ({ type }: { type: 'expense' | 'income' }) => {
-  const [walletCurrencyId, setWalletCurrencyId] = useState<string>(''); // State to hold the currency ID of the selected wallet
   const {
     mutateAsync,
     isPending,
     error: errorFromApi,
   } = useCreateTransaction();
-  const methods = useForm<TransactionInput>({
-    mode: 'onBlur',
+  const methods = useForm<TransactionInputInform, any, TransactionOutput>({
     resolver: zodResolver(transactionSchema),
+    mode: 'onBlur',
     defaultValues: {
       baseAmount: 0,
       baseCurrency: 'VND',
@@ -53,19 +53,15 @@ const TransactionForm = ({ type }: { type: 'expense' | 'income' }) => {
     reset,
     watch,
     handleSubmit,
-    getValues,
     setValue,
     formState: { errors },
   } = methods;
 
   const handleOnChangeCurrency = (currencyId: string) => {
-    setWalletCurrencyId(currencyId);
     setValue('baseCurrency', currencyId.toLowerCase());
   };
 
-  const onSubmit: React.Dispatch<
-    React.SetStateAction<TransactionInput>
-  > = async (data) => {
+  const onSubmit = async (data: TransactionOutput) => {
     const finalData = {
       ...(data as TransactionInput),
       transactionType: type,
@@ -75,11 +71,7 @@ const TransactionForm = ({ type }: { type: 'expense' | 'income' }) => {
       await mutateAsync(finalData);
       reset();
     } catch (error) {
-      console.log(
-        errorFromApi?.response?.data?.message ||
-          errorFromApi?.message ||
-          'An error occurred',
-      );
+      console.log(errorFromApi?.message || 'An error occurred');
     }
   };
 
