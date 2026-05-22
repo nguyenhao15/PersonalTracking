@@ -14,9 +14,9 @@ module.exports = {
           warning: '#FFC107',
         },
         primary: {
-          DEFAULT: '#1DB954', // spotify green
-          light: '#1ED760',
-          dark: '#1AA34A',
+          DEFAULT: '#588157', // Muted Green
+          light: '#709a6f',
+          dark: '#40603f',
         },
         background: {
           DEFAULT: '#121212', // dark background
@@ -33,7 +33,7 @@ module.exports = {
           tertiary: '#6A6A6A',
         },
         accent: {
-          DEFAULT: '#1DB954',
+          DEFAULT: '#588157',
           red: '#F44336',
           yellow: '#FFC107',
         },

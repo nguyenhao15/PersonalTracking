@@ -30,7 +30,7 @@ const LabelContainer = ({
   return (
     <Pressable className='gap-2' onPress={onPress}>
       <View
-        className={`flex flex-row items-center gap-3 p-6 bg-background-light rounded-lg shadow-md ${isError ? 'border border-red-500' : ''}`}
+        className={`flex flex-row items-center gap-4 p-6 bg-background-light rounded-2xl ${isError ? 'border border-red-500' : ''}`}
       >
         {isHasIcon && (
           <Ionicons

@@ -46,7 +46,7 @@ const CardSelectList = ({
       <TouchableOpacity className='self-end'>
         {canAddNewItem && (
           <Text
-            className='w-fit bg-text-primary text-background rounded-lg border-transparent shadow-black p-3 text-md font-bold mb-4'
+            className='w-fit bg-text-primary text-background rounded-lg p-3 text-md font-bold mb-4'
             onPress={addBehavior}
           >
             {addLabel}

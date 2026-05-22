@@ -76,7 +76,7 @@ const TransactionForm = ({ type }: { type: 'expense' | 'income' }) => {
   };
 
   return (
-    <ScrollView className='p-4 gap-4'>
+    <ScrollView className='p-4' contentContainerStyle={{ paddingBottom: 100 }}>
       <View className='gap-4 mb-2'>
         <AmountInputComponent
           control={control}
@@ -98,7 +98,7 @@ const TransactionForm = ({ type }: { type: 'expense' | 'income' }) => {
             <DatePickerComponent
               label='Date'
               iconName='calendar'
-              iconColor='white'
+              iconColor='#588157'
               placeholder='Select a date...'
               onChangeAction={onChange}
               initialValue={value}
@@ -138,7 +138,7 @@ const TransactionForm = ({ type }: { type: 'expense' | 'income' }) => {
           name='description'
           control={control}
           iconName='pencil'
-          iconColor='white'
+          iconColor='#588157'
           placeholder='Enter description...'
           onChangeAction={(text) => {
             setValue('description', text);
@@ -167,8 +167,9 @@ const TransactionForm = ({ type }: { type: 'expense' | 'income' }) => {
           control={control}
           render={({ field: { onChange, value, ...field } }) => (
             <LabelContainer
-              isHasIcon={false}
-              iconColor='white'
+              isHasIcon={true}
+              iconName='eye-off'
+              iconColor='#588157'
               direction='column'
               label='Excluded Report'
               isRequired={true}
@@ -187,10 +188,13 @@ const TransactionForm = ({ type }: { type: 'expense' | 'income' }) => {
 
         <TouchableOpacity
           onPress={handleSubmit(onSubmit)}
-          className={`w-full py-3 rounded-md items-center justify-center mt-4 ${type === 'expense' ? 'bg-status-negative' : 'bg-status-positive'}`}
+          className={`w-full py-4 rounded-full items-center justify-center mt-6 active:opacity-90 ${
+            type === 'expense' ? 'bg-[#a73b21]' : 'bg-primary'
+          }`}
+          activeOpacity={0.8}
         >
-          <Text className='text-white font-bold'>
-            Create {type === 'expense' ? 'Expense' : 'Income'}
+          <Text className='text-white font-bold text-sm tracking-widest'>
+            CREATE {type === 'expense' ? 'EXPENSE' : 'INCOME'}
           </Text>
         </TouchableOpacity>
       </View>

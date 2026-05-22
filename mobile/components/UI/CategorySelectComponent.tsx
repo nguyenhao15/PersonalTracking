@@ -61,7 +61,7 @@ const CategorySelectComponent = ({
     <View className='flex gap-2'>
       <LabelContainer
         isHasIcon
-        iconColor='white'
+        iconColor='#588157'
         iconName='pricetag'
         label='Category'
         isRequired={true}

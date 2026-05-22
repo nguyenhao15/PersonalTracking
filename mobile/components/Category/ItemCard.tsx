@@ -21,7 +21,7 @@ const CategoryCard = ({
   return (
     <Pressable onPress={handleOnPress}>
       <View
-        className={`p-4 rounded-lg shadow-md ${isSelected ? 'bg-primary' : 'bg-background-lighter'}`}
+        className={`p-4 rounded-lg ${isSelected ? 'bg-primary' : 'bg-background-lighter'}`}
       >
         <Text
           className={`text-lg font-bold mb-2 ${isSelected ? 'text-white' : 'text-text-primary'}`}

@@ -69,7 +69,7 @@ const TransferForm = ({ onSubmitTransfer }: TransferFormProps) => {
   };
 
   return (
-    <ScrollView className='p-4 gap-4'>
+    <ScrollView className='p-4' contentContainerStyle={{ paddingBottom: 100 }}>
       <AmountInputComponent
         control={control}
         originalAmountFieldName='amount'
@@ -111,7 +111,7 @@ const TransferForm = ({ onSubmitTransfer }: TransferFormProps) => {
         <DatePickerComponent
           label='Transfer Date'
           iconName='calendar'
-          iconColor='white'
+          iconColor='#588157'
           placeholder='Select transfer date...'
           onChangeAction={(date) =>
             setValue('date', date, { shouldValidate: true })
@@ -125,7 +125,7 @@ const TransferForm = ({ onSubmitTransfer }: TransferFormProps) => {
           name='fee'
           control={control}
           iconName='cash'
-          iconColor='white'
+          iconColor='#588157'
           placeholder='0'
           errorMessage={errors.fee?.message}
           isDisabled={isSubmitting}
@@ -135,7 +135,7 @@ const TransferForm = ({ onSubmitTransfer }: TransferFormProps) => {
         <InputWithModalComponent
           label='Description'
           iconName='pencil'
-          iconColor='white'
+          iconColor='#588157'
           control={control}
           name='description'
           errorMessage={errors.description?.message}
@@ -148,9 +148,12 @@ const TransferForm = ({ onSubmitTransfer }: TransferFormProps) => {
 
         <TouchableOpacity
           onPress={handleSubmit(submitTransfer)}
-          className='w-full py-3 rounded-md items-center justify-center mt-2 bg-blue-500'
+          className='w-full py-4 rounded-full items-center justify-center mt-6 bg-primary active:opacity-90'
+          activeOpacity={0.8}
         >
-          <Text className='text-white font-bold'>Create Transfer</Text>
+          <Text className='text-white font-bold text-sm tracking-widest'>
+            CREATE TRANSFER
+          </Text>
         </TouchableOpacity>
       </View>
     </ScrollView>

@@ -83,7 +83,7 @@ const AmountInputComponent = <
           textAlign: 'center',
           padding: 20,
           borderBottomWidth: isDisabled || isLoading ? 0 : 2,
-          borderColor: errorMessage ? '#ef4444' : '#d1d5db',
+          borderColor: errorMessage ? '#ef4444' : '#588157',
           marginBottom: 10,
           color: 'white',
         }}
@@ -132,10 +132,11 @@ const AmountInputComponent = <
       <TouchableOpacity
         disabled={isDisabled || isLoading}
         onPress={handleOpenCardModal}
-        className='self-start items-center justify-center mx-auto mb-1 px-3 py-2 bg-background-lighter rounded-md'
+        className='self-start items-center justify-center mx-auto mb-1 px-4 py-2 bg-primary/20 rounded-full border border-primary/10'
+        activeOpacity={0.8}
       >
-        <Text className='font-bold text-text-primary'>
-          {currency?.descriptionField}
+        <Text className='font-bold text-primary text-xs tracking-wider'>
+          {currency?.descriptionField?.toUpperCase()}
         </Text>
       </TouchableOpacity>
 

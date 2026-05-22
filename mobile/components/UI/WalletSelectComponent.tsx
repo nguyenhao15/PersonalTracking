@@ -71,7 +71,7 @@ const WalletSelectComponent = ({
     <View className='flex gap-2'>
       <LabelContainer
         isHasIcon
-        iconColor='white'
+        iconColor='#588157'
         iconName='wallet'
         label={label}
         isRequired={true}

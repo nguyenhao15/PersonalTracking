@@ -11,7 +11,6 @@ import { LocalAuthGuard } from './guards/local-auth/local-auth.guard';
 import { RefreshAuthGuard } from './guards/refresh-auth/refresh-auth.guard';
 import { JwtAuthGuard } from './guards/jwt-auth/jwt-auth.guard';
 import { Public } from './decorators/public.decorator';
-import { log } from 'console';
 
 @Controller('auth')
 export class AuthController {

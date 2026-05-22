@@ -11,24 +11,29 @@ const TabChoices = ({
   onChange: (key: string) => void;
 }) => {
   return (
-    <View className='flex-row py-2  rounded-lg p-1'>
+    <View className='flex-row py-2 px-1'>
       <BlurView
-        intensity={50}
+        intensity={30}
         tint='dark'
-        className='flex-row rounded-lg p-1 w-full'
+        className='flex-row rounded-full p-1.5 w-full bg-background-light/30 border border-white/5'
       >
         {TAB_ITEMS.map((tab) => {
           const active = value === tab.key;
           return (
             <TouchableOpacity
               key={tab.key}
-              className={`flex-1 px-2 py-2 rounded-md ${active ? 'bg-surface-light' : 'bg-transparent'}`}
+              className={`flex-1 py-3 rounded-full items-center justify-center ${
+                active ? 'bg-primary' : ''
+              }`}
               onPress={() => onChange(tab.key)}
+              activeOpacity={0.85}
             >
               <Text
-                className={`text-center text-xs font-semibold ${active ? 'text-white' : 'text-text-primary'}`}
+                className={`text-center text-xs font-bold tracking-wider ${
+                  active ? 'text-white' : 'text-text-secondary'
+                }`}
               >
-                {tab.label}
+                {tab.label.toUpperCase()}
               </Text>
             </TouchableOpacity>
           );
