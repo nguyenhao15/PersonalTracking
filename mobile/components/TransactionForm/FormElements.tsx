@@ -1,6 +1,6 @@
 import { View, Text } from 'react-native';
 import React, { useEffect, useState } from 'react';
-import { Controller, useFormContext } from 'react-hook-form';
+import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import CurrencyChipComponent from '../UI/CurrencyChipComponent';
 import AmountInputComponent from '../UI/AmountInputComponent';
 import DatePickerComponent from '../UI/DatePickerComponent';
@@ -27,22 +27,23 @@ const FormElements = ({ type }: FormElementsProps) => {
   const {
     control,
     reset,
-    watch,
+
+    getValues,
     setValue,
     formState: { errors },
   } = useFormContext();
-
-  const [baseCurrency, originalCurrency] = watch([
-    'baseCurrency',
-    'originalCurrency',
-  ]);
+  const baseCurrency = useWatch({ control, name: 'baseCurrency' });
+  const originalCurrency = useWatch({ control, name: 'originalCurrency' });
 
   const handleOnChangeCurrency = (currencyId: string) => {
-    setValue('baseCurrency', currencyId.toUpperCase());
+    setValue('baseCurrency', currencyId.toUpperCase(), {
+      shouldValidate: true,
+      shouldDirty: true,
+    });
   };
 
   return (
-    <View>
+    <View className='p-2'>
       <Controller
         name='originalCurrency'
         control={control}
@@ -62,7 +63,6 @@ const FormElements = ({ type }: FormElementsProps) => {
             onChange={onChange}
             onBlur={onBlur}
             value={value}
-            currencyCode={watch('originalCurrency')}
             errorMessage={
               (errors.originalAmount?.message as string) ||
               (errors.baseAmount?.message as string)
@@ -70,7 +70,7 @@ const FormElements = ({ type }: FormElementsProps) => {
           />
         )}
       />
-      {baseCurrency !== originalCurrency && (
+      {originalCurrency !== baseCurrency && (
         <Controller
           name='exchangeRate'
           control={control}
@@ -116,7 +116,7 @@ const FormElements = ({ type }: FormElementsProps) => {
       <Controller
         control={control}
         name='categoryId'
-        render={({ field: { onChange, onBlur, value } }) => (
+        render={({ field: { onChange, value, ...rest } }) => (
           <CategorySelectComponent
             transactionType={type}
             initialCategory={value}
@@ -126,18 +126,21 @@ const FormElements = ({ type }: FormElementsProps) => {
           />
         )}
       />
-      <InputWithModalComponent
-        label='Description'
+      <Controller
         name='description'
         control={control}
-        iconName='pencil'
-        iconColor='#588157'
-        placeholder='Enter description...'
-        onChangeAction={(text) => {
-          setValue('description', text);
-        }}
-        initialValue={watch('description') || ''}
-        onResetAction={reset}
+        render={({ field: { onChange, value, ...rest } }) => (
+          <InputWithModalComponent
+            label='Description'
+            iconName='pencil'
+            iconColor='#588157'
+            placeholder='Enter description...'
+            errorMessage={errors.description?.message as string}
+            initialValue={value}
+            onChangeAction={onChange}
+            onResetAction={reset}
+          />
+        )}
       />
       {type === 'expense' && (
         <Controller

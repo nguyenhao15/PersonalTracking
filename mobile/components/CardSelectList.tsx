@@ -54,12 +54,10 @@ const CardSelectList = ({
         )}
       </TouchableOpacity>
       <TextInput
-        className='w-full p-4 mb-4 border-2 border-slate-300 rounded text-text-primary'
-        placeholder={placeholder}
-        placeholderTextColor='#888'
-        style={{ fontSize: 18 }}
+        className='w-full p-4 mb-4 text-lg border-2 border-slate-300 rounded text-text-primary'
         value={searchQuery}
         onChangeText={setSearchQuery}
+        placeholder={placeholder}
       />
 
       <Text className='text-lg font-bold mb-4 text-text-primary'>

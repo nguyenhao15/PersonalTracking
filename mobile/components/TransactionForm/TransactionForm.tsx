@@ -34,18 +34,7 @@ const TransactionForm = ({ type }: { type: 'expense' | 'income' }) => {
     },
   });
 
-  const {
-    control,
-    reset,
-    watch,
-    handleSubmit,
-    setValue,
-    formState: { errors },
-  } = methods;
-
-  const handleOnChangeCurrency = (currencyId: string) => {
-    setValue('baseCurrency', currencyId.toLowerCase());
-  };
+  const { reset, handleSubmit } = methods;
 
   const onSubmit = async (data: TransactionOutput) => {
     const finalData = {
