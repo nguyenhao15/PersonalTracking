@@ -54,7 +54,7 @@ const CardSelectList = ({
         )}
       </TouchableOpacity>
       <TextInput
-        className='w-full p-4 mb-4 border rounded text-text-primary'
+        className='w-full p-4 mb-4 border-2 border-slate-300 rounded text-text-primary'
         placeholder={placeholder}
         placeholderTextColor='#888'
         style={{ fontSize: 18 }}
@@ -75,7 +75,7 @@ const CardSelectList = ({
       )}
       {data && (
         <FlatList
-          className='w-full p-2 h-full'
+          className='w-full p-4 h-full rounded-xl'
           data={filteredCategories}
           renderItem={({ item: item }) => (
             <View key={item?.id} className='w-full mb-3'>

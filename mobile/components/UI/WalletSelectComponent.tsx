@@ -15,7 +15,7 @@ interface WalletSelectComponentProps {
   initialWallet: any;
   resetAction?: () => void;
   errorMessage?: string;
-  throwCurrencyId: (currencyId: string) => void;
+  throwCurrencyId?: (currencyId: string) => void;
 }
 
 const WalletSelectComponent = ({

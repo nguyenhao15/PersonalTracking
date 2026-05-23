@@ -11,11 +11,11 @@ const TabChoices = ({
   onChange: (key: string) => void;
 }) => {
   return (
-    <View className='flex-row py-2 px-1'>
+    <View>
       <BlurView
         intensity={30}
         tint='dark'
-        className='flex-row rounded-full p-1.5 w-full bg-background-light/30 border border-white/5'
+        className='flex-row p-1.5 w-full bg-background-light/30 border border-white/5'
       >
         {TAB_ITEMS.map((tab) => {
           const active = value === tab.key;

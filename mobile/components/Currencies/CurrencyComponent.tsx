@@ -12,7 +12,7 @@ const CurrencyComponent = ({
 }) => {
   const { data: currencies, isLoading, error } = useGetCurrency();
 
-  const raw = currencies?.data || {};
+  const raw = (currencies?.data || {}) as Record<string, string>;
 
   const normalized = Object.entries(raw)
     .filter(([_, name]) => name && name.trim() !== '') // remove empty

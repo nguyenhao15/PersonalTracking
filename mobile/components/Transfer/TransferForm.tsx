@@ -33,7 +33,6 @@ const TransferForm = ({ onSubmitTransfer }: TransferFormProps) => {
   });
 
   const {
-    clearErrors,
     control,
     reset,
     handleSubmit,
@@ -70,12 +69,19 @@ const TransferForm = ({ onSubmitTransfer }: TransferFormProps) => {
 
   return (
     <ScrollView className='p-4' contentContainerStyle={{ paddingBottom: 100 }}>
-      <AmountInputComponent
+      <Controller
         control={control}
-        originalAmountFieldName='amount'
-        errorMessage={errors?.amount?.message}
-        isDisabled={isSubmitting}
-        isLoading={isSubmitting}
+        name='amount'
+        render={({ field: { onChange, onBlur, value } }) => (
+          <AmountInputComponent
+            value={value}
+            onChange={onChange}
+            onBlur={onBlur}
+            errorMessage={errors?.amount?.message}
+            isDisabled={isSubmitting}
+            isLoading={isSubmitting}
+          />
+        )}
       />
 
       <View className='gap-4 mb-6'>
