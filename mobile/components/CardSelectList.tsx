@@ -9,6 +9,8 @@ import {
 import CategoryCard from './Category/ItemCard';
 import ErrorPage from './ErrorPage';
 import LoadingPage from './LoadingPage';
+import BaseModal from './BaseModal';
+import CategoryForm from './Category/CategoryForm';
 
 interface CardSelectListProps {
   selectedItem?: any;
@@ -33,6 +35,7 @@ const CardSelectList = ({
   addBehavior,
   addLabel = 'Add New',
 }: CardSelectListProps) => {
+  const [modal, setModal] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
 
   const filteredCategories = data
@@ -41,9 +44,13 @@ const CardSelectList = ({
       )
     : [];
 
+  const handleOpenModal = () => {
+    setModal(true);
+  };
+
   return (
     <View className='p-4 h-full items-center justify-center'>
-      <TouchableOpacity className='self-end'>
+      <TouchableOpacity className='self-end' onPress={handleOpenModal}>
         {canAddNewItem && (
           <Text
             className='w-fit bg-text-primary text-background rounded-lg p-3 text-md font-bold mb-4'
@@ -54,8 +61,13 @@ const CardSelectList = ({
         )}
       </TouchableOpacity>
       <TextInput
-        className='w-full p-4 mb-4 text-lg border-2 border-slate-300 rounded text-text-primary'
+        className='w-full p-4 mb-4 border-2 border-slate-300 rounded text-text-primary'
         value={searchQuery}
+        style={{
+          lineHeight: 25,
+          fontSize: 18,
+        }}
+        placeholderTextColor='rgba(255, 255, 255, 0.5)'
         onChangeText={setSearchQuery}
         placeholder={placeholder}
       />
@@ -91,6 +103,13 @@ const CardSelectList = ({
           )}
         />
       )}
+      <BaseModal
+        visible={modal}
+        onClose={() => setModal(false)}
+        title={addLabel}
+      >
+        <CategoryForm />
+      </BaseModal>
     </View>
   );
 };

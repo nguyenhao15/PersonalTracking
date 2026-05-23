@@ -12,6 +12,7 @@ interface LabelContainerProps {
   iconColor?: string;
   direction?: 'row' | 'column';
   onPress?: () => void;
+  onBlur?: () => void;
   isLoading?: boolean;
 }
 
@@ -25,10 +26,13 @@ const LabelContainer = ({
   direction = 'column',
   iconColor = 'white',
   onPress,
+  onBlur,
+  ...rest
 }: LabelContainerProps) => {
   const isError = !!errorMessage;
+
   return (
-    <Pressable className='gap-2' onPress={onPress}>
+    <Pressable onBlur={onBlur} {...rest} className='gap-2' onPress={onPress}>
       <View
         className={`flex flex-row items-center gap-4 p-6 bg-background-light rounded-2xl ${isError ? 'border border-red-500' : ''}`}
       >

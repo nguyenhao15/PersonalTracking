@@ -1,4 +1,5 @@
-import { IsBoolean, IsString } from 'class-validator';
+import { IsBoolean, IsEnum, IsString } from 'class-validator';
+import { CategoryType } from './category-type.enum';
 
 export class CreateCategoryDto {
   @IsString()
@@ -7,6 +8,12 @@ export class CreateCategoryDto {
   @IsString()
   description: string;
 
+  @IsEnum(CategoryType)
+  categoryType!: CategoryType;
+
   @IsBoolean()
   isActive?: boolean;
+
+  @IsBoolean()
+  includeInSummary?: boolean;
 }

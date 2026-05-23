@@ -27,8 +27,6 @@ const FormElements = ({ type }: FormElementsProps) => {
   const {
     control,
     reset,
-
-    getValues,
     setValue,
     formState: { errors },
   } = useFormContext();
