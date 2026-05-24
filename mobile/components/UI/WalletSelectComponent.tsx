@@ -16,6 +16,7 @@ interface WalletSelectComponentProps {
   resetAction?: () => void;
   errorMessage?: string;
   throwCurrencyId?: (currencyId: string) => void;
+  disabled: boolean;
 }
 
 const WalletSelectComponent = ({
@@ -26,6 +27,7 @@ const WalletSelectComponent = ({
   resetAction,
   errorMessage,
   throwCurrencyId,
+  disabled,
 }: WalletSelectComponentProps) => {
   const [openModal, setOpenModal] = useState(false);
   const [addingNewWallet, setAddingNewWallet] = useState(false);
@@ -72,6 +74,7 @@ const WalletSelectComponent = ({
       <LabelContainer
         isHasIcon
         iconColor='#588157'
+        isLoading={disabled}
         iconName='wallet'
         label={label}
         isRequired={true}

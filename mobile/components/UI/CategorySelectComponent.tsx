@@ -11,6 +11,7 @@ interface CategorySelectComponentProps {
   initialCategory: any;
   resetActions?: () => void;
   errorMessage?: string;
+  disabled: boolean;
 }
 
 const CategorySelectComponent = ({
@@ -19,6 +20,7 @@ const CategorySelectComponent = ({
   initialCategory,
   resetActions,
   errorMessage,
+  disabled,
 }: CategorySelectComponentProps) => {
   const [selectedCategory, setSelectedCategory] = useState<any>(null);
   const [openModal, setOpenModal] = useState(false);
@@ -61,6 +63,7 @@ const CategorySelectComponent = ({
     <View className='flex gap-2'>
       <LabelContainer
         isHasIcon
+        isLoading={disabled}
         iconColor='#588157'
         iconName='pricetag'
         label='Category'

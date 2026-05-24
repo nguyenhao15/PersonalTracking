@@ -9,6 +9,9 @@ import React from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import FormElements from './FormElements';
+import { handleShowToast } from '../ToastComponent';
+import BaseModal from '../BaseModal';
+import LoadingPage from '../LoadingPage';
 
 const TransactionForm = ({ type }: { type: 'expense' | 'income' }) => {
   const {
@@ -44,6 +47,8 @@ const TransactionForm = ({ type }: { type: 'expense' | 'income' }) => {
 
     try {
       await mutateAsync(finalData);
+      handleShowToast('Create Transaction Success', 'success');
+
       reset();
     } catch (error) {
       console.log(errorFromApi?.message || 'An error occurred');
@@ -54,7 +59,7 @@ const TransactionForm = ({ type }: { type: 'expense' | 'income' }) => {
     <ScrollView className='p-4' contentContainerStyle={{ paddingBottom: 100 }}>
       <View className='gap-4 mb-2'>
         <FormProvider {...methods}>
-          <FormElements type={type} />
+          <FormElements isLoading={isPending} type={type} />
 
           <TouchableOpacity
             onPress={handleSubmit(onSubmit)}
@@ -69,6 +74,9 @@ const TransactionForm = ({ type }: { type: 'expense' | 'income' }) => {
           </TouchableOpacity>
         </FormProvider>
       </View>
+      <BaseModal visible={isPending} onClose={() => {}}>
+        <LoadingPage />
+      </BaseModal>
     </ScrollView>
   );
 };

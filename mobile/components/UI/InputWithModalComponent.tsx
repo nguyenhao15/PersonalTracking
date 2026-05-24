@@ -14,6 +14,7 @@ interface TextInputComponentProps {
   initialValue?: string;
   onResetAction?: () => void;
   errorMessage?: string;
+  disabled: boolean;
 }
 
 const InputWithModalComponent = ({
@@ -26,6 +27,7 @@ const InputWithModalComponent = ({
   initialValue,
   onResetAction,
   errorMessage,
+  disabled,
 }: TextInputComponentProps) => {
   const [content, setContent] = useState(initialValue || '');
   const [openModal, setOpenModal] = useState(false);
@@ -42,6 +44,7 @@ const InputWithModalComponent = ({
       <LabelContainer
         isHasIcon={!!iconName}
         iconColor={iconColor}
+        isLoading={disabled}
         iconName={iconName}
         label={label}
         isRequired={isRequired}

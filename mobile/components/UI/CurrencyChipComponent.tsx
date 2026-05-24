@@ -6,12 +6,14 @@ import CurrencyComponent from '../Currencies/CurrencyComponent';
 interface CurrencyChipComponentProps {
   label: string;
   onSelectItem: (currency: string) => void;
+  disabled: boolean;
   errorMessage?: string;
 }
 
 const CurrencyChipComponent = ({
   label,
   onSelectItem,
+  disabled,
   errorMessage,
   ...props
 }: CurrencyChipComponentProps) => {
@@ -32,6 +34,7 @@ const CurrencyChipComponent = ({
       <TouchableOpacity
         className={`${baseStyle} ${style}`}
         onPress={() => setVisible(true)}
+        disabled={disabled}
         {...props}
       >
         <Text className={`${style} text-xl font-bold`}>{label}</Text>

@@ -1,6 +1,6 @@
 import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
-import { Pressable, Text, View } from 'react-native';
+import { ActivityIndicator, Pressable, Text, View } from 'react-native';
 
 interface LabelContainerProps {
   label: string;
@@ -27,16 +27,35 @@ const LabelContainer = ({
   iconColor = 'white',
   onPress,
   onBlur,
+  isLoading,
   ...rest
 }: LabelContainerProps) => {
   const isError = !!errorMessage;
 
   return (
-    <Pressable onBlur={onBlur} {...rest} className='gap-2' onPress={onPress}>
+    <Pressable
+      disabled={isLoading}
+      onBlur={onBlur}
+      {...rest}
+      className='gap-2'
+      onPress={onPress}
+    >
       <View
         className={`flex flex-row items-center gap-4 p-6 bg-background-light rounded-2xl ${isError ? 'border border-red-500' : ''}`}
       >
-        {isHasIcon && (
+        {/* {isHasIcon && (
+          <Ionicons
+            name={
+              (iconName as keyof typeof Ionicons.glyphMap) || 'alert-circle'
+            }
+            size={15}
+            color={isLoading ? 'white' : isError ? 'red' : iconColor}
+          />
+        )} */}
+
+        {isLoading ? (
+          <ActivityIndicator size='small' color='#22577A' />
+        ) : (
           <Ionicons
             name={
               (iconName as keyof typeof Ionicons.glyphMap) || 'alert-circle'

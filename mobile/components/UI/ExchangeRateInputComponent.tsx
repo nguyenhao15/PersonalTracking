@@ -9,6 +9,7 @@ interface ExchangeRateInputComponentProps {
   onChange?: (text: any) => void;
   onBlur?: () => void;
   value?: any;
+  disabled: boolean;
 }
 
 const ExchangeRateInputComponent = ({
@@ -17,6 +18,7 @@ const ExchangeRateInputComponent = ({
   onChange,
   onBlur,
   value,
+  disabled,
 }: ExchangeRateInputComponentProps) => {
   return (
     <View className='flex gap-2 items-center border-b-2 border-b-primary py-4'>
@@ -28,8 +30,10 @@ const ExchangeRateInputComponent = ({
         delimiter='.'
         minValue={0}
         separator=','
+        readOnly={disabled}
         precision={0}
         onBlur={onBlur}
+        placeholder={placeholder}
         keyboardType='decimal-pad'
         placeholderTextColor='#9ca3af'
       />

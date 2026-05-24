@@ -8,6 +8,7 @@ interface TagSelectComponentProps {
   initialTag: string | undefined;
   onResetAction?: () => void;
   errorMessage?: string;
+  disabled: boolean;
   rest?: any;
 }
 
@@ -17,6 +18,7 @@ const TagSelectComponent = ({
   initialTag,
   onResetAction,
   errorMessage,
+  disabled,
   ...rest
 }: TagSelectComponentProps) => {
   const [selectedTag, setSelectedTag] = useState('');
@@ -47,9 +49,10 @@ const TagSelectComponent = ({
     <LabelContainer
       onPress={() => {}}
       label='Tags'
-      iconName='tag'
-      iconColor='#f59e0b'
+      iconName='pricetag'
+      iconColor='#588157'
       isRequired
+      isLoading={disabled}
       errorMessage={errorMessage}
       isHasIcon={false}
     >

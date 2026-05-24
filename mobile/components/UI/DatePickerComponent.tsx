@@ -12,6 +12,7 @@ interface DatePickerComponentProps {
   placeholder?: string;
   onChangeAction: (date: Date) => void;
   initialValue?: Date | string;
+  disabled: boolean;
 }
 
 const DatePickerComponent = ({
@@ -22,13 +23,12 @@ const DatePickerComponent = ({
   placeholder,
   onChangeAction,
   initialValue,
+  disabled,
 }: DatePickerComponentProps) => {
   const [selectedDate, setSelectedDate] = useState(
     new Date(initialValue || Date.now()),
   );
   const [openModal, setOpenModal] = useState(false);
-
-  const themeUser = useColorScheme();
 
   const handleOnChangeAction = (date: Date) => {
     setSelectedDate(date);
@@ -48,6 +48,7 @@ const DatePickerComponent = ({
     <View className='flex gap-2'>
       <LabelContainer
         isHasIcon
+        isLoading={disabled}
         iconColor={iconColor}
         iconName={iconName}
         label={label}

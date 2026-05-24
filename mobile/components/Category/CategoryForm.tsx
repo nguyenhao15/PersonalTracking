@@ -8,7 +8,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { Text, TouchableOpacity, View } from 'react-native';
 import CategoryFormElements from './CategoryFormElements';
 import { useCreateNewCategoru } from '@/hooks/useCategory';
-import Toast from 'react-native-toast-message';
+import { handleShowToast } from '../ToastComponent';
 
 interface CategoryFormProps {
   onSubmit: () => void;
@@ -30,18 +30,6 @@ const CategoryForm = ({ onSubmit }: CategoryFormProps) => {
     reset,
     formState: { errors },
   } = methods;
-
-  const handleShowToast = (
-    message: string,
-    type: 'success' | 'error' | 'info',
-  ) => {
-    Toast.show({
-      type: type,
-      text1: message,
-      position: 'top',
-      topOffset: 80,
-    });
-  };
 
   const handleSubmitForm = async (data: any) => {
     const { categoryType, ...rest } = data;

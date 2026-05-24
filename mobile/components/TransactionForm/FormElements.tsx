@@ -15,6 +15,7 @@ import ExchangeRateInputComponent from '../UI/ExchangeRateInputComponent';
 
 interface FormElementsProps {
   type: 'expense' | 'income';
+  isLoading: boolean;
 }
 
 const tagEnum = [
@@ -23,7 +24,7 @@ const tagEnum = [
   { value: 'not-necessary', label: 'Not necessary' },
 ];
 
-const FormElements = ({ type }: FormElementsProps) => {
+const FormElements = ({ type, isLoading }: FormElementsProps) => {
   const {
     control,
     reset,
@@ -49,6 +50,7 @@ const FormElements = ({ type }: FormElementsProps) => {
           <CurrencyChipComponent
             label={value}
             onSelectItem={onChange}
+            disabled={isLoading}
             {...props}
           />
         )}
@@ -61,6 +63,7 @@ const FormElements = ({ type }: FormElementsProps) => {
             onChange={onChange}
             onBlur={onBlur}
             value={value}
+            isDisabled={isLoading}
             errorMessage={
               (errors.originalAmount?.message as string) ||
               (errors.baseAmount?.message as string)
@@ -77,6 +80,7 @@ const FormElements = ({ type }: FormElementsProps) => {
               onChange={onChange}
               value={value}
               onBlur={onBlur}
+              disabled={isLoading}
               errorMessage={errors.exchangeRate?.message as string}
             />
           )}
@@ -91,6 +95,7 @@ const FormElements = ({ type }: FormElementsProps) => {
             iconName='calendar'
             iconColor='#588157'
             placeholder='Select a date...'
+            disabled={isLoading}
             onChangeAction={onChange}
             initialValue={value}
             {...rest}
@@ -106,6 +111,7 @@ const FormElements = ({ type }: FormElementsProps) => {
             onSelectWallet={onChange}
             onBlur={onBlur}
             resetAction={reset}
+            disabled={isLoading}
             throwCurrencyId={handleOnChangeCurrency}
             errorMessage={errors.walletId?.message as string}
           />
@@ -121,6 +127,7 @@ const FormElements = ({ type }: FormElementsProps) => {
             resetActions={reset}
             onSelectCategory={onChange}
             errorMessage={errors.categoryId?.message as string}
+            disabled={isLoading}
           />
         )}
       />
@@ -137,6 +144,7 @@ const FormElements = ({ type }: FormElementsProps) => {
             initialValue={value}
             onChangeAction={onChange}
             onResetAction={reset}
+            disabled={isLoading}
           />
         )}
       />
@@ -150,6 +158,7 @@ const FormElements = ({ type }: FormElementsProps) => {
               onChangeTag={onChange}
               initialTag={value}
               onResetAction={reset}
+              disabled={isLoading}
               {...field}
               errorMessage={errors.tag?.message as string}
             />
@@ -166,6 +175,7 @@ const FormElements = ({ type }: FormElementsProps) => {
             iconColor='#588157'
             direction='column'
             label='Excluded Report'
+            isLoading={isLoading}
             isRequired={true}
             errorMessage={errors.excludedFromReports?.message as string}
           >
@@ -174,6 +184,7 @@ const FormElements = ({ type }: FormElementsProps) => {
               label={value ? 'Yes' : 'No'}
               onChangeAction={onChange}
               defaultValue={value}
+              disabled={isLoading}
               {...field}
             />
           </LabelContainer>
