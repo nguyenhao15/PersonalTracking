@@ -13,4 +13,8 @@ export const categoryApi = {
       signal,
     });
   },
+
+  createCategory: async (category: any) => {
+    return await axiosClient.post(`${CATEGORIES_API}`, category);
+  },
 };

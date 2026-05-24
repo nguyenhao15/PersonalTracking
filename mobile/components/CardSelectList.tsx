@@ -108,7 +108,7 @@ const CardSelectList = ({
         onClose={() => setModal(false)}
         title={addLabel}
       >
-        <CategoryForm />
+        <CategoryForm onSubmit={() => setModal(false)} />
       </BaseModal>
     </View>
   );

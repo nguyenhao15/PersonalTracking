@@ -10,3 +10,8 @@ export const getCategoryActions = async ({
   const response = await categoryApi.getCategories({ type, signal });
   return response.data;
 };
+
+export const createNewCategory = async (category: any) => {
+  const response = await categoryApi.createCategory(category);
+  return response.data;
+};

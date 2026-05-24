@@ -43,7 +43,6 @@ const InputInlineComponent = ({
       isRequired={isRequired}
       label={label}
       errorMessage={errorMessage}
-      onBlur={onBlur}
     >
       <TextInput
         editable={!isDisabled && !isLoading}
@@ -71,8 +70,8 @@ const InputInlineComponent = ({
         placeholder={placeholder}
         value={value}
         placeholderTextColor={'#9ca3af'}
-        onBlur={onBlur}
         onChangeText={onChange}
+        onPressOut={onBlur}
       />
     </LabelContainer>
   );

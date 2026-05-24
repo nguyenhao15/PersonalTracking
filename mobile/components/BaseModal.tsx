@@ -1,5 +1,6 @@
 import React from 'react';
 import { Modal, Pressable, Text, View } from 'react-native';
+import Toast from 'react-native-toast-message';
 
 type BaseModalProps = {
   visible: boolean;
@@ -52,6 +53,7 @@ export default function BaseModal({
         )}
         {children}
       </View>
+      <Toast />
     </Modal>
   );
 }
