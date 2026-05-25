@@ -1,3 +1,4 @@
+import InputInlineComponent from '@/components/UI/InputInlineComponent';
 import { useLogin } from '@/hooks/useAuthentication';
 import { useAuthStore } from '@/stores/AuthStores';
 import { Redirect } from 'expo-router';
@@ -69,6 +70,7 @@ export default function LoginScreen() {
             placeholder='Nhập tên đăng nhập'
             placeholderTextColor='#9ca3af'
             autoCapitalize='none'
+            style={{ lineHeight: 18 }}
             autoCorrect={false}
             value={username}
             onChangeText={setUsername}
@@ -87,6 +89,7 @@ export default function LoginScreen() {
               placeholderTextColor='#9ca3af'
               secureTextEntry={!showPassword}
               autoCapitalize='none'
+              style={{ lineHeight: 18 }}
               autoCorrect={false}
               value={password}
               onChangeText={setPassword}

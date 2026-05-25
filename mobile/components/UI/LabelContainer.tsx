@@ -43,27 +43,11 @@ const LabelContainer = ({
       <View
         className={`flex flex-row items-center gap-4 p-6 bg-background-light rounded-2xl ${isError ? 'border border-red-500' : ''}`}
       >
-        {/* {isHasIcon && (
-          <Ionicons
-            name={
-              (iconName as keyof typeof Ionicons.glyphMap) || 'alert-circle'
-            }
-            size={15}
-            color={isLoading ? 'white' : isError ? 'red' : iconColor}
-          />
-        )} */}
-
-        {isLoading ? (
-          <ActivityIndicator size='small' color='#22577A' />
-        ) : (
-          <Ionicons
-            name={
-              (iconName as keyof typeof Ionicons.glyphMap) || 'alert-circle'
-            }
-            size={15}
-            color={isError ? 'red' : iconColor}
-          />
-        )}
+        <Ionicons
+          name={(iconName as keyof typeof Ionicons.glyphMap) || 'alert-circle'}
+          size={15}
+          color={isError ? 'red' : iconColor}
+        />
 
         <View
           className={`flex-1 ${direction === 'row' ? 'flex-row items-center' : 'flex-col items-start'}  px-2`}

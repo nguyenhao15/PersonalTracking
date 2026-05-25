@@ -30,6 +30,8 @@ export const useCreateTransaction = () => {
     onSuccess: () => {
       // Invalidate and refetch
       queryClient.invalidateQueries({ queryKey: ['transactions'] });
+      queryClient.invalidateQueries({ queryKey: ['wallets'] });
+      queryClient.invalidateQueries({ queryKey: ['walletBalance'] });
     },
     onError: (error) => {
       throw error;

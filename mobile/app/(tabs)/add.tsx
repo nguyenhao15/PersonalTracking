@@ -52,7 +52,9 @@ const add = ({ initial }: { initial?: TransactionInput }) => {
                 DEBT & LOAN TRACKING
               </Text>
               <Text className='text-text-secondary text-xs text-center leading-relaxed px-4'>
-                The Debt & Loan tracking module is currently under active development. You can log them as Expenses or Incomes to keep your balance updated for now!
+                The Debt & Loan tracking module is currently under active
+                development. You can log them as Expenses or Incomes to keep
+                your balance updated for now!
               </Text>
             </View>
           )}

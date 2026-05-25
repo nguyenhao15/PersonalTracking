@@ -18,6 +18,7 @@ export interface WalletObject extends BaseObject {
 export interface TransactionObject extends BaseObject {
   description?: string;
   amount?: number;
+  originalAmount: number;
   date?: string;
   categoryId?: string;
   walletId?: string | number;

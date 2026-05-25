@@ -55,7 +55,7 @@ const TransactionComponent = ({ transactions }: TransactionComponentProps) => {
                     }}
                     className='font-bold text-sm mt-1'
                   >
-                    {formatPrice(Number(item.amount ?? 0))}
+                    {formatPrice(Number(item.originalAmount ?? 0))}
                   </Text>
                 </View>
 

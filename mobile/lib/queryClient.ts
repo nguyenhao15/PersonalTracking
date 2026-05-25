@@ -3,7 +3,7 @@ import { QueryClient } from '@tanstack/react-query';
 export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 'static', // Dữ liệu được coi là "tươi" trong 5 phút
+      staleTime: Infinity, // Dữ liệu được coi là "tươi" vô hạn
       retry: 1, // Thử lại 1 lần nếu API lỗi
       refetchOnWindowFocus: false, // Tránh load lại khi user chuyển Tab (tối ưu tài nguyên)
       refetchOnMount: false, // Không tự động refetch khi component mount (sử dụng cache nếu có)

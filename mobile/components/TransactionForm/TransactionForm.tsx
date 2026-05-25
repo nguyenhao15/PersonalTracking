@@ -10,8 +10,6 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import FormElements from './FormElements';
 import { handleShowToast } from '../ToastComponent';
-import BaseModal from '../BaseModal';
-import LoadingPage from '../LoadingPage';
 
 const TransactionForm = ({ type }: { type: 'expense' | 'income' }) => {
   const {
@@ -40,9 +38,11 @@ const TransactionForm = ({ type }: { type: 'expense' | 'income' }) => {
   const { reset, handleSubmit } = methods;
 
   const onSubmit = async (data: TransactionOutput) => {
+    const handleOrgAmount = data.baseAmount * data.exchangeRate;
     const finalData = {
       ...(data as TransactionInput),
       transactionType: type,
+      originalAmount: handleOrgAmount,
     };
 
     try {
@@ -74,9 +74,6 @@ const TransactionForm = ({ type }: { type: 'expense' | 'income' }) => {
           </TouchableOpacity>
         </FormProvider>
       </View>
-      <BaseModal visible={isPending} onClose={() => {}}>
-        <LoadingPage />
-      </BaseModal>
     </ScrollView>
   );
 };
