@@ -6,3 +6,4 @@ export const WALLET_API = '/wallet';
 export const USER_API = '/users';
 export const BUDGET_API = '/budgets';
 export const DASHBOARD_API = '/dashboard';
+export const DEBT_API = '/debt';

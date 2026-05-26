@@ -39,7 +39,7 @@ const AmountInputComponent = ({
         placeholderTextColor='#9ca3af'
       />
       {errorMessage && (
-        <Text className='text-error text-xs mt-2'>{errorMessage}</Text>
+        <Text className='text-red-600 text-xs mt-2'>{errorMessage}</Text>
       )}
     </View>
   );

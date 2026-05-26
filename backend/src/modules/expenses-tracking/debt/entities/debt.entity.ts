@@ -1,6 +1,7 @@
 import { BaseAuditEntity } from 'src/core/security/common/entities/base.entity';
-import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
 import { Wallet } from '../../wallet/entities/wallet.entity';
+import { DebtTransaction } from '../../debt-trasactions/entities/debt-trasaction.entity';
 
 @Entity()
 export class Debt extends BaseAuditEntity {
@@ -13,7 +14,7 @@ export class Debt extends BaseAuditEntity {
   @Column()
   amount: number;
 
-  @ManyToOne(() => Wallet, (wallet) => wallet.transactions, {
+  @ManyToOne(() => Wallet, {
     onDelete: 'RESTRICT', // Đảm bảo không mất dữ liệu thu chi khi xóa ví
   })
   @JoinColumn({ name: 'walletId' })
@@ -31,4 +32,7 @@ export class Debt extends BaseAuditEntity {
     default: 'pending',
   })
   status: 'pending' | 'paid' | 'cancelled';
+
+  @OneToMany(() => DebtTransaction, (transaction) => transaction.debt)
+  transactions: DebtTransaction[];
 }

@@ -1,4 +1,4 @@
-import { IsInt, IsString } from 'class-validator';
+import { IsInt, IsOptional, IsString, IsDateString } from 'class-validator';
 
 export class CreateDebtDto {
   @IsString({
@@ -23,4 +23,10 @@ export class CreateDebtDto {
     message: 'Status must be a string',
   })
   status: 'pending' | 'paid' | 'cancelled';
+
+  @IsOptional()
+  @IsDateString({}, {
+    message: 'Transaction date must be a valid ISO8601 date string',
+  })
+  transactionDate?: string;
 }

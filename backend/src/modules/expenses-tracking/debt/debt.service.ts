@@ -17,7 +17,13 @@ export class DebtService {
 
   async create(createDebtDto: CreateDebtDto) {
     const wallet = await this.walletService.findOne(createDebtDto.walletId);
-    const debt = this.debtRepository.create(createDebtDto);
+    const transactionDate = createDebtDto.transactionDate
+      ? new Date(createDebtDto.transactionDate)
+      : new Date();
+    const debt = this.debtRepository.create({
+      ...createDebtDto,
+      transactionDate,
+    });
     debt.wallet = wallet;
     if (createDebtDto.type === 'borrow') {
       await this.walletService.updateBalance(wallet, createDebtDto.amount);
@@ -29,7 +35,10 @@ export class DebtService {
   }
 
   findAll() {
-    return this.debtRepository.find();
+    const options = QueryUtils.applyOwnership<Debt>({
+      relations: ['wallet'],
+    });
+    return this.debtRepository.find(options);
   }
 
   async modifyWalletBalance(debt: Debt, amount: number) {
