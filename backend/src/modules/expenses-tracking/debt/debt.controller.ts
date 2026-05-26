@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { DebtService } from './debt.service';
 import { CreateDebtDto } from './dto/create-debt.dto';
 import { UpdateDebtDto } from './dto/update-debt.dto';
@@ -30,5 +38,15 @@ export class DebtController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.debtService.remove(+id);
+  }
+
+  @Post(':id/cancel')
+  cancel(@Param('id') id: string) {
+    return this.debtService.cancel(+id);
+  }
+
+  @Post(':id/mark-as-paid')
+  markAsPaid(@Param('id') id: string) {
+    return this.debtService.markAsPaid(+id);
   }
 }

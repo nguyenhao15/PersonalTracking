@@ -11,7 +11,7 @@ import { CategoriesModule } from '../categories/categories.module';
     TypeOrmModule.forFeature([Transaction]),
     WalletModule,
     CategoriesModule,
-  ], // Thêm các Entity vào đây nếu có
+  ],
   controllers: [TransactionsController],
   providers: [TransactionsService],
   exports: [TypeOrmModule, TransactionsService],
