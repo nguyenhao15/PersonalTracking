@@ -24,11 +24,11 @@ export class DashboardService {
       .innerJoin('tx.category', 'category')
       .select(timeGroupExpr, 'timeGroup')
       .addSelect(
-        'SUM(CASE WHEN tx.transactionType = :incomeType THEN tx.amount ELSE 0 END)',
+        'SUM(CASE WHEN tx.transactionType = :incomeType THEN tx.baseAmount ELSE 0 END)',
         'totalIncome',
       )
       .addSelect(
-        'SUM(CASE WHEN tx.transactionType = :expenseType THEN tx.amount ELSE 0 END)',
+        'SUM(CASE WHEN tx.transactionType = :expenseType THEN tx.baseAmount ELSE 0 END)',
         'totalExpense',
       )
       .setParameters({

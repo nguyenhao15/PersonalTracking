@@ -35,7 +35,7 @@ const WalletForm = ({ backAction }: { backAction?: () => void }) => {
       await createWallet(data);
       reset();
       backAction && backAction();
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error creating wallet:', error?.response?.data?.message);
     }
   };
@@ -55,51 +55,79 @@ const WalletForm = ({ backAction }: { backAction?: () => void }) => {
       </View>
       <FormProvider {...methods}>
         <View className='gap-2 p-4'>
-          <InputInlineComponent
-            label='Wallet Name'
-            keyboardType='default'
-            isRequired
-            placeholder='Enter wallet name'
+          <Controller
             control={control}
             name='walletName'
-            errorMessage={errors.walletName?.message}
-            isDisabled={isCreatingWallet}
-            isLoading={isCreatingWallet}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <InputInlineComponent
+                label='Wallet Name'
+                keyboardType='default'
+                isRequired
+                placeholder='Enter wallet name'
+                value={value}
+                onChange={onChange}
+                onBlur={onBlur}
+                errorMessage={errors.walletName?.message}
+                isDisabled={isCreatingWallet}
+                isLoading={isCreatingWallet}
+              />
+            )}
           />
 
-          <InputInlineComponent
-            label='Currency'
-            keyboardType='default'
-            isRequired
-            placeholder='Enter currency'
+          <Controller
             control={control}
             name='currency'
-            errorMessage={errors.currency?.message}
-            isDisabled={isCreatingWallet}
-            isLoading={isCreatingWallet}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <InputInlineComponent
+                label='Currency'
+                keyboardType='default'
+                isRequired
+                placeholder='Enter currency'
+                value={value}
+                onChange={onChange}
+                onBlur={onBlur}
+                errorMessage={errors.currency?.message}
+                isDisabled={isCreatingWallet}
+                isLoading={isCreatingWallet}
+              />
+            )}
           />
 
-          <InputInlineComponent
-            label='Initial Balance'
-            keyboardType='numeric'
-            isDisabled={isCreatingWallet}
-            isLoading={isCreatingWallet}
-            isRequired
-            placeholder='Enter initial balance'
+          <Controller
             control={control}
             name='balance'
-            errorMessage={errors.balance?.message}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <InputInlineComponent
+                label='Initial Balance'
+                keyboardType='numeric'
+                isDisabled={isCreatingWallet}
+                isLoading={isCreatingWallet}
+                isRequired
+                placeholder='Enter initial balance'
+                value={value}
+                onChange={onChange}
+                onBlur={onBlur}
+                errorMessage={errors.balance?.message}
+              />
+            )}
           />
-          <InputInlineComponent
-            isDisabled={isCreatingWallet}
-            isLoading={isCreatingWallet}
-            label='Description'
-            isMultiline
-            keyboardType='default'
-            iconColor='white'
-            placeholder='Enter description'
+          <Controller
             control={control}
             name='description'
+            render={({ field: { onChange, onBlur, value } }) => (
+              <InputInlineComponent
+                isDisabled={isCreatingWallet}
+                isLoading={isCreatingWallet}
+                label='Description'
+                isMultiline
+                keyboardType='default'
+                iconColor='white'
+                placeholder='Enter description'
+                value={value}
+                onChange={onChange}
+                onBlur={onBlur}
+              />
+            )}
           />
 
           <Controller
@@ -111,8 +139,8 @@ const WalletForm = ({ backAction }: { backAction?: () => void }) => {
                 initialTag={value}
                 data={WalletTypeEnum}
                 onResetAction={reset}
-                {...field}
                 errorMessage={errors.walletType?.message}
+                disabled={field.disabled || false}
               />
             )}
           />

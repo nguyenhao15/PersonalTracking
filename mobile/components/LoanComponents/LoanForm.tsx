@@ -37,7 +37,6 @@ const LoanForm = () => {
 
   const currentType = watch('type');
   const currentDate = watch('date');
-  const currentDescription = watch('description');
 
   const onSubmit = async (data: LoanInput) => {
     try {

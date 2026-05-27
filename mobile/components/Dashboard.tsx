@@ -13,7 +13,7 @@ const Dashboard = ({ query }: { query: DashboardQuery }) => {
   }
 
   if (error) {
-    return <ErrorPage error={error?.response?.data.message} />;
+    return <ErrorPage error={(error as any)?.response?.data?.message || error.message} />;
   }
 
   return (

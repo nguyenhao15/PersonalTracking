@@ -42,3 +42,41 @@ export const useCreateDebt = () => {
     },
   });
 };
+
+export const useCancelDebt = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationKey: ['cancel-debt'],
+    mutationFn: async (id: number) => {
+      const res = await cancelDebtAction(id);
+      return res;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['debts'] });
+      queryClient.invalidateQueries({ queryKey: ['wallets'] });
+      queryClient.invalidateQueries({ queryKey: ['walletBalance'] });
+    },
+    onError: (error) => {
+      throw error;
+    },
+  });
+};
+
+export const useMarkDebtAsPaid = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationKey: ['mark-debt-paid'],
+    mutationFn: async (id: number) => {
+      const res = await markDebtAsPaidAction(id);
+      return res;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['debts'] });
+      queryClient.invalidateQueries({ queryKey: ['wallets'] });
+      queryClient.invalidateQueries({ queryKey: ['walletBalance'] });
+    },
+    onError: (error) => {
+      throw error;
+    },
+  });
+};

@@ -1,6 +1,7 @@
 import BalanceCard from '@/components/BalanceCard';
 import ErrorPage from '@/components/ErrorPage';
 import LoadingPage from '@/components/LoadingPage';
+import LoanComponents from '@/components/LoanComponents/LoanComponents';
 import SafeScreen from '@/components/SafeScreen';
 import TransactionComponent from '@/components/TransactionComponent';
 import WalletComponent from '@/components/Wallet/WalletComponent';
@@ -27,6 +28,13 @@ const Home = () => {
     logout();
   };
   const userTheme = useColorScheme();
+
+  const handleSliceList = (list: any[], num: number) => {
+    if (list.length > num) {
+      return list.slice(0, num);
+    }
+    return list;
+  };
 
   if (isLoading) {
     return <LoadingPage message='Loading expenses...' />;
@@ -65,9 +73,12 @@ const Home = () => {
         </View>
 
         <BalanceCard data={walletBalance} />
-        <WalletComponent wallets={wallet.slice(0, 2)} />
+        <WalletComponent wallets={handleSliceList(wallet, 3)} />
         <View className=' mt-2'>
-          <TransactionComponent transactions={transactions} />
+          <TransactionComponent
+            transactions={handleSliceList(transactions, 5)}
+          />
+          <LoanComponents />
         </View>
       </ScrollView>
     </SafeScreen>

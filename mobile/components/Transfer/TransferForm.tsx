@@ -95,6 +95,7 @@ const TransferForm = ({ onSubmitTransfer }: TransferFormProps) => {
               onSelectWallet={onChange}
               resetAction={reset}
               errorMessage={errors.fromWalletId?.message}
+              disabled={isSubmitting}
             />
           )}
         />
@@ -110,6 +111,7 @@ const TransferForm = ({ onSubmitTransfer }: TransferFormProps) => {
               onBlur={onBlur}
               resetAction={reset}
               errorMessage={errors.toWalletId?.message}
+              disabled={isSubmitting}
             />
           )}
         />
@@ -123,33 +125,40 @@ const TransferForm = ({ onSubmitTransfer }: TransferFormProps) => {
             setValue('date', date, { shouldValidate: true })
           }
           initialValue={watch('date')}
+          disabled={isSubmitting}
         />
 
-        <InputInlineComponent
-          label='Transfer Fee'
-          keyboardType='numeric'
-          name='fee'
+        <Controller
           control={control}
-          iconName='cash'
-          iconColor='#588157'
-          placeholder='0'
-          errorMessage={errors.fee?.message}
-          isDisabled={isSubmitting}
-          isLoading={isSubmitting}
+          name='fee'
+          render={({ field: { onChange, onBlur, value } }) => (
+            <InputInlineComponent
+              label='Transfer Fee'
+              keyboardType='numeric'
+              iconName='cash'
+              iconColor='#588157'
+              placeholder='0'
+              value={value}
+              onChange={onChange}
+              onBlur={onBlur}
+              errorMessage={errors.fee?.message}
+              isDisabled={isSubmitting}
+              isLoading={isSubmitting}
+            />
+          )}
         />
 
         <InputWithModalComponent
           label='Description'
           iconName='pencil'
           iconColor='#588157'
-          control={control}
-          name='description'
           errorMessage={errors.description?.message}
           placeholder='Add transfer note...'
           onChangeAction={(text) =>
             setValue('description', text, { shouldValidate: true })
           }
           initialValue={watch('description') || ''}
+          disabled={isSubmitting}
         />
 
         <TouchableOpacity

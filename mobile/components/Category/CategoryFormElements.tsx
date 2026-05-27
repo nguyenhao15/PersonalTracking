@@ -62,7 +62,7 @@ const CategoryFormElements = ({ errors }: CategoryFormElementsProps) => {
               label={value ? 'Yes' : 'No'}
               onChangeAction={onChange}
               defaultValue={value}
-              {...field}
+              disabled={field.disabled || false}
             />
           </LabelContainer>
         )}

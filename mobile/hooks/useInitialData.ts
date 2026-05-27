@@ -23,9 +23,9 @@ export const useInitialData = () => {
   const isLoading =
     isLoadingTransactions || isLoadingWallet || isLoadingWalletBalance;
   const error =
-    transactionsError?.response?.data.message ||
-    walletError?.response?.data.message ||
-    walletBalanceError?.response?.data.message;
+    (transactionsError as any)?.response?.data?.message ||
+    (walletError as any)?.response?.data?.message ||
+    (walletBalanceError as any)?.response?.data?.message;
 
   return {
     transactions,
