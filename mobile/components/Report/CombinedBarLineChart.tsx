@@ -5,134 +5,166 @@ import { BarChart, LineChart } from 'react-native-gifted-charts';
 const screenWidth = Dimensions.get('window').width;
 
 interface CombinedChartProps {
-  stats: any[];
+  stats: { label: string; expense: number; income: number }[];
 }
 
+// ====================================================
+// Helper: format large numbers for chart labels
+// ====================================================
+const formatChartValue = (val: number): string => {
+  if (val === 0) return '0';
+  if (val >= 1_000_000) return `${(val / 1_000_000).toFixed(1)}M`;
+  if (val >= 1_000) return `${Math.round(val / 1_000)}k`;
+  return String(val);
+};
+
 export const CombinedBarLineChart = ({ stats }: CombinedChartProps) => {
-  const padding = 16;
-  const cardPadding = 16;
-  const usableWidth = screenWidth - padding * 2 - cardPadding * 2 - 20;
+  // Calculate chart width: screen - page padding (16*2) - card padding (20*2) - yAxis space
+  const chartWidth = screenWidth - 32 - 40 - 40;
+  const barCount = stats.length || 7;
+  const barWidth = Math.min(Math.floor((chartWidth - barCount * 8) / barCount), 28);
+  const spacing = Math.floor((chartWidth - barWidth * barCount) / barCount);
 
-  // 1. Chuẩn bị dữ liệu cho Bar Chart (Expenses - Chi tiêu)
-  const barData = useMemo(() => {
-    return stats.map((item) => ({
-      value: item.expense,
-      label: item.label,
-      frontColor: '#a73b21',
-      topLabelComponent: () => {
-        if (item.expense === 0) return null;
-        return (
-          <Text className='text-[8px] text-[#a73b21] font-bold text-center mb-1'>
-            {item.expense >= 1000000
-              ? `${(item.expense / 1000000).toFixed(1)}M`
-              : item.expense >= 1000
-                ? `${Math.round(item.expense / 1000)}k`
-                : item.expense}
-          </Text>
-        );
-      },
-    }));
-  }, [stats]);
+  // ── Expense bar data ──
+  const barData = useMemo(
+    () =>
+      stats.map((item) => ({
+        value: item.expense,
+        label: item.label,
+        frontColor: '#a73b21',
+        gradientColor: '#fd795a',
+        topLabelComponent: () =>
+          item.expense === 0 ? null : (
+            <Text
+              style={{
+                fontSize: 7,
+                color: '#a73b21',
+                fontWeight: '700',
+                textAlign: 'center',
+                marginBottom: 2,
+              }}
+            >
+              {formatChartValue(item.expense)}
+            </Text>
+          ),
+      })),
+    [stats],
+  );
 
-  // 2. Chuẩn bị dữ liệu cho Line Chart (Income - Thu nhập)
-  const lineData = useMemo(() => {
-    return stats.map((item) => ({
-      value: item.income,
-      label: item.label,
-      dataPointText:
-        item.income > 0
-          ? item.income >= 1000000
-            ? `${(item.income / 1000000).toFixed(1)}M`
-            : item.income >= 1000
-              ? `${Math.round(item.income / 1000)}k`
-              : String(item.income)
-          : '',
-    }));
-  }, [stats]);
+  // ── Income line data ──
+  const lineData = useMemo(
+    () =>
+      stats.map((item) => ({
+        value: item.income,
+        label: item.label,
+        dataPointText: item.income > 0 ? formatChartValue(item.income) : '',
+      })),
+    [stats],
+  );
+
+  // ── Common axis style ──
+  const axisLabelStyle = { color: '#5a6157', fontSize: 9, fontWeight: '600' as const };
+  const yAxisStyle = { color: '#adb4a8', fontSize: 8 };
 
   return (
-    <View className='bg-surface border border-white/5 rounded-2xl p-4 shadow-sm mb-5'>
-      <Text className='text-text-primary text-base font-bold mb-1'>
-        Weekly Statistics
+    <View
+      className='bg-white rounded-3xl p-5 mb-4'
+      style={{
+        shadowColor: '#2d342c',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.06,
+        shadowRadius: 16,
+        elevation: 3,
+      }}
+    >
+      <Text
+        style={{ fontFamily: 'Manrope' }}
+        className='text-[#2d342c] text-base font-extrabold mb-0.5'
+      >
+        Weekly Trend
       </Text>
-      <Text className='text-text-secondary text-xs mb-6'>
-        Independently scaled analysis of your daily transactions
+      <Text className='text-[#5a6157] text-xs mb-5'>
+        Daily income vs. expenses over the past 7 days
       </Text>
 
-      {/* 1. Bar Chart - Weekly Expenses */}
-      <View className='mb-6'>
-        <View className='flex-row items-center gap-2 mb-3'>
+      {/* ── Expense Bar Chart ── */}
+      <View className='mb-5'>
+        <View className='flex-row items-center mb-3'>
           <View className='w-3 h-3 rounded bg-[#a73b21]' />
-          <Text className='text-text-primary text-sm font-bold'>
-            Expenses (Chi)
+          <Text className='text-[#2d342c] text-[13px] font-bold ml-2'>
+            Expenses
           </Text>
         </View>
-
-        <View className='items-center justify-center' style={{ width: '100%' }}>
-          <BarChart
-            data={barData}
-            width={usableWidth}
-            height={90}
-            barWidth={16}
-            spacing={16}
-            barBorderRadius={4}
-            noOfSections={3}
-            yAxisThickness={0}
-            xAxisThickness={0}
-            rulesColor='rgba(255, 255, 255, 0.05)'
-            rulesType='dashed'
-            yAxisTextStyle={{ color: '#888', fontSize: 9 }}
-            xAxisLabelTextStyle={{
-              color: '#888',
-              fontSize: 9,
-              fontWeight: 'bold',
-            }}
-            initialSpacing={10}
-          />
-        </View>
+        <BarChart
+          data={barData}
+          width={chartWidth}
+          height={110}
+          barWidth={barWidth}
+          spacing={spacing}
+          barBorderRadius={6}
+          noOfSections={4}
+          yAxisThickness={0}
+          xAxisThickness={1}
+          xAxisColor='#eaf0e5'
+          rulesColor='#eaf0e5'
+          rulesType='dashed'
+          dashGap={6}
+          dashWidth={3}
+          yAxisTextStyle={yAxisStyle}
+          xAxisLabelTextStyle={axisLabelStyle}
+          initialSpacing={8}
+          endSpacing={4}
+          disablePress
+          isAnimated
+          animationDuration={600}
+        />
       </View>
 
-      <View className='h-px bg-background-light/50 my-2' />
+      {/* ── Divider ── */}
+      <View className='h-px bg-[#eaf0e5] mb-5' />
 
-      {/* 2. Line Area Chart - Weekly Income */}
-      <View className='mt-3'>
-        <View className='flex-row items-center gap-2 mb-3'>
-          <View className='w-3.5 h-1 rounded bg-[#588157]' />
-          <Text className='text-text-primary text-sm font-bold'>
-            Income (Thu)
+      {/* ── Income Area Chart ── */}
+      <View>
+        <View className='flex-row items-center mb-3'>
+          <View className='w-4 h-1.5 rounded-full bg-[#406841]' />
+          <Text className='text-[#2d342c] text-[13px] font-bold ml-2'>
+            Income
           </Text>
         </View>
-
-        <View className='items-center justify-center' style={{ width: '100%' }}>
-          <LineChart
-            data={lineData}
-            width={usableWidth}
-            height={90}
-            color='#588157'
-            thickness={2.5}
-            noOfSections={3}
-            yAxisThickness={0}
-            xAxisThickness={0}
-            rulesColor='rgba(255, 255, 255, 0.05)'
-            rulesType='dashed'
-            yAxisTextStyle={{ color: '#888', fontSize: 9 }}
-            xAxisLabelTextStyle={{
-              color: '#888',
-              fontSize: 9,
-              fontWeight: 'bold',
-            }}
-            initialSpacing={10}
-            dataPointsColor='#588157'
-            dataPointsRadius={3}
-            areaChart
-            startFillColor='rgba(88, 129, 87, 0.25)'
-            endFillColor='rgba(88, 129, 87, 0.01)'
-            textColor='#588157'
-            textFontSize={8}
-            textShiftY={-8}
-            textShiftX={-3}
-          />
-        </View>
+        <LineChart
+          data={lineData}
+          width={chartWidth}
+          height={110}
+          color='#406841'
+          thickness={2.5}
+          noOfSections={4}
+          yAxisThickness={0}
+          xAxisThickness={1}
+          xAxisColor='#eaf0e5'
+          rulesColor='#eaf0e5'
+          rulesType='dashed'
+          dashGap={6}
+          dashWidth={3}
+          yAxisTextStyle={yAxisStyle}
+          xAxisLabelTextStyle={axisLabelStyle}
+          initialSpacing={8}
+          endSpacing={4}
+          dataPointsColor='#406841'
+          dataPointsRadius={4}
+          areaChart
+          startFillColor='rgba(64, 104, 65, 0.20)'
+          endFillColor='rgba(64, 104, 65, 0.01)'
+          startOpacity={0.2}
+          endOpacity={0.01}
+          textColor='#406841'
+          textFontSize={8}
+          textShiftY={-10}
+          textShiftX={-5}
+          curved
+          curvature={0.2}
+          isAnimated
+          animationDuration={800}
+        />
       </View>
     </View>
   );

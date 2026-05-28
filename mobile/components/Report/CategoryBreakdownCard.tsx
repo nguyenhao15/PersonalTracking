@@ -1,8 +1,26 @@
 import React, { useMemo, useState } from 'react';
-import { Text, TouchableOpacity, View } from 'react-native';
+import { Dimensions, Text, TouchableOpacity, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { PieChart } from 'react-native-gifted-charts';
 import { formatPrice, toArray } from '@/utils/formatValue';
+
+const screenWidth = Dimensions.get('window').width;
+
+// ====================================================
+// Default color palette – used when categories lack a color
+// ====================================================
+const PALETTE = [
+  '#406841',
+  '#a73b21',
+  '#5e632e',
+  '#536450',
+  '#355c36',
+  '#646833',
+  '#475745',
+  '#791903',
+  '#525623',
+  '#4f604d',
+];
 
 interface CategoryBreakdownProps {
   transactions: any[];
@@ -11,9 +29,11 @@ interface CategoryBreakdownProps {
 export const CategoryBreakdownCard = ({
   transactions,
 }: CategoryBreakdownProps) => {
-  const [typeFilter, setTypeFilter] = useState<'expense' | 'income'>('expense');
+  const [typeFilter, setTypeFilter] = useState<'expense' | 'income'>(
+    'expense',
+  );
 
-  // 1. Tính toán cơ cấu chi tiêu / thu nhập theo danh mục
+  // ── Aggregate by category ──
   const categoryData = useMemo(() => {
     const list = toArray<any>(transactions);
     const filtered = list.filter((tx) => tx.transactionType === typeFilter);
@@ -26,7 +46,7 @@ export const CategoryBreakdownCard = ({
 
     filtered.forEach((tx) => {
       const categoryName = tx.category?.name || 'Uncategorized';
-      const categoryColor = tx.category?.color || '#588157';
+      const categoryColor = tx.category?.color;
       const amount = Number(tx.originalAmount || tx.baseAmount || 0);
 
       totalValue += amount;
@@ -46,8 +66,9 @@ export const CategoryBreakdownCard = ({
     );
 
     return {
-      list: sortedList.map((item) => ({
+      list: sortedList.map((item, index) => ({
         ...item,
+        color: item.color || PALETTE[index % PALETTE.length],
         percentage:
           totalValue > 0 ? Math.round((item.amount / totalValue) * 100) : 0,
       })),
@@ -55,125 +76,174 @@ export const CategoryBreakdownCard = ({
     };
   }, [transactions, typeFilter]);
 
-  // 2. Định dạng dữ liệu cho Pie Chart (Gifted Charts)
+  // ── PieChart data ──
   const pieData = useMemo(() => {
+    if (categoryData.list.length === 0) {
+      return [{ value: 1, color: '#eaf0e5', text: '' }];
+    }
     return categoryData.list.map((item) => ({
       value: item.amount,
-      color: item.color || '#588157',
-      text: item.percentage > 5 ? `${item.percentage}%` : '',
+      color: item.color,
+      text: item.percentage > 8 ? `${item.percentage}%` : '',
     }));
   }, [categoryData]);
 
-  // 3. Component nhãn ở giữa Donut Chart
+  // ── Donut center label ──
+  const pieRadius = Math.min((screenWidth - 32 - 40) / 2 - 16, 80);
+  const innerRadius = pieRadius * 0.62;
+
   const renderCenterLabel = () => {
     const total = categoryData.totalValue;
-    const formattedTotal = total >= 1000000 
-      ? `${(total / 1000000).toFixed(1)}M` 
-      : total >= 1000 
-      ? `${Math.round(total / 1000)}k` 
-      : String(total);
+    const formatted = formatPrice(total);
 
     return (
       <View className='items-center justify-center'>
-        <Text className='text-white text-xs font-bold'>{formattedTotal}</Text>
-        <Text className='text-[#888] text-[7px] font-bold uppercase tracking-widest mt-0.5'>Total</Text>
+        <Text className='text-[#5a6157] text-[8px] font-bold uppercase tracking-widest mb-0.5'>
+          Total
+        </Text>
+        <Text
+          style={{ fontFamily: 'Manrope', fontSize: innerRadius * 0.28 }}
+          className='text-[#2d342c] font-black'
+          numberOfLines={1}
+          adjustsFontSizeToFit
+        >
+          {formatted}
+        </Text>
       </View>
     );
   };
 
+  // ── Active tab style helpers ──
+  const isExpense = typeFilter === 'expense';
+
   return (
-    <View className='bg-surface border border-white/5 rounded-2xl p-4 shadow-sm mb-5'>
+    <View
+      className='bg-white rounded-3xl p-5 mb-4'
+      style={{
+        shadowColor: '#2d342c',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.06,
+        shadowRadius: 16,
+        elevation: 3,
+      }}
+    >
+      {/* Header + Tab */}
       <View className='flex-row justify-between items-center mb-1'>
-        <Text className='text-text-primary text-base font-bold'>
+        <Text
+          style={{ fontFamily: 'Manrope' }}
+          className='text-[#2d342c] text-base font-extrabold'
+        >
           Category Breakdown
         </Text>
 
-        {/* Tab switch */}
-        <View className='flex-row bg-background-light/40 border border-white/5 rounded-full p-0.5'>
+        <View className='flex-row bg-[#eaf0e5] rounded-xl p-0.5'>
           <TouchableOpacity
             onPress={() => setTypeFilter('expense')}
-            className={`px-3 py-1 rounded-full ${
-              typeFilter === 'expense' ? 'bg-[#a73b21]' : ''
+            className={`px-3 py-1.5 rounded-[10px] ${
+              isExpense ? 'bg-[#a73b21]' : ''
             }`}
+            activeOpacity={0.7}
           >
-            <Text className='text-white text-[10px] font-bold uppercase'>
+            <Text
+              className={`text-[10px] font-bold uppercase ${
+                isExpense ? 'text-white' : 'text-[#5a6157]'
+              }`}
+            >
               Expense
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => setTypeFilter('income')}
-            className={`px-3 py-1 rounded-full ${
-              typeFilter === 'income' ? 'bg-primary' : ''
+            className={`px-3 py-1.5 rounded-[10px] ${
+              !isExpense ? 'bg-[#406841]' : ''
             }`}
+            activeOpacity={0.7}
           >
-            <Text className='text-white text-[10px] font-bold uppercase'>
+            <Text
+              className={`text-[10px] font-bold uppercase ${
+                !isExpense ? 'text-white' : 'text-[#5a6157]'
+              }`}
+            >
               Income
             </Text>
           </TouchableOpacity>
         </View>
       </View>
-      <Text className='text-text-secondary text-xs mb-5'>
-        Visual allocation of daily flow by transaction category
+      <Text className='text-[#5a6157] text-xs mb-5'>
+        Allocation by category
       </Text>
 
       {categoryData.list.length === 0 ? (
-        <View className='bg-background-light/30 border border-white/5 rounded-xl p-6 items-center justify-center'>
-          <Ionicons name='pie-chart-outline' size={32} color='#888' />
-          <Text className='text-text-secondary text-xs mt-2 italic'>
-            No transactions found for this type.
+        /* ── Empty state ── */
+        <View className='bg-[#f1f5ec] rounded-2xl py-10 items-center justify-center'>
+          <Ionicons name='pie-chart-outline' size={36} color='#adb4a8' />
+          <Text className='text-[#5a6157] text-xs mt-3'>
+            No transactions found for this period.
           </Text>
         </View>
       ) : (
         <View>
-          {/* Pie/Donut Chart visual render */}
-          <View className='items-center justify-center py-4 mb-4'>
+          {/* ── Donut Chart ── */}
+          <View className='items-center justify-center py-3 mb-4'>
             <PieChart
               donut
-              radius={65}
-              innerRadius={45}
+              radius={pieRadius}
+              innerRadius={innerRadius}
               data={pieData}
               showText
               textColor='#ffffff'
-              textSize={8}
+              textSize={9}
               fontWeight='bold'
               centerLabelComponent={renderCenterLabel}
+              focusOnPress
+              sectionAutoFocus
+              isAnimated
             />
           </View>
 
-          {/* List of Category Allocations */}
-          <View className='gap-3'>
+          {/* ── Category Legend ── */}
+          <View className='gap-2.5'>
             {categoryData.list.map((item, index) => (
               <View
-                key={`row-${index}`}
-                className='flex-row justify-between items-center'
+                key={`cat-${index}`}
+                className='flex-row items-center justify-between'
               >
-                <View className='flex-row items-center gap-2.5 flex-1 pr-3'>
+                {/* Left: indicator + name + % */}
+                <View className='flex-row items-center flex-1 mr-3'>
                   <View
-                    className='w-3.5 h-3.5 rounded-full border border-white/10'
-                    style={{ backgroundColor: item.color || '#588157' }}
+                    className='w-3 h-3 rounded-full mr-2.5'
+                    style={{ backgroundColor: item.color }}
                   />
-                  <Text className='text-text-primary text-sm font-semibold flex-1'>
+                  <Text
+                    className='text-[#2d342c] text-[13px] font-semibold flex-1'
+                    numberOfLines={1}
+                  >
                     {item.name}
                   </Text>
-                  <Text className='text-text-secondary text-xs font-semibold'>
-                    {item.percentage}%
-                  </Text>
+                  <View className='bg-[#f1f5ec] rounded-md px-1.5 py-0.5 ml-2'>
+                    <Text className='text-[#5a6157] text-[10px] font-bold'>
+                      {item.percentage}%
+                    </Text>
+                  </View>
                 </View>
-                <Text className='text-text-primary text-sm font-bold'>
+
+                {/* Right: amount */}
+                <Text className='text-[#2d342c] text-[13px] font-bold'>
                   {formatPrice(item.amount)}
                 </Text>
               </View>
             ))}
           </View>
 
-          {/* Total aggregate display */}
-          <View className='border-t border-background-light mt-5 pt-4 flex-row justify-between items-center'>
-            <Text className='text-text-secondary text-xs font-bold uppercase tracking-wider'>
-              Total {typeFilter === 'expense' ? 'Expenses' : 'Income'}
+          {/* ── Total Row ── */}
+          <View className='mt-5 pt-4 flex-row justify-between items-center' style={{ borderTopWidth: 1, borderTopColor: '#eaf0e5' }}>
+            <Text className='text-[#5a6157] text-[11px] font-bold uppercase tracking-wider'>
+              Total {isExpense ? 'Expenses' : 'Income'}
             </Text>
             <Text
+              style={{ fontFamily: 'Manrope' }}
               className={`text-lg font-black ${
-                typeFilter === 'expense' ? 'text-[#a73b21]' : 'text-primary'
+                isExpense ? 'text-[#a73b21]' : 'text-[#406841]'
               }`}
             >
               {formatPrice(categoryData.totalValue)}
