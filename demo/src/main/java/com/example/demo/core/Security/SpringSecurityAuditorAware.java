@@ -1,4 +1,4 @@
-package com.example.demo01.core.Security;
+package com.example.demo.core.Security;
 
 import com.example.demo01.core.Auth.dtos.CustomUserDetails;
 import org.jetbrains.annotations.NotNull;

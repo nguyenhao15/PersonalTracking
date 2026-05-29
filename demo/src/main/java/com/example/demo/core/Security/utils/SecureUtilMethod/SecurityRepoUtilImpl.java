@@ -1,4 +1,4 @@
-package com.example.demo01.core.Security.utils.SecureUtilMethod;
+package com.example.demo.core.Security.utils.SecureUtilMethod;
 
 import com.example.demo01.core.Security.utils.SecurityUtil;
 import com.example.demo01.domains.mongo.HRManagment.Department.dto.Department.DepartmentInfoDto;
@@ -16,7 +16,8 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Component;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 @RequiredArgsConstructor

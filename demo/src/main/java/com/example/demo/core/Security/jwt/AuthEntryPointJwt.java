@@ -1,4 +1,4 @@
-package com.example.demo01.core.Security.jwt;
+package com.example.demo.core.Security.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;

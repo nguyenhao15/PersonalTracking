@@ -1,4 +1,4 @@
-package com.example.demo01.core.Security.utils;
+package com.example.demo.core.Security.utils;
 
 import com.example.demo01.core.Auth.dtos.CustomUserDetails;
 import org.springframework.security.core.Authentication;

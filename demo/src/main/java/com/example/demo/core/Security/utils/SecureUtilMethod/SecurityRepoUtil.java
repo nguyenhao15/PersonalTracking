@@ -1,4 +1,4 @@
-package com.example.demo01.core.Security.utils.SecureUtilMethod;
+package com.example.demo.core.Security.utils.SecureUtilMethod;
 
 import com.example.demo01.domains.mongo.HRManagment.HumanResource.dto.StaffProfileInfoDto;
 import com.example.demo01.utils.ScopeView;
