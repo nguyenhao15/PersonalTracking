@@ -21,7 +21,7 @@ import javax.sql.DataSource;
 @EnableTransactionManagement
 @EntityScan(basePackages = "com.example.demo")
 @EnableJpaRepositories(
-        basePackages = "com.example.demo",
+        basePackages = "com.example.demo.repositories.postgreSQL",
         entityManagerFactoryRef = "postgreSQLFactoryManager",
         transactionManagerRef = "postgreSQLTransactionManager"
 )

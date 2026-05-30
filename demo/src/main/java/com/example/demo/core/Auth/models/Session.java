@@ -1,9 +1,6 @@
 package com.example.demo.core.Auth.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Index;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,7 +18,9 @@ import java.time.Instant;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(
-        uniqueConstraints = {},
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = {"username","refreshToken"})
+        },
         indexes = {
                 @Index(name = "idx_user_name", columnList = "username",unique = true),
                 @Index(name = "idx_token", columnList = "refreshToken",unique = true),
