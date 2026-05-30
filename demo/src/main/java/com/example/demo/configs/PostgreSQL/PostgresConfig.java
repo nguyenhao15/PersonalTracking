@@ -19,9 +19,9 @@ import javax.sql.DataSource;
 
 @Configuration
 @EnableTransactionManagement
-@EntityScan(basePackages = "com.example.demo.repository.postgreSQL")
+@EntityScan(basePackages = "com.example.demo")
 @EnableJpaRepositories(
-        basePackages = "com.example.demo.repository.postgreSQL",
+        basePackages = "com.example.demo",
         entityManagerFactoryRef = "postgreSQLFactoryManager",
         transactionManagerRef = "postgreSQLTransactionManager"
 )
@@ -45,7 +45,7 @@ public class PostgresConfig {
             @Qualifier("postgreSQLDataSource") DataSource dataSource) {
         return builder
                 .dataSource(dataSource)
-                .packages("com.example.demo01.domains.jpa")
+                .packages("com.example.demo")
                 .persistenceUnit("postgreSQLPU")
                 .build();
     }

@@ -135,11 +135,6 @@ public class DynamicSpecificationBuilder<T> {
         }
     }
 
-//    private Set<String> extractFields(List<Specification<T>> filters) {
-//        return filters.stream()
-//                .map(Specification::getField)
-//                .collect(Collectors.toSet());
-//        }
 
 
 }

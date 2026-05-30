@@ -1,10 +1,8 @@
 package com.example.demo.core.Security.jwt;
 
-import com.example.demo01.core.Auth.dtos.CustomUserDetails;
-import com.example.demo01.core.Auth.services.UserDetailsServiceImpl;
-import com.example.demo01.core.Exceptions.InvalidCredentialsException;
-import com.example.demo01.domains.mongo.HRManagment.HumanResource.dto.StaffProfileInfoDto;
-import com.example.demo01.domains.mongo.HRManagment.HumanResource.service.StaffProfileService;
+import com.example.demo.core.Auth.dtos.user.CustomUserDetails;
+import com.example.demo.core.Auth.services.UserDetailsServiceImpl;
+import com.example.demo.core.Exceptions.InvalidCredentialsException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -28,8 +26,6 @@ public class AuthTokenFilter extends OncePerRequestFilter {
     @Autowired
     private UserDetailsServiceImpl userDetailsService;
 
-    @Autowired
-    private StaffProfileService staffProfileService;
 
     @Value("${PROFILE_HEADER}")
     private String PROFILE_HEADER;
@@ -45,21 +41,11 @@ public class AuthTokenFilter extends OncePerRequestFilter {
                 CustomUserDetails userDetails = (CustomUserDetails) userDetailsService.loadUserByUsername(username);
 
                 String profileHeader = request.getHeader(PROFILE_HEADER);
-                StaffProfileInfoDto activeProfile = null;
 
-                if (profileHeader != null && !profileHeader.isEmpty()) {
-                    activeProfile = userDetails.getAllProfiles().get(profileHeader);
-                }
-
-                if (activeProfile == null) {
-                    activeProfile = userDetails.getDefaultProfile();
-                }
-
-                CustomUserDetails userDetailsWithProfile = userDetails.withActiveProfile(activeProfile);
 
                 UsernamePasswordAuthenticationToken authentication =
                         new UsernamePasswordAuthenticationToken(
-                                userDetailsWithProfile,
+                                userDetails,
                                 null,
                                 userDetails.getAuthorities()
                         );

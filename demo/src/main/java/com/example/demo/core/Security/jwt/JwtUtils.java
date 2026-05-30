@@ -6,11 +6,17 @@ import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Component;
+import org.springframework.web.util.WebUtils;
 
 import javax.crypto.SecretKey;
 import java.security.Key;
@@ -29,6 +35,28 @@ public class JwtUtils {
 
     @Value("${spring.app.jwt.refresh-expiration}")
     private int refreshExpirationMs;
+
+    @Autowired
+    private HttpServletResponse response;
+
+    @Autowired
+    private HttpServletRequest request;
+
+    public void setRefreshTokenInCookie(String value, int maxAgeSeconds) {
+        ResponseCookie cookie = ResponseCookie.from("refreshToken", value)
+                .httpOnly(true)
+                .secure(true)
+                .path("/")
+                .sameSite("None")
+                .maxAge(maxAgeSeconds)
+                .build();
+        response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
+    }
+
+    public String getRefreshTokenInCookieValue() {
+        Cookie cookie = WebUtils.getCookie(request, "refreshToken");
+        return cookie != null ? cookie.getValue() : null;
+    }
 
     public String getJwtFromHeader(HttpServletRequest request) {
         String bearerToken = request.getHeader("Authorization");

@@ -1,7 +1,7 @@
 package com.example.demo.core.Security;
 
-import com.example.demo01.core.Auth.dtos.CustomUserDetails;
-import org.jetbrains.annotations.NotNull;
+import com.example.demo.core.Auth.dtos.user.CustomUserDetails;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -24,7 +24,7 @@ public class SpringSecurityAuditorAware implements AuditorAware<String> {
         Object principal = authentication.getPrincipal();
 
         if (principal instanceof CustomUserDetails) {
-            return Optional.of(((CustomUserDetails) principal).getStaffId());
+            return Optional.of(((CustomUserDetails) principal).getUsername());
         }
 
         return Optional.of(authentication.getName());

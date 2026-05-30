@@ -13,10 +13,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 
-import java.time.Instant;
 import java.time.LocalDate;
 
 @Entity(name = "users")
@@ -25,7 +22,6 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @Table(name = "users",
-        uniqueConstraints = {},
         indexes = {
                 @Index(name = "idx_user_name", columnList = "username",unique = true),
                 @Index(name = "idx_email", columnList = "email",unique = true),
@@ -33,7 +29,7 @@ import java.time.LocalDate;
 public class Users extends BaseAuditJpaModel {
 
     @Id
-    private String id;
+    private Long id;
 
     @NotBlank
     private String fullName;
@@ -63,12 +59,6 @@ public class Users extends BaseAuditJpaModel {
     private String twoFactorSecret;
     private boolean isTwoFactorEnabled = false;
     private String signUpMethod;
-
-    @CreatedDate
-    private Instant createdDate;
-
-    @LastModifiedDate
-    private Instant updatedDate;
 
     public Users(String userName, String email, String password) {
         this.username = Users.this.username;
