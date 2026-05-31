@@ -22,8 +22,6 @@ public class WalletRequestDto {
 
     private String currency;
 
-    private Long ownerId;
-
     private Double priority;
 
     private WalletTypeEnum walletType;

@@ -37,4 +37,16 @@ public class WalletController {
         return ResponseEntity.ok(walletList);
     }
 
+    @PatchMapping("/{walletId}/update-balance")
+    public ResponseEntity<?> updateWalletBalance(@PathVariable Long walletId, @RequestParam Long amount) {
+        WalletInfoDto walletInfoDto = walletService.updateWalletBalance(walletId, amount);
+        return ResponseEntity.ok(walletInfoDto);
+    }
+
+    @PatchMapping("/{walletId}")
+    public ResponseEntity<?> updateWallet(@PathVariable Long walletId, @RequestBody WalletRequestDto walletRequestDto) {
+        WalletInfoDto walletInfoDto = walletService.updateWallet(walletId, walletRequestDto);
+        return ResponseEntity.ok(walletInfoDto);
+    }
+
 }

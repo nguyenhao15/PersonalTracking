@@ -15,7 +15,7 @@ public record WalletInfoDto (
 
          String currency,
 
-         Long userId,
+         Long ownerId,
 
          Double priority,
 

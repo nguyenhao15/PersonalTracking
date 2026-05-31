@@ -13,6 +13,8 @@ public record WalletSummaryInfo(
 
         WalletTypeEnum walletType,
 
+        Long ownerId,
+
         Double priority
 ) {
 }

@@ -9,6 +9,7 @@ public interface SessionService {
 
     Session findByRefreshToken(String refreshToken);
 
+
     void deleteRefreshToken(String refreshToken);
 
     void deleteRefreshTokenByUserId(String userId);

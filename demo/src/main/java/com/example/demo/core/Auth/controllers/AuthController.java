@@ -5,12 +5,10 @@ import com.example.demo.core.Auth.services.UserService;
 import com.example.demo.core.annotation.InstanceApiController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@InstanceApiController
+@InstanceApiController(version = "v1")
 @RequestMapping("/auth")
 public class AuthController {
 

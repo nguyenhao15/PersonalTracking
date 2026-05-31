@@ -11,5 +11,5 @@ import java.util.List;
 @Repository
 public interface WalletRepository extends JpaRepository<WalletEntity, Long>, JpaSpecificationExecutor<WalletEntity> {
 
-    List<WalletEntity> findByUserId(Long userId, Sort sort);
+    List<WalletEntity> findByOwnerId(Long userId, Sort sort);
 }

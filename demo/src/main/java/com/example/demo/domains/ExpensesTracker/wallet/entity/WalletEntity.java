@@ -31,7 +31,7 @@ public class WalletEntity extends BaseAuditJpaModel {
 
     private Double priority;
 
-    private Long userId;
+    private Long ownerId;
 
     @Enumerated(EnumType.STRING)
     private WalletTypeEnum walletType;

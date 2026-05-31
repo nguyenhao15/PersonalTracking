@@ -2,6 +2,7 @@ package com.example.demo.configs;
 
 import com.example.demo.core.annotation.InstanceApiController;
 import jakarta.validation.constraints.NotNull;
+import org.jspecify.annotations.NonNull;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,7 +16,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Value("${frontend.url}")
     String frontEndUrl;
 
-
+    @Override
     public void configurePathMatch(PathMatchConfigurer configurer) {
         configurer.addPathPrefix("/api/v1", c -> c.isAnnotationPresent(InstanceApiController.class)
                 && "v1".equals(c.getAnnotation(InstanceApiController.class).version()));
@@ -28,7 +29,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     public WebMvcConfigurer corsConfigurer() {
         return new WebMvcConfigurer() {
             @Override
-            public void addCorsMappings(@NotNull CorsRegistry registry) {
+            public void addCorsMappings(@NonNull CorsRegistry registry) {
                 registry.addMapping("/api/**")
                         .allowedOrigins(frontEndUrl)
                         .allowedMethods("GET", "POST","PATCH" ,"PUT", "DELETE", "OPTIONS")

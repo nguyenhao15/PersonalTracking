@@ -29,7 +29,10 @@ public class WalletServiceImpl implements WalletService {
 
     @Override
     public WalletInfoDto createWallet(WalletRequestDto walletRequestDto) {
+        Long userId = securityUtil.getCurrentUserDetails().getId();
+
         WalletEntity wallet = walletMapper.fromRequestToEntity(walletRequestDto);
+        wallet.setOwnerId(userId);
         WalletEntity savedWallet = walletRepository.save(wallet);
         return walletMapper.fromEntityToDto(savedWallet);
     }
@@ -50,7 +53,7 @@ public class WalletServiceImpl implements WalletService {
     public List<WalletSummaryInfo> getMyAllWallets() {
         Long userId =securityUtil.getCurrentUserDetails().getId();
         Sort sort = Sort.by(Sort.Direction.DESC, "priority");
-        List<WalletEntity> walletEntities = walletRepository.findByUserId(userId, sort);
+        List<WalletEntity> walletEntities = walletRepository.findByOwnerId(userId, sort);
         return walletMapper.fromEntityToSummaryInfoList(walletEntities);
     }
 
