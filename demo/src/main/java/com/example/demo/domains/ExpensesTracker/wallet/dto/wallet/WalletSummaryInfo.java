@@ -11,6 +11,8 @@ public record WalletSummaryInfo(
 
         String description,
 
-        WalletTypeEnum walletType
+        WalletTypeEnum walletType,
+
+        Double priority
 ) {
 }

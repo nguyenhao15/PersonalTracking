@@ -15,7 +15,9 @@ public record WalletInfoDto (
 
          String currency,
 
-         String ownerId,
+         Long userId,
+
+         Double priority,
 
          WalletTypeEnum walletType
 ) { }

@@ -3,12 +3,16 @@ package com.example.demo.domains.ExpensesTracker.wallet.entity;
 import com.example.demo.utils.BaseEntity.Jpa.BaseAuditJpaModel;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 
 @Entity(name = "wallet")
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
+@Setter
 public class WalletEntity extends BaseAuditJpaModel {
 
     @Id
@@ -25,7 +29,9 @@ public class WalletEntity extends BaseAuditJpaModel {
 
     private String currency;
 
-    private String ownerId;
+    private Double priority;
+
+    private Long userId;
 
     @Enumerated(EnumType.STRING)
     private WalletTypeEnum walletType;

@@ -1,5 +1,6 @@
 package com.example.demo.core.Auth.dtos.user;
 
+import com.example.demo.core.Auth.models.SystemRole;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,7 +14,7 @@ public class UserSummaryDto {
     private String staffId;
     private String fullName;
     private String email;
-    private String systemRole;
+    private SystemRole systemRole;
     private boolean accountNonLocked;
     private boolean accountNonExpired;
     private boolean enabled;

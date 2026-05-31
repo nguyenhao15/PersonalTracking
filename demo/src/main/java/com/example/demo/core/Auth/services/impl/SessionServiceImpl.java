@@ -65,7 +65,7 @@ public class SessionServiceImpl implements SessionService {
 
     @Override
     public void deleteRefreshToken(String refreshToken) {
-        Session session = sessionRepository.findByRefreshToken(refreshToken);
+        Session session = sessionRepository.findByUsername(refreshToken);
         sessionRepository.delete(session);
     }
 

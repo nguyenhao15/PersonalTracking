@@ -1,5 +1,6 @@
 package com.example.demo.core.Auth.dtos.user;
 
+import com.example.demo.core.Auth.models.SystemRole;
 import com.example.demo.core.Auth.models.Users;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
@@ -24,7 +25,7 @@ public class CustomUserDetails implements UserDetails {
     private String fullName;
 
     private String email;
-    private String userRole;
+    private SystemRole userRole;
 
 
     public CustomUserDetails(Users user) {

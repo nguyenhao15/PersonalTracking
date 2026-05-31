@@ -6,6 +6,7 @@ import com.example.demo.core.Auth.models.Session;
 import com.example.demo.core.Auth.models.Users;
 import com.example.demo.core.Auth.services.SessionService;
 import com.example.demo.core.Auth.services.UserService;
+import com.example.demo.core.Exceptions.DuplicateResourceException;
 import com.example.demo.core.Exceptions.InvalidCredentialsException;
 import com.example.demo.core.Exceptions.ResourceNotFoundException;
 import com.example.demo.core.Security.jwt.JwtUtils;
@@ -66,10 +67,28 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO createNewUser(CreateUserRequest createUserRequest) {
-            Users user = userMapper.fromCreateRequestToEntity(createUserRequest);
-            Users createdUser = userRepository.save(user);
+        Users user = userMapper.fromCreateRequestToEntity(createUserRequest);
+        String username = createUserRequest.getUsername();
+        String password = createUserRequest.getPassword();
+        String email = createUserRequest.getEmail();
+
+        if (userRepository.existsByUsername(username)) {
+            throw new DuplicateResourceException("Username: " + username + " already exists");
+        }
+        if (userRepository.existsByEmail(email)) {
+            throw new DuplicateResourceException("Email: " + email + " already exists");
+        }
+
+        user.setSignUpMethod("LOCAL");
+        user.setTwoFactorEnabled(false);
+        user.setPassword(encoder.encode(password));
+
+        user.setEnabled(true);
+        user.setAccountNonLocked(true);
+
+        Users createdUser = userRepository.save(user);
             // TODO: CREATE DEFAULT DATA SET
-            return userMapper.toDto(createdUser);
+        return userMapper.toDto(createdUser);
     }
 
     @Override
@@ -79,7 +98,7 @@ public class UserServiceImpl implements UserService {
         String password = loginRequest.getPassword();
         boolean isAlreadyExist = userRepository.existsByUsername(username);
         if (!isAlreadyExist) {
-            throw new ResourceNotFoundException("Staff", "StaffId", username);
+            throw new ResourceNotFoundException("Users", "username", username);
         }
 
         try {

@@ -1,22 +1,18 @@
 package com.example.demo.core.Auth.models;
 
+import com.example.demo.utils.BaseEntity.Jpa.BaseAuditJpaModel;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedBy;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedBy;
-import org.springframework.data.annotation.LastModifiedDate;
+import lombok.*;
 
 
 import java.time.Instant;
 
 
-@Data
 @Entity(name = "sessions")
 @AllArgsConstructor
 @NoArgsConstructor
+@Setter
+@Getter
 @Table(
         uniqueConstraints = {
                 @UniqueConstraint(columnNames = {"username","refreshToken"})
@@ -26,9 +22,10 @@ import java.time.Instant;
                 @Index(name = "idx_token", columnList = "refreshToken",unique = true),
         }
 )
-public class Session {
+public class Session extends BaseAuditJpaModel {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String username;
@@ -36,16 +33,4 @@ public class Session {
     private String refreshToken;
 
     private Instant expiryDate;
-
-    @CreatedDate
-    private Instant createdDate;
-
-    @LastModifiedDate
-    private Instant updatedDate;
-
-    @CreatedBy
-    private String createdBy;
-
-    @LastModifiedBy
-    private String updatedBy;
 }

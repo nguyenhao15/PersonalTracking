@@ -30,6 +30,7 @@ import java.time.LocalDate;
 public class Users extends BaseAuditJpaModel {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotBlank
@@ -43,7 +44,8 @@ public class Users extends BaseAuditJpaModel {
     @Email
     private String email;
 
-    private String userRole;
+    @Enumerated(EnumType.STRING)
+    private SystemRole userRole;
 
     @Size(max = 120)
     @JsonIgnore

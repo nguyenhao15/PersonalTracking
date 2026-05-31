@@ -1,6 +1,7 @@
 // CreateUserRequest.java
 package com.example.demo.core.Auth.dtos.user;
 
+import com.example.demo.core.Auth.models.SystemRole;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -22,6 +23,8 @@ public class CreateUserRequest {
     @Email(message = "Invalid email")
     private String email;
 
-    private String systemRole;
+    private String password;
+
+    private SystemRole userRole;
 
 }

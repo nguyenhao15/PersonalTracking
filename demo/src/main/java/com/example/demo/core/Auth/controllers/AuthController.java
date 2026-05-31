@@ -1,10 +1,8 @@
 package com.example.demo.core.Auth.controllers;
 
-import com.example.demo.core.Auth.dtos.user.LoginRequest;
-import com.example.demo.core.Auth.dtos.user.LoginResponse;
-import com.example.demo.core.Auth.dtos.user.UpdatePassword;
-import com.example.demo.core.Auth.dtos.user.UserDTO;
+import com.example.demo.core.Auth.dtos.user.*;
 import com.example.demo.core.Auth.services.UserService;
+import com.example.demo.core.annotation.InstanceApiController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -12,7 +10,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/auth")
+@InstanceApiController
+@RequestMapping("/auth")
 public class AuthController {
 
     @Autowired
@@ -24,15 +23,16 @@ public class AuthController {
         return ResponseEntity.ok(loginResponse);
     }
 
+    @PostMapping("/register")
+    public ResponseEntity<?> registerUser(@RequestBody CreateUserRequest createUserRequest) {
+        UserDTO userDTO = userService.createNewUser(createUserRequest);
+        return ResponseEntity.ok(userDTO);
+    }
 
     @PostMapping("/refresh-token")
     public ResponseEntity<?> refreshToken() {
-        try {
-            String accessToken = userService.refreshToken();
-            return ResponseEntity.ok(accessToken);
-        } catch (RuntimeException e) {
-            return ResponseEntity.status(403).body(e.getMessage());
-        }
+        String accessToken = userService.refreshToken();
+        return ResponseEntity.ok(accessToken);
     }
 
     @PostMapping("/log-out")
@@ -41,11 +41,6 @@ public class AuthController {
         return ResponseEntity.ok(logOutMessage);
     }
 
-    @GetMapping("/staff-profile")
-    public ResponseEntity<?> getUserInfo(@AuthenticationPrincipal UserDetails userDetails) {
-        UserDTO userDTO = userService.getMyInfo();
-        return ResponseEntity.ok(userDTO);
-    }
 
     @PutMapping("/update-password")
     public ResponseEntity<?> updatePassword(@RequestBody UpdatePassword newPassword) {
